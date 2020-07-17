@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xalz.mappers.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.xalz.bean.Comment" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="cmt_id" property="cmtId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="activ_id" property="activId" jdbcType="INTEGER" />
+    <result column="cmt_time" property="cmtTime" jdbcType="TIMESTAMP" />
+    <result column="cmt_content" property="cmtContent" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>
