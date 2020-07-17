@@ -39,6 +39,17 @@ public class UserServiceImpl implements UserService {
 		if (userMapper.insert(user) == 1) {
 			return true;
 		}else return false;
+//		int flag = 0;
+//		try {
+//			flag = userMapper.insert(user);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		if (flag == 1) {
+//			return true;
+//		}else return false;
+		
 	}
 	
 	

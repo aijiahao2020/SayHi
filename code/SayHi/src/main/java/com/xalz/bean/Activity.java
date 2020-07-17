@@ -47,7 +47,31 @@ public class Activity {
     @Column(name = "user_id")
     private Integer userId;
 
-    /**
+    public Activity() {
+		super();
+	}
+
+	public Activity(Integer activId, String activName, String activState, String activCity, String activAddress,
+			Date activStarttime, Date activEndtime, String activBrief, String activLabel, Integer expNum,
+			String limitExplain, String activBill, Integer favorNum, Integer userId) {
+		super();
+		this.activId = activId;
+		this.activName = activName;
+		this.activState = activState;
+		this.activCity = activCity;
+		this.activAddress = activAddress;
+		this.activStarttime = activStarttime;
+		this.activEndtime = activEndtime;
+		this.activBrief = activBrief;
+		this.activLabel = activLabel;
+		this.expNum = expNum;
+		this.limitExplain = limitExplain;
+		this.activBill = activBill;
+		this.favorNum = favorNum;
+		this.userId = userId;
+	}
+
+	/**
      * @return activ_id
      */
     public Integer getActivId() {
@@ -242,4 +266,15 @@ public class Activity {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
+
+	@Override
+	public String toString() {
+		return "Activity [activId=" + activId + ", activName=" + activName + ", activState=" + activState
+				+ ", activCity=" + activCity + ", activAddress=" + activAddress + ", activStarttime=" + activStarttime
+				+ ", activEndtime=" + activEndtime + ", activBrief=" + activBrief + ", activLabel=" + activLabel
+				+ ", expNum=" + expNum + ", limitExplain=" + limitExplain + ", activBill=" + activBill + ", favorNum="
+				+ favorNum + ", userId=" + userId + "]";
+	}
+    
+    
 }

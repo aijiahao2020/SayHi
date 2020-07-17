@@ -20,7 +20,20 @@ public class Comment {
     @Column(name = "cmt_content")
     private String cmtContent;
 
-    /**
+    public Comment() {
+		super();
+	}
+
+	public Comment(Integer cmtId, Integer userId, Integer activId, Date cmtTime, String cmtContent) {
+		super();
+		this.cmtId = cmtId;
+		this.userId = userId;
+		this.activId = activId;
+		this.cmtTime = cmtTime;
+		this.cmtContent = cmtContent;
+	}
+
+	/**
      * @return cmt_id
      */
     public Integer getCmtId() {
@@ -89,4 +102,10 @@ public class Comment {
     public void setCmtContent(String cmtContent) {
         this.cmtContent = cmtContent;
     }
+
+	@Override
+	public String toString() {
+		return "Comment [cmtId=" + cmtId + ", userId=" + userId + ", activId=" + activId + ", cmtTime=" + cmtTime
+				+ ", cmtContent=" + cmtContent + "]";
+	}
 }

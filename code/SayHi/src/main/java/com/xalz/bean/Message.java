@@ -9,7 +9,17 @@ public class Message {
     @Column(name = "mess_info")
     private String messInfo;
 
-    /**
+    public Message() {
+		super();
+	}
+
+	public Message(Integer userId, String messInfo) {
+		super();
+		this.userId = userId;
+		this.messInfo = messInfo;
+	}
+
+	/**
      * @return user_id
      */
     public Integer getUserId() {
@@ -36,4 +46,9 @@ public class Message {
     public void setMessInfo(String messInfo) {
         this.messInfo = messInfo;
     }
+
+	@Override
+	public String toString() {
+		return "Message [userId=" + userId + ", messInfo=" + messInfo + "]";
+	}
 }

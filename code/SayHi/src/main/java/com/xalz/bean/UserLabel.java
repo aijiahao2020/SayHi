@@ -14,7 +14,18 @@ public class UserLabel {
     @Column(name = "label_name")
     private String labelName;
 
-    /**
+    public UserLabel() {
+		super();
+	}
+
+	public UserLabel(Integer labelId, Integer userId, String labelName) {
+		super();
+		this.labelId = labelId;
+		this.userId = userId;
+		this.labelName = labelName;
+	}
+
+	/**
      * @return label_id
      */
     public Integer getLabelId() {
@@ -55,4 +66,9 @@ public class UserLabel {
     public void setLabelName(String labelName) {
         this.labelName = labelName;
     }
+
+	@Override
+	public String toString() {
+		return "UserLabel [labelId=" + labelId + ", userId=" + userId + ", labelName=" + labelName + "]";
+	}
 }

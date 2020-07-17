@@ -10,7 +10,17 @@ public class ActivityMember {
     @Column(name = "activ_id")
     private Integer activId;
 
-    /**
+    public ActivityMember() {
+		super();
+	}
+
+	public ActivityMember(Integer userId, Integer activId) {
+		super();
+		this.userId = userId;
+		this.activId = activId;
+	}
+
+	/**
      * @return user_id
      */
     public Integer getUserId() {
@@ -37,4 +47,9 @@ public class ActivityMember {
     public void setActivId(Integer activId) {
         this.activId = activId;
     }
+
+	@Override
+	public String toString() {
+		return "ActivityMember [userId=" + userId + ", activId=" + activId + "]";
+	}
 }

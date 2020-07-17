@@ -10,7 +10,17 @@ public class FavoriteInfo {
     @Column(name = "activ_id")
     private Integer activId;
 
-    /**
+    public FavoriteInfo() {
+		super();
+	}
+
+	public FavoriteInfo(Integer userId, Integer activId) {
+		super();
+		this.userId = userId;
+		this.activId = activId;
+	}
+
+	/**
      * @return user_id
      */
     public Integer getUserId() {
@@ -37,4 +47,9 @@ public class FavoriteInfo {
     public void setActivId(Integer activId) {
         this.activId = activId;
     }
+
+	@Override
+	public String toString() {
+		return "FavoriteInfo [userId=" + userId + ", activId=" + activId + "]";
+	}
 }
