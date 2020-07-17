@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xalz.mappers.ActivityMapper" >
+  <resultMap id="BaseResultMap" type="com.xalz.bean.Activity" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="activ_id" property="activId" jdbcType="INTEGER" />
+    <result column="activ_name" property="activName" jdbcType="CHAR" />
+    <result column="activ_state" property="activState" jdbcType="CHAR" />
+    <result column="activ_city" property="activCity" jdbcType="CHAR" />
+    <result column="activ_address" property="activAddress" jdbcType="VARCHAR" />
+    <result column="activ_starttime" property="activStarttime" jdbcType="TIMESTAMP" />
+    <result column="activ_endtime" property="activEndtime" jdbcType="TIMESTAMP" />
+    <result column="activ_brief" property="activBrief" jdbcType="VARCHAR" />
+    <result column="activ_label" property="activLabel" jdbcType="CHAR" />
+    <result column="exp_num" property="expNum" jdbcType="INTEGER" />
+    <result column="limit_explain" property="limitExplain" jdbcType="VARCHAR" />
+    <result column="activ_bill" property="activBill" jdbcType="VARCHAR" />
+    <result column="favor_num" property="favorNum" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+  </resultMap>
+</mapper>
