@@ -17,6 +17,9 @@ import tk.mybatis.mapper.entity.Example.Criteria;
 
 public class ActivityTest {
 	
+	/**
+	 * ActivityService 测试
+	 */
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext context =
                 new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -39,7 +42,7 @@ public class ActivityTest {
 //		System.out.println(activityService.updateActivByPrimaryKey(activity));
 		
 		
-/* 测试updateActiv(Activity activity) */	
+/* 测试deleteActivByPrimaryKey(Integer activId) */	
 //		System.out.println(activityService.deleteActivByPrimaryKey(18));
 		
 /* 测试getActivListByExample(Example example) */	

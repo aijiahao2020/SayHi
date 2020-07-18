@@ -51,6 +51,14 @@ public class UserServiceImpl implements UserService {
 //		}else return false;
 		
 	}
+
+	/**
+	 * 根据主键获取用户信息
+	*/
+	@Override
+	public User getUserByPrimaryKey(Integer user_id) {
+		return userMapper.selectByPrimaryKey(user_id);
+	}
 	
 	
 	

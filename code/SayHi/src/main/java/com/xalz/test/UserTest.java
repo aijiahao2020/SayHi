@@ -14,9 +14,12 @@ public class UserTest {
         UserService userService = context.getBean(UserService.class);
 
         // queryUser（）
-        User user = new User(null,"xq1","1234561",null);
-//        System.out.println(userService.queryUser(user));
-        userService.register(user);
+        User user = new User(null,"xq1","12345",null);
+        System.out.println(userService.queryUser(user));
+//        userService.register(user);
+        
+        //getUserByPrimaryKey()
+        System.out.println(userService.getUserByPrimaryKey(1));
 		
 	}
 	

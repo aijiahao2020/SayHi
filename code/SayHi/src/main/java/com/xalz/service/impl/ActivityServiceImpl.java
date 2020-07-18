@@ -12,7 +12,7 @@ import com.xalz.service.ActivityService;
 import tk.mybatis.mapper.entity.Example;
 
 /**
- * 活动操作类
+ * 活动表操作实现类
  * @author po
  *
  */
