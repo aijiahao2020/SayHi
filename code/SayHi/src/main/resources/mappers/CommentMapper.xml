@@ -11,4 +11,26 @@
     <result column="cmt_time" property="cmtTime" jdbcType="TIMESTAMP" />
     <result column="cmt_content" property="cmtContent" jdbcType="VARCHAR" />
   </resultMap>
+  
+  <resultMap id="UserCommentResultMap" type="com.xalz.bean.UserAndComment" >
+    
+    <id column="cmt_id" property="cmtId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="activ_id" property="activId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="CHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="cmt_time" property="cmtTime" jdbcType="TIMESTAMP" />
+    <result column="cmt_content" property="cmtContent" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  
+  <select id="selectUserCommentByActivId" resultMap="UserCommentResultMap" parameterType="com.xalz.bean.Comment">
+  		<!-- 对用户表和评论表进行联表查询 -->
+  		select cmt_id, comment.user_id, activ_id, user_name, avatar, cmt_time, cmt_content from comment, user where
+  		comment.activ_id=#{activId} 
+  		and 
+  		comment.user_id = user.user_id
+  		
+  </select>
+  
 </mapper>

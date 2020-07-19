@@ -1,8 +1,10 @@
 package com.xalz.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.xalz.bean.Activity;
+import com.xalz.bean.User;
 
 import tk.mybatis.mapper.entity.Example;
 
@@ -57,4 +59,7 @@ public interface ActivityService {
 	
 	//点赞数进行自增√
 	public boolean updateActivFavorInfoSelfByPrimaryKey(Integer activId, Integer operator);
+	
+	//通过查询获取活动和用户的map集合
+	public Map<Activity,List<User>> getActivUserMap(Activity activity);
 }

@@ -3,12 +3,11 @@ package com.xalz.service.impl;
 
 import java.util.List;
 
-import javax.lang.model.element.Element;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xalz.bean.Comment;
+import com.xalz.bean.UserAndComment;
 import com.xalz.mappers.CommentMapper;
 import com.xalz.service.CommentService;
 
@@ -112,5 +111,11 @@ public class CommentServiceimpl implements CommentService{
 		return commentMapper.selectCount(comment);
 	}
 
-	
+	/**
+	 * 通过活动编号获取活动的评论及用户
+	 */
+	@Override
+	public List<UserAndComment> getUserCommentByActivId(Comment comment) {
+		return commentMapper.selectUserCommentByActivId(comment);
+	}
 }

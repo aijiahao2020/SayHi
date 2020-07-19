@@ -1,11 +1,14 @@
 package com.xalz.service.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xalz.bean.Activity;
 import com.xalz.bean.ActivityMember;
+import com.xalz.bean.User;
 import com.xalz.mappers.ActivityMemberMapper;
 import com.xalz.service.ActivityMemberService;
 
@@ -64,6 +67,31 @@ public class ActivityMemberServiceImpl implements ActivityMemberService{
 	public Integer getActvityMemberCount(ActivityMember activityMemeber) {
 		return activityMemberMapper.selectCount(activityMemeber);
 	}
+	
+	/**
+	 * 通过活动编号查询所有参加该活动的详细信息并将发起者排第一个
+	 */
+	
+	@Override
+	public List<User> getUserListByActivity(ActivityMember activityMemeber) {
+		 List<User> userList = activityMemberMapper.selectUserListByActivity(activityMemeber);
+		 Activity activity = activityMemberMapper.selectUserIdByActivId(activityMemeber);
+		 Integer userId = activity.getUserId();
+		 int i = 0;
+		 for(User user : userList) {
+			 if(user.getUserId() == userId && i == 0) {
+				 break;
+			 }
+			 if(user.getUserId() == userId && i != 0)
+			 {
+				 Collections.swap(userList, i, 0);
+				 break;
+			 }
+			 i++;
+		 }
+		 return userList;
+	}
+
 
 	
 }

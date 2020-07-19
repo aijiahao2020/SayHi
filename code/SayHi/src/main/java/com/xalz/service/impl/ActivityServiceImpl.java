@@ -1,16 +1,19 @@
 package com.xalz.service.impl;
 
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xalz.bean.Activity;
+import com.xalz.bean.ActivityMember;
+import com.xalz.bean.User;
 import com.xalz.mappers.ActivityMapper;
+import com.xalz.service.ActivityMemberService;
 import com.xalz.service.ActivityService;
 
 import tk.mybatis.mapper.entity.Example;
@@ -28,6 +31,8 @@ public class ActivityServiceImpl implements ActivityService{
 	@Autowired
 	ActivityMapper activityMapper;
 	
+	@Autowired
+	ActivityMemberService activityMemberService;
 	/**
 	 * 获取所有活动
 	 */
@@ -198,6 +203,20 @@ public class ActivityServiceImpl implements ActivityService{
 	}
 
 	
+	/**
+	 * 通过查询获取活动和用户的map集合
+	 */
+	public Map<Activity, List<User>> getActivUserMap(Activity activity) {
+		List<Activity> activList = getActivListByFuzzySearch(activity);
+		ActivityMember activityMemeber = new ActivityMember();
+		Map<Activity, List<User>> activUserMap = new HashMap<Activity, List<User>>();
+		for(Activity activ : activList) {
+			activityMemeber.setActivId(activ.getActivId());
+			List<User> userList = activityMemberService.getUserListByActivity(activityMemeber);
+			activUserMap.put(activ, userList);
+		}
+		return activUserMap;
+	}
 
 	
 	

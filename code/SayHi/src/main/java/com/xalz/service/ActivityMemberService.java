@@ -3,6 +3,7 @@ package com.xalz.service;
 import java.util.List;
 
 import com.xalz.bean.ActivityMember;
+import com.xalz.bean.User;
 
 
 public interface ActivityMemberService {
@@ -21,4 +22,7 @@ public interface ActivityMemberService {
 	
 	//查询活动成员的数量√
 	public Integer getActvityMemberCount(ActivityMember activityMemeber);
+	
+	//通过活动编号查询所有参加该活动用户的详细信息√(传入活动编号，返回活动成员的详细信息)
+	public List<User> getUserListByActivity(ActivityMember activityMemeber);
 }

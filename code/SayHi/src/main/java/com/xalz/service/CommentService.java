@@ -3,6 +3,7 @@ package com.xalz.service;
 import java.util.List;
 
 import com.xalz.bean.Comment;
+import com.xalz.bean.UserAndComment;
 
 import tk.mybatis.mapper.entity.Example;
 
@@ -42,5 +43,7 @@ public interface CommentService {
 	
 	//通过评论数进行排序
 	
+	//通过活动编号获取活动的评论及用户√
+	public List<UserAndComment> getUserCommentByActivId(Comment comment);
 	
 }

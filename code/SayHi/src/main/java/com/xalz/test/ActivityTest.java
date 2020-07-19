@@ -5,10 +5,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.xalz.bean.Activity;
+import com.xalz.bean.User;
 import com.xalz.service.ActivityService;
 
 
@@ -86,8 +88,8 @@ public class ActivityTest {
 		/* 测试getActivListByFuzzySearch(Activity activity) */	
 //		Activity activity = new Activity(null, null, "担当", "湖南", null, null, null, null, null, "体育", null, null, null, null, null);
 //		Activity activity = new Activity(null, null, null, null, null, null, null, null, null, "体育", null, null, null, null, null);
-//		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//		Date activStarttime = dateFormat.parse("2019-07-17 00:00:00");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date activStarttime = dateFormat.parse("2019-07-17 00:00:00");
 //		Date activEndtime = dateFormat.parse("2020-07-18 00:00:00");
 //		Activity activity = new Activity(null, null, null, null, null, null, activStarttime, null, null, null, null, null, null, null, null);
 //		Activity activity = new Activity();
@@ -110,6 +112,15 @@ public class ActivityTest {
 		System.out.println(activityService.updateActivCmtSelfByPrimaryKey(9,1));
 		System.out.println(activityService.updateActivFavorInfoSelfByPrimaryKey(9, 1));
 		
+		Activity activity = new Activity(null, null, null, null, null, null, activStarttime, null, null, null, null, null, null, null, null);
+		Map<Activity, List<User>> activUser =  activityService.getActivUserMap(activity);
+		
+		for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
+           System.out.println(entry.getKey());
+           for(User user : entry.getValue()) {
+        	   System.out.println(user);
+           }
+        }
 		
 		
 	}
