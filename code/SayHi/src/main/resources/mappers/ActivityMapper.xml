@@ -6,6 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="activ_id" property="activId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="activ_name" property="activName" jdbcType="CHAR" />
     <result column="activ_state" property="activState" jdbcType="CHAR" />
     <result column="activ_city" property="activCity" jdbcType="CHAR" />
@@ -18,6 +19,6 @@
     <result column="limit_explain" property="limitExplain" jdbcType="VARCHAR" />
     <result column="activ_bill" property="activBill" jdbcType="VARCHAR" />
     <result column="favor_num" property="favorNum" jdbcType="INTEGER" />
-    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="cmt_num" property="cmtNum" jdbcType="INTEGER" />
   </resultMap>
 </mapper>

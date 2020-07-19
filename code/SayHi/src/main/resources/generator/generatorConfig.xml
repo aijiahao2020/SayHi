@@ -50,28 +50,28 @@
             <generatedKey column="id" sqlStatement="Mysql" identity="true" />
         </table> 
         <!-- 活动成员表 -->
-       <!--  <table tableName="activity_member" domainObjectName="ActivityMember">
+        <!-- <table tableName="activity_member" domainObjectName="ActivityMember">
             配置主键生成策略
-        </table> -->
-        <!-- 评论表 -->
-        <!-- <table tableName="comment" domainObjectName="Comment">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
-        </table>  -->
-        <!-- 点赞信息表  -->
-        <!-- <table tableName="favorite_info" domainObjectName="FavoriteInfo">
         </table>
-        消息表
-        <table tableName="message" domainObjectName="Message">
-            配置主键生成策略
+        评论表
+        <table tableName="comment" domainObjectName="Comment">
             <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table> 
+        点赞信息表 
+        <table tableName="favorite_info" domainObjectName="FavoriteInfo">
         </table> -->
-        <!-- 用户表 -->
+        <!-- 消息表 -->
+        <table tableName="message" domainObjectName="Message">
+           <!--  配置主键生成策略 -->
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>
+       <!--  用户表 -->
         <!-- <table tableName="user" domainObjectName="User">
             配置主键生成策略
             <generatedKey column="id" sqlStatement="Mysql" identity="true" />
-        </table> -->
-        <!-- 用户标签表 -->
-       <!--  <table tableName="user_label" domainObjectName="UserLabel">
+        </table>
+        用户标签表
+        <table tableName="user_label" domainObjectName="UserLabel">
             配置主键生成策略
             <generatedKey column="id" sqlStatement="Mysql" identity="true" />
         </table> -->

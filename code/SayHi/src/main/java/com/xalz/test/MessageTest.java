@@ -25,7 +25,7 @@ public class MessageTest {
 //		System.out.println(messageService.deleteMessage(message));
 		
 		/* 测试getAllMessage(Message message) */
-		Message message = new Message(3,null);
+		Message message = new Message(3,null,null);
 		List<Message> list = messageService.getAllMessage(message);
 		for(Message mess : list) {
 			System.out.println(mess);

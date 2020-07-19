@@ -1,8 +1,9 @@
 package com.xalz.test;
 
-import java.util.Calendar;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -10,17 +11,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.xalz.bean.Activity;
 import com.xalz.service.ActivityService;
 
-import tk.mybatis.mapper.entity.Example;
-import tk.mybatis.mapper.entity.Example.Criteria;
-
 
 
 public class ActivityTest {
 	
 	/**
 	 * ActivityService 测试
+	 * @throws ParseException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 		ClassPathXmlApplicationContext context =
                 new ClassPathXmlApplicationContext("applicationContext.xml");
 
@@ -34,8 +33,8 @@ public class ActivityTest {
 		
 		
 /* 测试createActiv(Activity activity) */		
-		Activity activity = new Activity(null, null, "活动省份", "活动城市", "活动地点", new Date(), new Date(), "活动简介", "动漫", 30, null, null, null, 1);
-		System.out.println(activityService.createActiv(activity));
+//		Activity activity = new Activity(null, 1, null, "活动省份", "活动城市", "活动地点", new Date(), new Date(), "活动简介", "动漫", 30, null, null, null, null);
+//		System.out.println(activityService.createActiv(activity));
 		
 /* 测试updateActiv(Activity activity) */	
 //		Activity activity = new Activity(17, "活动名称1", "活动省份1", "活动城市1", "活动地点1", new Date(), new Date(), "活动简介1", "动漫1", 30, "活动简介", null, 0, 1);
@@ -71,6 +70,47 @@ public class ActivityTest {
 //		for(Activity activ : list) {
 //			System.out.println(activ);
 //		}
+		
+		/* 测试getActivListByFavoriteInfo() */	
+//		List<Activity> list = activityService.getActivListByFavoriteInfo();
+//		for(Activity activ : list) {
+//			System.out.println(activ);
+//		}
+		
+		/* 测试getActivListByCommentNumber() */	
+//		List<Activity> list = activityService.getActivListByCommentNumber();
+//		for(Activity activ : list) {
+//			System.out.println(activ);
+//		}
+		
+		/* 测试getActivListByFuzzySearch(Activity activity) */	
+//		Activity activity = new Activity(null, null, "担当", "湖南", null, null, null, null, null, "体育", null, null, null, null, null);
+//		Activity activity = new Activity(null, null, null, null, null, null, null, null, null, "体育", null, null, null, null, null);
+//		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		Date activStarttime = dateFormat.parse("2019-07-17 00:00:00");
+//		Date activEndtime = dateFormat.parse("2020-07-18 00:00:00");
+//		Activity activity = new Activity(null, null, null, null, null, null, activStarttime, null, null, null, null, null, null, null, null);
+//		Activity activity = new Activity();
+//		List<Activity> list = activityService.getActivListByFuzzySearch(activity);
+		
+//		activity.setActivStarttime(activStarttime);
+//		
+//		List<Activity> list = activityService.getActivListByComprehensive(activity);
+//		
+//		for(Activity activ : list) {
+//			System.out.println(activ);
+//		}
+//		System.out.println();
+//		List<Activity> list1 = activityService.getActivListByFavoriteInfo(activity);
+//		
+//		for(Activity activ : list1) {
+//			System.out.println(activ);
+//		}
+		
+		System.out.println(activityService.updateActivCmtSelfByPrimaryKey(9,1));
+		System.out.println(activityService.updateActivFavorInfoSelfByPrimaryKey(9, 1));
+		
+		
 		
 	}
 	
