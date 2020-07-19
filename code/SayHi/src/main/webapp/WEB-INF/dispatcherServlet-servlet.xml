@@ -26,8 +26,16 @@
 
     <!-- 能支持 springmvc 更高级的一些功能，JSR303 校验，快捷的 ajax...映射动态请求 -->
     <mvc:annotation-driven/>
-
+	
     <!--上传文件-->
+      
+	<!-- 定义文件上传解析器 -->
+	<bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+	    <property name="maxUploadSize" value="104857600"/>
+	    <property name="defaultEncoding" value="utf-8"/>
+	    <property name="maxInMemorySize" value="40960"/>	
+	</bean>
+
     <!-- <bean id="MultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="defaultEncoding" value="UTF-8"/>
         <property name="maxUploadSize" value="1024"/>

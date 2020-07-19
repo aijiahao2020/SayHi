@@ -25,7 +25,6 @@ public class ActivityMemberServiceImpl implements ActivityMemberService{
 	@Override
 	public List<ActivityMember> getAllActvityMember(ActivityMember activityMemeber) {
 		return activityMemberMapper.select(activityMemeber);
-		
 	}
 
 	/**

@@ -38,4 +38,23 @@ public interface ActivityService {
 	//根据精确条件获取活动集合√
 	public List<Activity> getActivListByEqual(Activity activity);
 	
+	//通过评论数进行排序√
+	public List<Activity> getActivListByCommentNumber (Activity activity);
+	
+	//通过点赞数进行排序√
+	public List<Activity> getActivListByFavoriteInfo (Activity activity);
+	
+	//通过活动属性进行模糊查询√
+	public List<Activity> getActivListByFuzzySearch(Activity activity);
+	
+	//通过综合活动各属性进行查询√
+	public List<Activity> getActivListByComprehensive(Activity activity);
+	
+	//通过发布时间进行查询？
+	
+	//点赞数进行自增√
+	public boolean updateActivCmtSelfByPrimaryKey(Integer activId, Integer operator);
+	
+	//点赞数进行自增√
+	public boolean updateActivFavorInfoSelfByPrimaryKey(Integer activId, Integer operator);
 }

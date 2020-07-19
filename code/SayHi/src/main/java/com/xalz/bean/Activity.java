@@ -8,6 +8,9 @@ public class Activity {
     @Column(name = "activ_id")
     private Integer activId;
 
+    @Column(name = "user_id")
+    private Integer userId;
+
     @Column(name = "activ_name")
     private String activName;
 
@@ -44,18 +47,20 @@ public class Activity {
     @Column(name = "favor_num")
     private Integer favorNum;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "cmt_num")
+    private Integer cmtNum;
 
+    
     public Activity() {
 		super();
 	}
 
-	public Activity(Integer activId, String activName, String activState, String activCity, String activAddress,
-			Date activStarttime, Date activEndtime, String activBrief, String activLabel, Integer expNum,
-			String limitExplain, String activBill, Integer favorNum, Integer userId) {
+	public Activity(Integer activId, Integer userId, String activName, String activState, String activCity,
+			String activAddress, Date activStarttime, Date activEndtime, String activBrief, String activLabel,
+			Integer expNum, String limitExplain, String activBill, Integer favorNum, Integer cmtNum) {
 		super();
 		this.activId = activId;
+		this.userId = userId;
 		this.activName = activName;
 		this.activState = activState;
 		this.activCity = activCity;
@@ -68,7 +73,7 @@ public class Activity {
 		this.limitExplain = limitExplain;
 		this.activBill = activBill;
 		this.favorNum = favorNum;
-		this.userId = userId;
+		this.cmtNum = cmtNum;
 	}
 
 	/**
@@ -83,6 +88,20 @@ public class Activity {
      */
     public void setActivId(Integer activId) {
         this.activId = activId;
+    }
+
+    /**
+     * @return user_id
+     */
+    public Integer getUserId() {
+        return userId;
+    }
+
+    /**
+     * @param userId
+     */
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     /**
@@ -254,27 +273,26 @@ public class Activity {
     }
 
     /**
-     * @return user_id
+     * @return cmt_num
      */
-    public Integer getUserId() {
-        return userId;
+    public Integer getCmtNum() {
+        return cmtNum;
     }
 
     /**
-     * @param userId
+     * @param cmtNum
      */
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setCmtNum(Integer cmtNum) {
+        this.cmtNum = cmtNum;
     }
 
 	@Override
 	public String toString() {
-		return "Activity [activId=" + activId + ", activName=" + activName + ", activState=" + activState
-				+ ", activCity=" + activCity + ", activAddress=" + activAddress + ", activStarttime=" + activStarttime
-				+ ", activEndtime=" + activEndtime + ", activBrief=" + activBrief + ", activLabel=" + activLabel
-				+ ", expNum=" + expNum + ", limitExplain=" + limitExplain + ", activBill=" + activBill + ", favorNum="
-				+ favorNum + ", userId=" + userId + "]";
+		return "Activity [activId=" + activId + ", userId=" + userId + ", activName=" + activName + ", activState="
+				+ activState + ", activCity=" + activCity + ", activAddress=" + activAddress + ", activStarttime="
+				+ activStarttime + ", activEndtime=" + activEndtime + ", activBrief=" + activBrief + ", activLabel="
+				+ activLabel + ", expNum=" + expNum + ", limitExplain=" + limitExplain + ", activBill=" + activBill
+				+ ", favorNum=" + favorNum + ", cmtNum=" + cmtNum + "]";
 	}
-    
     
 }

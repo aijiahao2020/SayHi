@@ -1,5 +1,7 @@
 package com.xalz.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,6 @@ public class UserServiceImpl implements UserService {
      */
 	@Override
 	public boolean register(User user) {
-		System.out.println(userMapper.insert(user));
 		if (userMapper.insert(user) == 1) {
 			return true;
 		}else return false;
@@ -58,6 +59,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserByPrimaryKey(Integer user_id) {
 		return userMapper.selectByPrimaryKey(user_id);
+	}
+
+	/**
+	 * 获取所有用户列表
+	*/
+	@Override
+	public List<User> getAllUserList() {
+		return userMapper.selectAll();
 	}
 	
 	

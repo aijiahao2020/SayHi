@@ -7,6 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>${session.user}</h1>
+	<a href="login1">登录</a>
+	<a href="register1">注册</a>
+	<a href="index/search">查询</a>
+	<h1>${requestScope.activities}</h1>
+	<h2>${sessionScope.user}</h2>
+	<h2>${requestScope.message}</h2>
 </body>
 </html>

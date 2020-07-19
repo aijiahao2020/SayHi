@@ -8,7 +8,7 @@
 </head>
 <body>
 	
-	<a href="index">测试</a>
+	<a href="index">首页</a>
 	
 </body>
 </html>

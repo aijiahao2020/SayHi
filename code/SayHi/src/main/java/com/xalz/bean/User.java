@@ -1,6 +1,9 @@
 package com.xalz.bean;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public class User {
     @Id
@@ -14,7 +17,17 @@ public class User {
 
     private String avatar;
     
-    public User() {
+    private MultipartFile file;
+    
+    public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+
+	public User() {
     	
     }
     

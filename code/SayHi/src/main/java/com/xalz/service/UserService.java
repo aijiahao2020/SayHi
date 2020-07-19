@@ -1,5 +1,7 @@
 package com.xalz.service;
 
+import java.util.List;
+
 import com.xalz.bean.User;
 
 public interface UserService {
@@ -14,6 +16,9 @@ public interface UserService {
     
     //根据主键获取用户信息 √
     public User getUserByPrimaryKey(Integer user_id);
+    
+    //获取所有用户列表
+    public List<User> getAllUserList();
     
     
 }
