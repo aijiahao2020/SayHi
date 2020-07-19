@@ -4,10 +4,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.xalz.bean.User;
@@ -18,6 +20,7 @@ import com.xalz.service.UserService;
  * @author po
  *
  */
+@SessionAttributes("user")
 @Controller
 public class UserController {
 	
@@ -26,18 +29,20 @@ public class UserController {
 	
 	
 	
-//	@ResponseBody
-//    @RequestMapping(value = "/login",method=RequestMethod.POST)
-//    public ModelAndView login(@RequestBody User user){
-////		ModelAndView model = new ModelAndView();
-////		model.setView(view);
-////    	if(userService.queryUser(user))
-////        return "index";
-////    	else {
-////    		
-////    		return map;
-////    	}
-//    }
+	@ResponseBody
+    @RequestMapping(value = "/login",method=RequestMethod.POST)
+    public ModelAndView login(ModelAndView  model ,@RequestBody User user){
+    	if(userService.queryUser(user)) {
+    		model.setViewName("index");
+    		model.addObject("user", user);
+    		return model;
+    	}
+    	else {
+    		model.setViewName("login");
+    		model.addObject("message", "用户名或密码错误");
+    		return model;
+    	}
+    }
     
     /**
             * 注册操作

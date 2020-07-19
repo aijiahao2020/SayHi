@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>${requestScope.activities}</h1>
+	<h1>${session.user}</h1>
 </body>
 </html>
