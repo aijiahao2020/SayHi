@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.xalz.bean.Activity;
 import com.xalz.bean.User;
-import com.xalz.bean.UserLabel;
 
 public interface UserService {
 	

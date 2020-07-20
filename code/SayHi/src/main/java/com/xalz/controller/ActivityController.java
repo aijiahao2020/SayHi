@@ -107,7 +107,7 @@ public class ActivityController {
 	@RequestMapping("/index/search")
 	public String getActivByName(Map<String, Object> map){
 		Example example = new Example(Activity.class);
-		map.put("activities", activityService.getActivListByExample(example));
+//		map.put("activities", activityService.getActivListByExample(example));
 		return "index";
 	}
 	
