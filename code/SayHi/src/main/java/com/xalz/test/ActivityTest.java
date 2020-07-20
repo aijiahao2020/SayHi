@@ -109,11 +109,45 @@ public class ActivityTest {
 //			System.out.println(activ);
 //		}
 		
-		System.out.println(activityService.updateActivCmtSelfByPrimaryKey(9,1));
-		System.out.println(activityService.updateActivFavorInfoSelfByPrimaryKey(9, 1));
+//		System.out.println(activityService.updateActivCmtSelfByPrimaryKey(9,1));
+//		System.out.println(activityService.updateActivFavorInfoSelfByPrimaryKey(9, 1));
 		
+		
+		/* 测试getActivUserMap(Activity activity) */	
+//		Activity activity = new Activity(null, null, null, null, null, null, activStarttime, null, null, null, null, null, null, null, null);
+//		Map<Activity, List<User>> activUser =  activityService.getActivUserMap(activity);
+//		
+//		for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
+//           System.out.println(entry.getKey());
+//           for(User user : entry.getValue()) {
+//        	   System.out.println(user);
+//           }
+//        }
+		
+		/* 测试getActivListByFuzzySearch(Activity activity) */	
+//		Activity activity = new Activity(null, null, null, null, null, null, activStarttime, null, null, null, null, null, null, null, null);
+//		Map<Activity, List<User>> activUser =  activityService.getActivListByCommentNumber(activity);
+//		
+//		for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
+//           System.out.println(entry.getKey());
+//           for(User user : entry.getValue()) {
+//        	   System.out.println(user);
+//           }
+//        }
+		
+//		/* 测试getActivListByFavoriteInfo(Activity activity) */	
+//		Activity activity = new Activity(null, null, null, null, null, null, activStarttime, null, null, null, null, null, null, null, null);
+//		Map<Activity, List<User>> activUser =  activityService.getActivListByFavoriteInfo(activity);
+//		
+//		for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
+//           System.out.println(entry.getKey());
+//           for(User user : entry.getValue()) {
+//        	   System.out.println(user);
+//           }
+//        }
+		/* 测试getActivListByFavoriteInfo(Activity activity) */	
 		Activity activity = new Activity(null, null, null, null, null, null, activStarttime, null, null, null, null, null, null, null, null);
-		Map<Activity, List<User>> activUser =  activityService.getActivUserMap(activity);
+		Map<Activity, List<User>> activUser =  activityService.getActivListByComprehensive(activity);
 		
 		for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
            System.out.println(entry.getKey());
@@ -121,7 +155,6 @@ public class ActivityTest {
         	   System.out.println(user);
            }
         }
-		
 		
 	}
 	

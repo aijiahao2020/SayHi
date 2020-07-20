@@ -41,18 +41,18 @@ public interface ActivityService {
 	public List<Activity> getActivListByEqual(Activity activity);
 	
 	//通过评论数进行排序√
-	public List<Activity> getActivListByCommentNumber (Activity activity);
+	public Map<Activity, List<User>> getActivListByCommentNumber (Activity activity);
 	
 	//通过点赞数进行排序√
-	public List<Activity> getActivListByFavoriteInfo (Activity activity);
+	public Map<Activity, List<User>> getActivListByFavoriteInfo (Activity activity);
 	
 	//通过活动属性进行模糊查询√
 	public List<Activity> getActivListByFuzzySearch(Activity activity);
 	
 	//通过综合活动各属性进行查询√
-	public List<Activity> getActivListByComprehensive(Activity activity);
+	public Map<Activity, List<User>> getActivListByComprehensive(Activity activity);
 	
-	//通过发布时间进行查询？
+	//通过发布时间进行查询
 	
 	//点赞数进行自增√
 	public boolean updateActivCmtSelfByPrimaryKey(Integer activId, Integer operator);
@@ -60,6 +60,6 @@ public interface ActivityService {
 	//点赞数进行自增√
 	public boolean updateActivFavorInfoSelfByPrimaryKey(Integer activId, Integer operator);
 	
-	//通过查询获取活动和用户的map集合
+	//通过查询获取活动和用户的map集合√
 	public Map<Activity,List<User>> getActivUserMap(Activity activity);
 }

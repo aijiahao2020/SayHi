@@ -1,10 +1,14 @@
 package com.xalz.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +50,13 @@ public class ActivityServiceImpl implements ActivityService{
 	 */
 	@Override
 	public boolean createActiv(Activity activity) {
+		ActivityMember activityMemeber = new ActivityMember(activity.getUserId(), activity.getActivId());
+		activityMemberService.addActvityMember(activityMemeber);
+		activity.setCmtNum(0);
+		activity.setFavorNum(0);
+//		if(activity.getActivBill() != null) {
+//			activity.setActivBill(image);
+//		}
 		if (activityMapper.insert(activity) == 1) {
 			return true;
 		}else return false;
@@ -99,33 +110,48 @@ public class ActivityServiceImpl implements ActivityService{
 	 * 通过评论数进行排序
 	 */
 	@Override
-	public List<Activity> getActivListByCommentNumber(Activity activity) {
-		List<Activity> allActivSortByCmtNum = getActivListByFuzzySearch(activity);
-		Collections.sort(allActivSortByCmtNum, new Comparator<Activity>() {
+	public Map<Activity, List<User>> getActivListByCommentNumber(Activity activity) {
+		Map<Activity, List<User>> activUserMap = getActivUserMap(activity);
+		
+		Set<Map.Entry<Activity, List<User>>> mapEntries = activUserMap.entrySet();    //获取map集合的所有键值对的Set集合（于Set集合中无序存放）
+		List<Map.Entry<Activity,List<User>>> list = new ArrayList<Map.Entry<Activity,List<User>>>(mapEntries);
+		Collections.sort(list, new Comparator<Map.Entry<Activity,List<User>>>() {
 
 			@Override
-			public int compare(Activity o1, Activity o2) {
-				return o2.getCmtNum() - o1.getCmtNum();
+			public int compare(Entry<Activity, List<User>> o1, Entry<Activity, List<User>> o2) {
+				return o2.getKey().getCmtNum() - o1.getKey().getCmtNum();
 			}
 			
 		});
-		return allActivSortByCmtNum;
+		Map<Activity, List<User>> activUserMapByComNum = new LinkedHashMap<Activity, List<User>>();
+		for(Map.Entry<Activity, List<User>> entry : list) {
+			activUserMapByComNum.put(entry.getKey(), entry.getValue());
+		}
+		
+		return activUserMapByComNum;
 	}
 	/**
 	 * 通过点赞数进行排序
 	 */
 	@Override
-	public List<Activity> getActivListByFavoriteInfo(Activity activity) {
-		List<Activity> allActivSortByFavorNum = getActivListByFuzzySearch(activity);
-		Collections.sort(allActivSortByFavorNum, new Comparator<Activity>() {
+	public Map<Activity, List<User>> getActivListByFavoriteInfo(Activity activity) {
+		Map<Activity, List<User>> activUserMap = getActivUserMap(activity);
+		
+		Set<Map.Entry<Activity, List<User>>> mapEntries = activUserMap.entrySet();    //获取map集合的所有键值对的Set集合（于Set集合中无序存放）
+		List<Map.Entry<Activity,List<User>>> list = new ArrayList<Map.Entry<Activity,List<User>>>(mapEntries);
+		Collections.sort(list, new Comparator<Map.Entry<Activity,List<User>>>() {
 
 			@Override
-			public int compare(Activity o1, Activity o2) {//降序
-				return o2.getFavorNum() - o1.getFavorNum();
+			public int compare(Entry<Activity, List<User>> o1, Entry<Activity, List<User>> o2) {
+				return o2.getKey().getFavorNum() - o1.getKey().getFavorNum();
 			}
 			
 		});
-		return allActivSortByFavorNum;
+		Map<Activity, List<User>> activUserMapByFavorNum = new LinkedHashMap<Activity, List<User>>();
+		for(Map.Entry<Activity, List<User>> entry : list) {
+			activUserMapByFavorNum.put(entry.getKey(), entry.getValue());
+		}
+		return activUserMapByFavorNum;
 	}
 
 	/**
@@ -158,17 +184,25 @@ public class ActivityServiceImpl implements ActivityService{
 	
 	
 	@Override
-	public List<Activity> getActivListByComprehensive(Activity activity) {
-		List<Activity> allActivSortByComprehensive = getActivListByFuzzySearch(activity);
-		Collections.sort(allActivSortByComprehensive, new Comparator<Activity>() {
+	public Map<Activity, List<User>> getActivListByComprehensive(Activity activity) {
+Map<Activity, List<User>> activUserMap = getActivUserMap(activity);
+		
+		Set<Map.Entry<Activity, List<User>>> mapEntries = activUserMap.entrySet();    //获取map集合的所有键值对的Set集合（于Set集合中无序存放）
+		List<Map.Entry<Activity,List<User>>> list = new ArrayList<Map.Entry<Activity,List<User>>>(mapEntries);
+		Collections.sort(list, new Comparator<Map.Entry<Activity,List<User>>>() {
 
 			@Override
-			public int compare(Activity o1, Activity o2) {//降序
-				return (o2.getFavorNum() + o2.getCmtNum()) - (o1.getFavorNum() + o1.getCmtNum());
+			public int compare(Entry<Activity, List<User>> o1, Entry<Activity, List<User>> o2) {
+				return (o2.getKey().getCmtNum() + o2.getKey().getFavorNum()) - (o1.getKey().getCmtNum() + o1.getKey().getFavorNum());
 			}
 			
 		});
-		return allActivSortByComprehensive;
+		Map<Activity, List<User>> activUserMapByCphs = new LinkedHashMap<Activity, List<User>>();
+		for(Map.Entry<Activity, List<User>> entry : list) {
+			activUserMapByCphs.put(entry.getKey(), entry.getValue());
+		}
+		
+		return activUserMapByCphs;
 	}
 
 	/**
@@ -204,7 +238,7 @@ public class ActivityServiceImpl implements ActivityService{
 
 	
 	/**
-	 * 通过查询获取活动和用户的map集合
+	 * 通过模糊查询获取活动和用户的map集合
 	 */
 	public Map<Activity, List<User>> getActivUserMap(Activity activity) {
 		List<Activity> activList = getActivListByFuzzySearch(activity);
