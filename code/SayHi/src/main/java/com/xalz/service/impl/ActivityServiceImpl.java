@@ -1,10 +1,16 @@
 package com.xalz.service.impl;
 
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +52,13 @@ public class ActivityServiceImpl implements ActivityService{
 	 */
 	@Override
 	public boolean createActiv(Activity activity) {
+		ActivityMember activityMemeber = new ActivityMember(activity.getUserId(), activity.getActivId());
+		activityMemberService.addActvityMember(activityMemeber);
+		activity.setCmtNum(0);
+		activity.setFavorNum(0);
+//		if(activity.getActivBill() != null) {
+//			activity.setActivBill(image);
+//		}
 		if (activityMapper.insert(activity) == 1) {
 			return true;
 		}else return false;
@@ -72,14 +85,6 @@ public class ActivityServiceImpl implements ActivityService{
 	}
 	
 	/**
-	 * 使用QBC查询活动
-	 */
-	@Override
-	public List<Activity> getActivListByExample(Example example) {
-		return activityMapper.selectByExample(example);
-	}
-
-	/**
 	 * 根据精确条件获取活动集合
 	 */
 	@Override
@@ -99,33 +104,48 @@ public class ActivityServiceImpl implements ActivityService{
 	 * 通过评论数进行排序
 	 */
 	@Override
-	public List<Activity> getActivListByCommentNumber(Activity activity) {
-		List<Activity> allActivSortByCmtNum = getActivListByFuzzySearch(activity);
-		Collections.sort(allActivSortByCmtNum, new Comparator<Activity>() {
+	public Map<Activity, List<User>> getActivListByCommentNumber(Activity activity) {
+		Map<Activity, List<User>> activUserMap = getActivUserMap(activity);
+		
+		Set<Map.Entry<Activity, List<User>>> mapEntries = activUserMap.entrySet();    //获取map集合的所有键值对的Set集合（于Set集合中无序存放）
+		List<Map.Entry<Activity,List<User>>> list = new ArrayList<Map.Entry<Activity,List<User>>>(mapEntries);
+		Collections.sort(list, new Comparator<Map.Entry<Activity,List<User>>>() {
 
 			@Override
-			public int compare(Activity o1, Activity o2) {
-				return o2.getCmtNum() - o1.getCmtNum();
+			public int compare(Entry<Activity, List<User>> o1, Entry<Activity, List<User>> o2) {
+				return o2.getKey().getCmtNum() - o1.getKey().getCmtNum();
 			}
 			
 		});
-		return allActivSortByCmtNum;
+		Map<Activity, List<User>> activUserMapByComNum = new LinkedHashMap<Activity, List<User>>();
+		for(Map.Entry<Activity, List<User>> entry : list) {
+			activUserMapByComNum.put(entry.getKey(), entry.getValue());
+		}
+		
+		return activUserMapByComNum;
 	}
 	/**
 	 * 通过点赞数进行排序
 	 */
 	@Override
-	public List<Activity> getActivListByFavoriteInfo(Activity activity) {
-		List<Activity> allActivSortByFavorNum = getActivListByFuzzySearch(activity);
-		Collections.sort(allActivSortByFavorNum, new Comparator<Activity>() {
+	public Map<Activity, List<User>> getActivListByFavoriteInfo(Activity activity) {
+		Map<Activity, List<User>> activUserMap = getActivUserMap(activity);
+		
+		Set<Map.Entry<Activity, List<User>>> mapEntries = activUserMap.entrySet();    //获取map集合的所有键值对的Set集合（于Set集合中无序存放）
+		List<Map.Entry<Activity,List<User>>> list = new ArrayList<Map.Entry<Activity,List<User>>>(mapEntries);
+		Collections.sort(list, new Comparator<Map.Entry<Activity,List<User>>>() {
 
 			@Override
-			public int compare(Activity o1, Activity o2) {//降序
-				return o2.getFavorNum() - o1.getFavorNum();
+			public int compare(Entry<Activity, List<User>> o1, Entry<Activity, List<User>> o2) {
+				return o2.getKey().getFavorNum() - o1.getKey().getFavorNum();
 			}
 			
 		});
-		return allActivSortByFavorNum;
+		Map<Activity, List<User>> activUserMapByFavorNum = new LinkedHashMap<Activity, List<User>>();
+		for(Map.Entry<Activity, List<User>> entry : list) {
+			activUserMapByFavorNum.put(entry.getKey(), entry.getValue());
+		}
+		return activUserMapByFavorNum;
 	}
 
 	/**
@@ -134,41 +154,62 @@ public class ActivityServiceImpl implements ActivityService{
 	@Override
 	public List<Activity> getActivListByFuzzySearch(Activity activity) {
 		Example example = new Example(Activity.class);
+		//设置查询的及结果按照活动开始时间升序排列
+		example.setOrderByClause("activ_starttime DESC");
 		Criteria criteria = example.createCriteria();
 		if(activity != null) {
-			if(activity.getActivName() != null && activity.getActivName().length() > 0) {
+			if(activity.getUserId() != null) {
+				criteria.andCondition("user_id=" +  activity.getUserId());
+			}
+			if(activity.getActivName() != null && activity.getActivName().length() > 0) {//设置活动名查询条件
 				criteria.andLike("activName", "%" + activity.getActivName() + "%");
 			}
-			if(activity.getActivLabel() != null && activity.getActivLabel().length() > 0) {
+			if(activity.getActivLabel() != null && activity.getActivLabel().length() > 0) {//设置活动标签查询条件
 				criteria.andLike("activLabel", "%" + activity.getActivLabel() + "%");
 			}
-			if(activity.getActivState() != null && activity.getActivState().length() > 0) {
+			if(activity.getActivState() != null && activity.getActivState().length() > 0) {//设置活动省份查询条件
 				criteria.andLike("activState", "%" + activity.getActivState() + "%");
 			}
-			if(activity.getActivStarttime() != null && activity.getActivEndtime() != null) {
+			if(activity.getActivStarttime() != null && activity.getActivEndtime() != null) {//设置活动开始时间查询条件
 //				Calendar calendar = new GregorianCalendar(); 
 //				calendar.setTime(activity.getActivStarttime());
+				//传入的开始时间与结束时间为区间，查找开始时间在这个区间的活动
 				criteria.andBetween("activStarttime", activity.getActivStarttime(), activity.getActivEndtime());
 			}else if(activity.getActivStarttime() != null && activity.getActivEndtime() == null) {
-				criteria.andGreaterThan("activStarttime", activity.getActivStarttime());
+				
+//				criteria.andGreaterThan("activStarttime", activity.getActivStarttime());
+//				criteria.andLessThan("activEndtime", activity.getActivStarttime());
+				
+				//查询进行中的活动
+				//criteria.andLessThan("activStarttime", activity.getActivStarttime());
+				criteria.andGreaterThan("activEndtime", activity.getActivStarttime());
 			}
 		}
-		return getActivListByExample(example);
+		
+		return activityMapper.selectByExample(example);
 	}
 	
 	
 	@Override
-	public List<Activity> getActivListByComprehensive(Activity activity) {
-		List<Activity> allActivSortByComprehensive = getActivListByFuzzySearch(activity);
-		Collections.sort(allActivSortByComprehensive, new Comparator<Activity>() {
+	public Map<Activity, List<User>> getActivListByComprehensive(Activity activity) {
+		Map<Activity, List<User>> activUserMap = getActivUserMap(activity);
+		
+		Set<Map.Entry<Activity, List<User>>> mapEntries = activUserMap.entrySet();    //获取map集合的所有键值对的Set集合（于Set集合中无序存放）
+		List<Map.Entry<Activity,List<User>>> list = new ArrayList<Map.Entry<Activity,List<User>>>(mapEntries);
+		Collections.sort(list, new Comparator<Map.Entry<Activity,List<User>>>() {
 
 			@Override
-			public int compare(Activity o1, Activity o2) {//降序
-				return (o2.getFavorNum() + o2.getCmtNum()) - (o1.getFavorNum() + o1.getCmtNum());
+			public int compare(Entry<Activity, List<User>> o1, Entry<Activity, List<User>> o2) {
+				return (o2.getKey().getCmtNum() + o2.getKey().getFavorNum()) - (o1.getKey().getCmtNum() + o1.getKey().getFavorNum());
 			}
 			
 		});
-		return allActivSortByComprehensive;
+		Map<Activity, List<User>> activUserMapByCphs = new LinkedHashMap<Activity, List<User>>();
+		for(Map.Entry<Activity, List<User>> entry : list) {
+			activUserMapByCphs.put(entry.getKey(), entry.getValue());
+		}
+		
+		return activUserMapByCphs;
 	}
 
 	/**
@@ -204,18 +245,41 @@ public class ActivityServiceImpl implements ActivityService{
 
 	
 	/**
-	 * 通过查询获取活动和用户的map集合
+	 * 通过模糊查询获取活动和用户的map集合
 	 */
 	public Map<Activity, List<User>> getActivUserMap(Activity activity) {
 		List<Activity> activList = getActivListByFuzzySearch(activity);
-		ActivityMember activityMemeber = new ActivityMember();
-		Map<Activity, List<User>> activUserMap = new HashMap<Activity, List<User>>();
+		Map<Activity, List<User>> activUserMap = new LinkedHashMap<Activity, List<User>>();
 		for(Activity activ : activList) {
-			activityMemeber.setActivId(activ.getActivId());
-			List<User> userList = activityMemberService.getUserListByActivity(activityMemeber);
+			List<User> userList = activityMemberService.getUserListByActivity(activ.getActivId());
 			activUserMap.put(activ, userList);
 		}
 		return activUserMap;
+	}
+
+	/**
+	 * 通过主键和时间进行条件查询
+	 */
+	@Override
+	public Activity getActivListByPKAndTime(Activity activity) {
+		Example example = new Example(Activity.class);
+		//设置查询的及结果按照活动开始时间升序排列
+		example.setOrderByClause("activ_starttime ASC");
+		Criteria criteria = example.createCriteria();
+		if(activity != null) {
+			if(activity.getActivId() != null) {
+				criteria.andCondition("activ_id=" +  activity.getActivId());
+			}
+			if(activity.getActivStarttime() != null && activity.getActivEndtime() == null) {
+				//查询活动 当前时间 < 结束时间  进行中的活动
+//				criteria.andLessThan("activStarttime", activity.getActivStarttime());
+				criteria.andGreaterThan("activEndtime", activity.getActivStarttime());
+			}else if(activity.getActivStarttime() == null && activity.getActivEndtime() != null) {
+				//查询活动 当前时间 < 结束时间  历史活动
+				criteria.andLessThan("activEndtime", activity.getActivEndtime());
+			}
+		}
+		return activityMapper.selectOneByExample(example);
 	}
 
 	

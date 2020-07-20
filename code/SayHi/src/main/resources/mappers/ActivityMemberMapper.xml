@@ -32,7 +32,7 @@
     <result column="cmt_num" property="cmtNum" jdbcType="INTEGER" />
   </resultMap>
   
-  <select id="selectUserListByActivity" resultMap="UserResultMap" parameterType="com.xalz.bean.ActivityMember">
+  <select id="selectUserListByActivity" resultMap="UserResultMap">
   		<!-- 对用户表和活动成员表进行联表查询 -->
   		select * from activity_member, user where
   		activity_member.activ_id=#{activId} 
@@ -41,10 +41,31 @@
   		
   </select>
   
-  <select id="selectUserIdByActivId" resultMap="ActivityResultMap" parameterType="com.xalz.bean.ActivityMember">
+  <select id="selectUserIdByActivId" resultMap="ActivityResultMap">
   		<!-- 通过活动编号查询发起活动者的用户编号 -->
   		select * from activity where
   		activ_id=#{activId} 
   		
   </select>
+  
+  <!-- <select id="selectActivIdByUserId" resultMap="ActivityResultMap">
+  		通过活动编号查询发起活动者的用户编号
+  		select activity.activ_id, activity.user_id , activ_name, activ_state, 
+  		activ_city, activ_address, activ_starttime, activ_endtime,
+  		activ_brief, activ_label, exp_num, limit_explain, activ_bill, 
+  		favor_num, cmt_num
+  		查询活动表和活动成员表
+  		from activity , activity_member
+  		where activity_member.user_id = #{userId} and activity_member.activ_id = activity.activ_id
+  		
+  		<where>
+  			<if test="title != null">
+	  			and title like concat('%',#{title},'%')
+	  		</if>
+	  		<if test="content != null">
+	  			and title like concat('%',#{content},'%')
+	  		</if>
+  		</where>
+  </select> -->
+  
 </mapper>
