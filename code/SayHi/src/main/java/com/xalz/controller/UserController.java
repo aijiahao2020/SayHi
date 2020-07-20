@@ -131,14 +131,11 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public Map<String, Object> register(User user, Map<String, Object> map) {
-		System.out.println(user);
 		if (userService.register(user)) {
-			System.out.println("sssssss");
 			map.put("msg", "注册成功");
 		} else {
 			map.put("msg", "注册失败");
 		}
-
 		return map;
 	}
 
