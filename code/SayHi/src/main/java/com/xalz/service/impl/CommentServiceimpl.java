@@ -118,4 +118,5 @@ public class CommentServiceimpl implements CommentService{
 	public List<UserAndComment> getUserCommentByActivId(Comment comment) {
 		return commentMapper.selectUserCommentByActivId(comment);
 	}
+
 }

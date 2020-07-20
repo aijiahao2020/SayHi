@@ -50,4 +50,24 @@ public class MessageServiceImpl implements MessageService {
 		return messageMapper.select(message);
 	}
 
+	/**
+	 * 通过用户编号获取所有消息
+     */
+	@Override
+	public List<Message> getMessageListByUserId(Integer userId) {
+		Message message = new Message();
+		message.setUserId(userId);
+		return messageMapper.select(message);
+	}
+
+	/**
+	 * 通过消息编号删除消息
+     */
+	@Override
+	public boolean deleteMessageByPrimaryKey(Integer msgId) {
+		if (messageMapper.deleteByPrimaryKey(msgId) == 1) {
+			return true;
+		}else return false;
+	}
+
 }

@@ -41,8 +41,6 @@ public interface CommentService {
 	//更据活动编号查询评论数√ (查询条件使用等号，通过活动编号查询评论数)
 	public Integer getCommentCount(Comment comment);
 	
-	//通过评论数进行排序
-	
 	//通过活动编号获取活动的评论及用户√
 	public List<UserAndComment> getUserCommentByActivId(Comment comment);
 	

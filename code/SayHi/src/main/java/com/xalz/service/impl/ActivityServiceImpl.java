@@ -1,10 +1,12 @@
 package com.xalz.service.impl;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -83,14 +85,6 @@ public class ActivityServiceImpl implements ActivityService{
 	}
 	
 	/**
-	 * 使用QBC查询活动
-	 */
-	@Override
-	public List<Activity> getActivListByExample(Example example) {
-		return activityMapper.selectByExample(example);
-	}
-
-	/**
 	 * 根据精确条件获取活动集合
 	 */
 	@Override
@@ -160,32 +154,45 @@ public class ActivityServiceImpl implements ActivityService{
 	@Override
 	public List<Activity> getActivListByFuzzySearch(Activity activity) {
 		Example example = new Example(Activity.class);
+		//设置查询的及结果按照活动开始时间升序排列
+		example.setOrderByClause("activ_starttime DESC");
 		Criteria criteria = example.createCriteria();
 		if(activity != null) {
-			if(activity.getActivName() != null && activity.getActivName().length() > 0) {
+			if(activity.getUserId() != null) {
+				criteria.andCondition("user_id=" +  activity.getUserId());
+			}
+			if(activity.getActivName() != null && activity.getActivName().length() > 0) {//设置活动名查询条件
 				criteria.andLike("activName", "%" + activity.getActivName() + "%");
 			}
-			if(activity.getActivLabel() != null && activity.getActivLabel().length() > 0) {
+			if(activity.getActivLabel() != null && activity.getActivLabel().length() > 0) {//设置活动标签查询条件
 				criteria.andLike("activLabel", "%" + activity.getActivLabel() + "%");
 			}
-			if(activity.getActivState() != null && activity.getActivState().length() > 0) {
+			if(activity.getActivState() != null && activity.getActivState().length() > 0) {//设置活动省份查询条件
 				criteria.andLike("activState", "%" + activity.getActivState() + "%");
 			}
-			if(activity.getActivStarttime() != null && activity.getActivEndtime() != null) {
+			if(activity.getActivStarttime() != null && activity.getActivEndtime() != null) {//设置活动开始时间查询条件
 //				Calendar calendar = new GregorianCalendar(); 
 //				calendar.setTime(activity.getActivStarttime());
+				//传入的开始时间与结束时间为区间，查找开始时间在这个区间的活动
 				criteria.andBetween("activStarttime", activity.getActivStarttime(), activity.getActivEndtime());
 			}else if(activity.getActivStarttime() != null && activity.getActivEndtime() == null) {
-				criteria.andGreaterThan("activStarttime", activity.getActivStarttime());
+				
+//				criteria.andGreaterThan("activStarttime", activity.getActivStarttime());
+//				criteria.andLessThan("activEndtime", activity.getActivStarttime());
+				
+				//查询进行中的活动
+				//criteria.andLessThan("activStarttime", activity.getActivStarttime());
+				criteria.andGreaterThan("activEndtime", activity.getActivStarttime());
 			}
 		}
-		return getActivListByExample(example);
+		
+		return activityMapper.selectByExample(example);
 	}
 	
 	
 	@Override
 	public Map<Activity, List<User>> getActivListByComprehensive(Activity activity) {
-Map<Activity, List<User>> activUserMap = getActivUserMap(activity);
+		Map<Activity, List<User>> activUserMap = getActivUserMap(activity);
 		
 		Set<Map.Entry<Activity, List<User>>> mapEntries = activUserMap.entrySet();    //获取map集合的所有键值对的Set集合（于Set集合中无序存放）
 		List<Map.Entry<Activity,List<User>>> list = new ArrayList<Map.Entry<Activity,List<User>>>(mapEntries);
@@ -242,14 +249,37 @@ Map<Activity, List<User>> activUserMap = getActivUserMap(activity);
 	 */
 	public Map<Activity, List<User>> getActivUserMap(Activity activity) {
 		List<Activity> activList = getActivListByFuzzySearch(activity);
-		ActivityMember activityMemeber = new ActivityMember();
-		Map<Activity, List<User>> activUserMap = new HashMap<Activity, List<User>>();
+		Map<Activity, List<User>> activUserMap = new LinkedHashMap<Activity, List<User>>();
 		for(Activity activ : activList) {
-			activityMemeber.setActivId(activ.getActivId());
-			List<User> userList = activityMemberService.getUserListByActivity(activityMemeber);
+			List<User> userList = activityMemberService.getUserListByActivity(activ.getActivId());
 			activUserMap.put(activ, userList);
 		}
 		return activUserMap;
+	}
+
+	/**
+	 * 通过主键和时间进行条件查询
+	 */
+	@Override
+	public Activity getActivListByPKAndTime(Activity activity) {
+		Example example = new Example(Activity.class);
+		//设置查询的及结果按照活动开始时间升序排列
+		example.setOrderByClause("activ_starttime ASC");
+		Criteria criteria = example.createCriteria();
+		if(activity != null) {
+			if(activity.getActivId() != null) {
+				criteria.andCondition("activ_id=" +  activity.getActivId());
+			}
+			if(activity.getActivStarttime() != null && activity.getActivEndtime() == null) {
+				//查询活动 当前时间 < 结束时间  进行中的活动
+//				criteria.andLessThan("activStarttime", activity.getActivStarttime());
+				criteria.andGreaterThan("activEndtime", activity.getActivStarttime());
+			}else if(activity.getActivStarttime() == null && activity.getActivEndtime() != null) {
+				//查询活动 当前时间 < 结束时间  历史活动
+				criteria.andLessThan("activEndtime", activity.getActivEndtime());
+			}
+		}
+		return activityMapper.selectOneByExample(example);
 	}
 
 	

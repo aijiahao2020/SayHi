@@ -5,6 +5,7 @@
     <!--
       WARNING - @mbg.generated
     -->
+    <id column="msg_id" property="msgId" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="mess_info" property="messInfo" jdbcType="VARCHAR" />
     <result column="mess_time" property="messTime" jdbcType="TIMESTAMP" />

@@ -4,6 +4,10 @@ import java.util.Date;
 import javax.persistence.*;
 
 public class Message {
+    @Id
+    @Column(name = "msg_id")
+    private Integer msgId;
+
     @Column(name = "user_id")
     private Integer userId;
 
@@ -13,19 +17,33 @@ public class Message {
     @Column(name = "mess_time")
     private Date messTime;
 
-    
     public Message() {
 		super();
 	}
 
-	public Message(Integer userId, String messInfo, Date messTime) {
+	public Message(Integer msgId, Integer userId, String messInfo, Date messTime) {
 		super();
+		this.msgId = msgId;
 		this.userId = userId;
 		this.messInfo = messInfo;
 		this.messTime = messTime;
 	}
 
 	/**
+     * @return msg_id
+     */
+    public Integer getMsgId() {
+        return msgId;
+    }
+
+    /**
+     * @param msgId
+     */
+    public void setMsgId(Integer msgId) {
+        this.msgId = msgId;
+    }
+
+    /**
      * @return user_id
      */
     public Integer getUserId() {
@@ -69,7 +87,8 @@ public class Message {
 
 	@Override
 	public String toString() {
-		return "Message [userId=" + userId + ", messInfo=" + messInfo + ", messTime=" + messTime + "]";
+		return "Message [msgId=" + msgId + ", userId=" + userId + ", messInfo=" + messInfo + ", messTime=" + messTime
+				+ "]";
 	}
     
 }

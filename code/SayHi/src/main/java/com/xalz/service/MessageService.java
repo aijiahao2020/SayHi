@@ -20,6 +20,10 @@ public interface MessageService {
 	// 获取该用户所有消息√
 	public List<Message> getAllMessage(Message message);
 	
+	//通过用户编号获取所有消息√
+	public List<Message> getMessageListByUserId(Integer userId);
 	
+	//通过消息编号删除消息√
+	public boolean deleteMessageByPrimaryKey(Integer msgId);
 	
 }

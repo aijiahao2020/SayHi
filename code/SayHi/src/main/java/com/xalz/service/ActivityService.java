@@ -31,8 +31,8 @@ public interface ActivityService {
 	//根据主键删除某一活动√
 	public boolean deleteActivByPrimaryKey(Integer activId);
 	
-	//使用QBC查询活动√
-	public List<Activity> getActivListByExample(Example example);
+	//通过主键和时间进行条件查询
+	public Activity getActivListByPKAndTime(Activity activity);
 	
 	//根据主键查询一个活动√
 	public Activity getActivByPrimaryKey(Integer activId);

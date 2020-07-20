@@ -1,7 +1,11 @@
 package com.xalz.test;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.xalz.bean.Activity;
 import com.xalz.bean.User;
 import com.xalz.service.UserService;
 
@@ -14,13 +18,47 @@ public class UserTest {
         UserService userService = context.getBean(UserService.class);
 
         // queryUser（）
-        User user = new User(null,"xq1","12345",null);
-        System.out.println(userService.queryUser(user));
+//        User user = new User(null,"xq1","12345",null);
+//        System.out.println(userService.queryUser(user));
 //        userService.register(user);
         
         //getUserByPrimaryKey()
-        System.out.println(userService.getUserByPrimaryKey(1));
+//        System.out.println(userService.getUserByPrimaryKey(1));
 		
+        //根据用户编号获取进行中用户发起活动
+//        Map<Activity, List<User>> activUser = userService.getAllAUMPgByUserId(1);
+//        for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
+//            System.out.println(entry.getKey());
+//            for(User user : entry.getValue()) {
+//         	   System.out.println(user);
+//            }
+//         }
+        
+      //根据用户编号获取用户点赞过的历史活动
+//        Map<Activity, List<User>> activUser = userService.getFavorAUMPdByUserId(1);
+//        for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
+//            System.out.println(entry.getKey());
+//            for(User user : entry.getValue()) {
+//         	   System.out.println(user);
+//            }
+//         }
+        
+        //根据用户编号获取用户点赞过的历史活动
+//        Map<Activity, List<User>> activUser = userService.getCmtAUMPdByUserId(1);
+//        for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
+//            System.out.println(entry.getKey());
+//            for(User user : entry.getValue()) {
+//         	   System.out.println(user);
+//            }
+//         }
+      //根据用户编号获取参加过得的历史活动
+//        Map<Activity, List<User>> activUser = userService.getAttendedAUMPdByUserId(1);
+//        for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
+//            System.out.println(entry.getKey());
+//            for(User user : entry.getValue()) {
+//         	   System.out.println(user);
+//            }
+//         }
 	}
 	
 }
