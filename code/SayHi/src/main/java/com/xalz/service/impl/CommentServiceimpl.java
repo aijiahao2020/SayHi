@@ -116,6 +116,7 @@ public class CommentServiceimpl implements CommentService{
 	 */
 	@Override
 	public List<UserAndComment> getUserCommentByActivId(Comment comment) {
+		
 		return commentMapper.selectUserCommentByActivId(comment);
 	}
 

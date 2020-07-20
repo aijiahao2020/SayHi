@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -183,23 +184,26 @@ function checkPasswordConfig()
 				</div>
 				<div id="psw">
 					<h3 style="padding-left: 5%; margin-top: 5%;">密码:</h3>
-					<input type="password" id="password" name="password" 
-					onkeyup=checkPasswordConfig()><span
-						id="spanPassword" ></span>
+					<input type="password" id="password" name="password"
+						onkeyup=checkPasswordConfig()><span id="spanPassword"></span>
 				</div>
 				<div id="comfirm">
 					<h3 style="padding-left: 5%; margin-top: 5%;">确认密码:</h3>
 					<input type="password" id="passwordConfig"
-						onkeyup=checkPasswordConfig() ><span
+						onkeyup=checkPasswordConfig()><span
 						id="spanPasswordConfig"></span>
 				</div>
 				<div id="button">
 					<input type="submit" value="注册" id="button1">
+					<c:if test="${!empty requestScope.msg}"></c:if>
+					<font color="red">
+						${requestScope.message }
+					</font>
 				</div>
-				</form>
+			</form>
 		</div>
 
-		
+
 	</div>
 </body>
 </html>
