@@ -41,6 +41,17 @@ public class ActivityServiceImpl implements ActivityService{
 	ActivityMemberService activityMemberService;
 	
 	/**
+	 * 根据固定标签查询活动
+	 */
+	@Override
+	public List<ActivityUser> getActivUserByActivLabel(String activLabel) {
+		Activity activity = new Activity();
+		activity.setActivLabel(activLabel);
+		activity.setActivStarttime(new Date());
+		return getActivUserListByComprehensive(activity);
+	}
+	
+	/**
 	 * 通过活动id获取该活动以及相关推荐
 	 */
 	public List<ActivityUser> getActivAndRecommentByActivId(Integer activId) {
@@ -84,7 +95,7 @@ public class ActivityServiceImpl implements ActivityService{
 	 * ${activs.getkey().sss}
 	 */
 	@Override
-	public List<ActivityUser> getActivMapByNameAddress(String activName, String address) {
+	public List<ActivityUser> getActivUserByNameAddress(String activName, String address) {
 		Activity activ = new Activity();
 		activ.setActivName(activName);
 		String activState = "";
@@ -113,8 +124,8 @@ public class ActivityServiceImpl implements ActivityService{
 	 * 获取所有活动
 	 */
 	@Override
-	public List<Activity> getAllActiv() {
-		return activityMapper.selectAll();
+	public List<ActivityUser> getAllActiv() {
+		return convertActivListToActivUserList(activityMapper.selectAll());
 	}
 
 	/**
@@ -122,6 +133,7 @@ public class ActivityServiceImpl implements ActivityService{
 	 */
 	@Override
 	public boolean createActiv(Activity activity) {
+		
 		activity.setCmtNum(0);
 		activity.setFavorNum(0);
 		if(activity.getLimitExplain() == null) {
@@ -130,6 +142,15 @@ public class ActivityServiceImpl implements ActivityService{
 //		if(activity.getActivBill() == null) {
 //			activity.setActivBill(image);
 //		}
+		Date date = new Date();
+		//当期时间  > 活动结束时间 返回false
+		if(date.after(activity.getActivStarttime())) {
+			return false;
+		}
+		//活动结束时间 < 活动开始时间 返回false
+		if(activity.getActivEndtime().before(activity.getActivStarttime())) {
+			return false;
+		}
 		if (activityMapper.insert(activity) == 1) {
 			Activity activ = activityMapper.selectOne(activity);
 			if(activityMemberService.addActvityMember(activ.getUserId(), activ.getActivId())) {
@@ -144,10 +165,28 @@ public class ActivityServiceImpl implements ActivityService{
 	 */
 	@Override
 	public boolean updateActivByPrimaryKey(Activity activity) {
+		//通过活动编号获取活动参加者人数
+		Integer activNum = activityMemberService.getActvityMemberCount(activity.getActivId());
 		
-		if (activityMapper.updateByPrimaryKey(activity) == 1) {
-			return true;
-		}else return false;
+		Date date = new Date();
+		//当期时间  > 活动结束时间 返回false
+		if(date.after(activity.getActivEndtime())) {
+			return false;
+		}
+		//活动结束时间 < 活动开始时间 返回false
+		if(activity.getActivEndtime().before(activity.getActivStarttime())) {
+			return false;
+		}
+		
+		//当前活动参加人数 > 活动期望人数 返回false
+		if(activNum <= activity.getExpNum()) {
+			if (activityMapper.updateByPrimaryKey(activity) == 1) {
+				return true;
+			}
+			return false;
+		}
+		return false;
+		
 	}
 	
 	/**
@@ -262,7 +301,9 @@ public class ActivityServiceImpl implements ActivityService{
 		return activityMapper.selectByExample(example);
 	}
 	
-	
+	/**
+	 * 通过综合活动各属性进行查询
+	 */
 	@Override
 	public List<ActivityUser> getActivUserListByComprehensive(Activity activity) {
 		List<Activity> activList = getActivListByFuzzySearch(activity);
@@ -361,6 +402,8 @@ public class ActivityServiceImpl implements ActivityService{
 		}
 		return activityMapper.selectOneByExample(example);
 	}
+
+	
 
 	
 	

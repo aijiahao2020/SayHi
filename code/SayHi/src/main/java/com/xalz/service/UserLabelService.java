@@ -8,14 +8,17 @@ import com.xalz.bean.UserLabel;
 
 public interface UserLabelService {
 
+	//获取用户指定索引的标签
+	public String queryUserLabelByUserId(Integer userId, Integer index);
+	
+	//通过用户编号更新用户标签
+	public boolean updateUserLabelByUserId(Integer userId, List<String> labelList);
+	
 	//添加用户标签√
 	public boolean addUserLabel(UserLabel userLabel);
 
 	//删除用户标签√
 	public  boolean deleteUserLabel(UserLabel userLabel);
-	
-//	//更新用户标签√
-//	public boolean updateUserLabel(UserLabel userLabel);
 	
 	//获取用户所有标签
 	public List<UserLabel> getUserLabel(UserLabel userLabel);

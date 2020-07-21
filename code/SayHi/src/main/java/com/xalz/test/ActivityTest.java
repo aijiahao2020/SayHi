@@ -180,9 +180,9 @@ public class ActivityTest {
 //        	   System.out.println(user);
 //           }
 //        }
+//		根据固定标签查询活动
 		
-		
-		List<ActivityUser> activUser =  activityService.getActivAndRecommentByActivId(5);
+		List<ActivityUser> activUser =  activityService.getActivUserByActivLabel("动漫");
 		
 		for(ActivityUser activ : activUser){
            System.out.println(activ);

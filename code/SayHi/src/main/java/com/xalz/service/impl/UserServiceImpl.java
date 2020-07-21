@@ -1,10 +1,8 @@
 package com.xalz.service.impl;
 
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +57,17 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserByExample(User user) {
 		return userMapper.selectOne(user);
+	}
+	
+	/*
+     * 用户登录
+     *
+     */
+    @Override
+	public boolean updateUserByPrimaryKey(User user) {
+		if (userMapper.updateByPrimaryKey(user) != 0) {
+            return true;
+        } else return false;
 	}
     
 	/**
@@ -245,6 +254,11 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+	
+
+	
 
 }
 

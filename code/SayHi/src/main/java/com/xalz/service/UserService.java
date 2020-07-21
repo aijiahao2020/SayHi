@@ -13,6 +13,9 @@ public interface UserService {
 	//根据用户名和密码查询用户信息
 	public User getUserByExample(User user);
 	
+	//更据用户编号更新用户信息
+	public boolean updateUserByPrimaryKey(User user);
+	
 	//查询登录用户是否存在√
     public boolean queryUser(User user);
     
@@ -23,6 +26,7 @@ public interface UserService {
     
     //根据主键获取用户和用户标签信息 
     public User getUserByPrimaryKey(Integer userId);
+    
     
     //根据用户编号获取进行中用户所有活动√
     public List<ActivityUser> getAllAUMPgByUserId(Integer userId);

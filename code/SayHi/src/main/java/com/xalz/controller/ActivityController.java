@@ -98,7 +98,7 @@ public class ActivityController {
 	@RequestMapping("/index/search")
 	public String getActivByName(@RequestParam(value = "activName", required = false) String activName,
 			@RequestParam(value = "address", required = false) String address, Map<String, List<ActivityUser>> map) {
-		List<ActivityUser> activityUsers = activityService.getActivMapByNameAddress(activName, address);
+		List<ActivityUser> activityUsers = activityService.getActivUserByNameAddress(activName, address);
 		map.put("activityUsers", activityUsers);
 		return "index";
 	}
@@ -138,7 +138,6 @@ public class ActivityController {
 		map.put("comments", comments);
 		map.put("activUsers", activUsers);
 		return "activSpecificInfo";
-
 	}
 
 	@RequestMapping("/favoriteActiv")

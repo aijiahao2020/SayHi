@@ -17,15 +17,17 @@ public interface ActivityService {
 	 * 
 	 * @return
 	 */
+	//根据固定标签查询活动√
+	public List<ActivityUser> getActivUserByActivLabel(String activLabel);
 	
 	//通过活动id获取该活动以及相关推荐√
 	public List<ActivityUser> getActivAndRecommentByActivId(Integer activId);
 	
 	//通过活动名和地点进行活动查询
-	public List<ActivityUser> getActivMapByNameAddress(String activName, String address);
+	public List<ActivityUser> getActivUserByNameAddress(String activName, String address);
 	
 	//	获取所有活动 √
-	public List<Activity> getAllActiv();
+	public List<ActivityUser> getAllActiv();
 	
 	// 创建一个新的活动 √ 
 	public boolean createActiv(Activity activity);
