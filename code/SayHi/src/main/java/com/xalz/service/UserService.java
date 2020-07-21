@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.xalz.bean.Activity;
 import com.xalz.bean.User;
+import com.xalz.bean.UserLabel;
 
 public interface UserService {
 	
@@ -33,6 +34,9 @@ public interface UserService {
     
     //根据用户编号获取参加过得的历史活动√
     public Map<Activity, List<User>> getAttendedAUMPdByUserId(Integer userId);
+    
+    //根据传来的用户对象和用户标签集合更新用户的信息
+    public boolean updateUserInformation(User user, List<String> userLabelList);
     
     //获取所有用户列表
     public List<User> getAllUserList();

@@ -35,7 +35,7 @@ public class ActivityTest {
 		
 		
 /* 测试createActiv(Activity activity) */		
-//		Activity activity = new Activity(null, 1, null, "活动省份", "活动城市", "活动地点", new Date(), new Date(), "活动简介", "动漫", 30, null, null, null, null);
+//		Activity activity = new Activity(null, 3, "新活动名称", "湖北省武汉市", "活动城市", "活动地点", new Date(), new Date(), "活动简介", "动漫", 30, null, null, null, null);
 //		System.out.println(activityService.createActiv(activity));
 		
 /* 测试updateActiv(Activity activity) */	
@@ -88,8 +88,8 @@ public class ActivityTest {
 		/* 测试getActivListByFuzzySearch(Activity activity) */	
 //		Activity activity = new Activity(null, null, "担当", "湖南", null, null, null, null, null, "体育", null, null, null, null, null);
 //		Activity activity = new Activity(null, null, null, null, null, null, null, null, null, "体育", null, null, null, null, null);
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date activStarttime = dateFormat.parse("2010-07-17 00:00:00");
+//		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		Date activStarttime = dateFormat.parse("2010-07-17 00:00:00");
 //		Date activEndtime = dateFormat.parse("2020-07-18 00:00:00");
 //		Activity activity = new Activity(null, null, null, null, null, null, activStarttime, null, null, null, null, null, null, null, null);
 //		Activity activity = new Activity();
@@ -153,14 +153,36 @@ public class ActivityTest {
 //           }
 //        }
 		/* 测试getActivListByFavoriteInfo(Activity activity) */	
-		Activity activity = new Activity(null, null, null, null, null, null, activStarttime, null, null, null, null, null, null, null, null);
-		Map<Activity, List<User>> activUser =  activityService.getActivUserMap(activity);
-		
-		for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
-           System.out.println(entry.getKey());
+//		Activity activity = new Activity(null, null, null, null, null, null, activStarttime, null, null, null, null, null, null, null, null);
+//		Map<Activity, List<User>> activUser =  activityService.getActivUserMap(activity);
+//		
+//		for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
+//           System.out.println(entry.getKey());
 //           for(User user : entry.getValue()) {
 //        	   System.out.println(user);
 //           }
+//        }
+		
+		/* 测试通过活动id获取该活动以及相关推荐 */	
+		
+//		Map<Activity, List<User>> activUser =  activityService.getActivAndRecomment(5);
+//		
+//		for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
+//           System.out.println(entry.getKey());
+//           for(User user : entry.getValue()) {
+//        	   System.out.println(user);
+//           }
+//        }
+		
+		/* 测试过活动名和地点进行活动查询 */	
+		
+		Map<Activity, List<User>> activUser =  activityService.getActivMapByNameAddress("新", "湖北省武汉市");
+		
+		for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
+           System.out.println(entry.getKey());
+           for(User user : entry.getValue()) {
+        	   System.out.println(user);
+           }
         }
 		
 	}

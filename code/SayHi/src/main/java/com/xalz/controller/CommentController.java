@@ -34,7 +34,7 @@ public class CommentController {
 		int activId = Integer.parseInt(request.getParameter("activId"));
 		comment.setActivId(activId);
 		//添加评论
-		commentService.addComment(comment);
+		//commentService.addComment(comment);
 		return "";
 	}
 	

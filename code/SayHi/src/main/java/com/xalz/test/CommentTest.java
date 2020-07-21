@@ -1,17 +1,11 @@
 package com.xalz.test;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.xalz.bean.Comment;
+import com.xalz.bean.UserAndComment;
 import com.xalz.service.CommentService;
-
-import tk.mybatis.mapper.entity.Example;
-import tk.mybatis.mapper.entity.Example.Criteria;
 
 public class CommentTest {
 	
@@ -24,7 +18,8 @@ public class CommentTest {
 		
 		/* 测试addComment(Comment comment) */
 //		Comment comment = new Comment(null, 1, 3, new Date(), "憨批活动");
-//		System.out.println(commentService.addComment(comment));
+		
+//		System.out.println(commentService.addComment(10, 2, "希望大家玩的开心"));
 		
 		/* 测试updateCommentByPrimaryKey(Comment comment) */
 //		Comment comment = new Comment(27, 1, 3, new Date(), "憨批活动");
@@ -45,10 +40,10 @@ public class CommentTest {
 		
 		/* 测试deleteComment(Comment comment) */
 //		Comment comment = new Comment(null, null, null, null, "憨批");
-//		System.out.println(commentService.deleteComment(comment));
+//		System.out.println(commentService.deleteComment(36));
 		
 		/* deleteCommentByPrimaryKey(Integer cmtId) */
-//		System.out.println(commentService.deleteCommentByPrimaryKey(32));
+		System.out.println(commentService.deleteCommentByPrimaryKey(37));
 		
 		
 		/* getCommentListByExample(Example example) */
@@ -74,8 +69,17 @@ public class CommentTest {
 //		}
 		
 		/* getActivCommentCount(Comment comment) */
-		Comment comment = new Comment(null, 1, 1, null, null);
-		System.out.println(commentService.getCommentCount(comment));
+//		Comment comment = new Comment(null, 1, 1, null, null);
+//		System.out.println(commentService.getCommentCount(comment));
+		
+		/* getUserCommentByActivId(Integer activId) */
+//		List<UserAndComment> usc = commentService.getUserCommentByActivId(3);
+//		for(UserAndComment com : usc) {
+//			System.out.println(com);
+//		}
+		
+		
+		
 	}
 	
 }

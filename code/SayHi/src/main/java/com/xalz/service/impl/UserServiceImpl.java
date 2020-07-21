@@ -14,6 +14,7 @@ import com.xalz.bean.Comment;
 import com.xalz.bean.FavoriteInfo;
 import com.xalz.bean.Message;
 import com.xalz.bean.User;
+import com.xalz.bean.UserLabel;
 import com.xalz.mappers.UserMapper;
 import com.xalz.service.ActivityMemberService;
 import com.xalz.service.ActivityService;
@@ -223,6 +224,15 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		return activUserMap;
+	}
+
+	/**
+	 * 根据用户编号获取参加过得的历史活动
+	*/
+	@Override
+	public boolean updateUserInformation(User user, List<String> userLabelList) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -38,8 +38,8 @@ public class FavoriteInfoTest {
 		
 		
 		/* 测试getFavoriteInfoCount(FavoriteInfo favoriteInfo) */
-		FavoriteInfo favoriteInfo = new FavoriteInfo(null,1);
-		System.out.println(favoriteInfoService.getFavoriteInfoCount(favoriteInfo));
+//		FavoriteInfo favoriteInfo = new FavoriteInfo(null,1);
+//		System.out.println(favoriteInfoService.getFavoriteInfoCount(favoriteInfo));
 		
 	}
 }

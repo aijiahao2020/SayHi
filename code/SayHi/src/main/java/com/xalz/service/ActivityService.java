@@ -19,6 +19,12 @@ public interface ActivityService {
 	 * @return
 	 */
 	
+	//通过活动名和地点进行活动查询
+	public Map<Activity, List<User>> getActivMapByNameAddress(String activName, String address);
+	
+	//通过活动id获取该活动以及相关推荐√
+	public Map<Activity, List<User>> getActivAndRecomment(Integer activId);
+	
 	//	获取所有活动 √
 	public List<Activity> getAllActiv();
 	

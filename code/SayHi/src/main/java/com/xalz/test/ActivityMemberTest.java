@@ -23,7 +23,7 @@ public class ActivityMemberTest {
 		
 //		/* 测试addActvityMember(ActivityMember activityMemeber) */
 //		ActivityMember activityMemeber = new ActivityMember(1, 8);
-//		System.out.println(activityMemberService.addActvityMember(activityMemeber));
+		System.out.println(activityMemberService.addActvityMember(1, 8));
 		
 //		/* 测试deleteActvityMember(ActivityMember activityMemeber) */
 //		ActivityMember activityMemeber = new ActivityMember(1, 8);
@@ -38,9 +38,11 @@ public class ActivityMemberTest {
 //		}
 		
 		/* 测试deleteActvityMember(ActivityMember activityMemeber) */
-		ActivityMember activityMemeber = new ActivityMember(null, 1);
-		System.out.println(activityMemberService.getActvityMemberCount(activityMemeber));
-	
+//		ActivityMember activityMemeber = new ActivityMember(null, 1);
+//		System.out.println(activityMemberService.getActvityMemberCount(1));
+		
+		/* 测试queryActvityMember(Integer userId, Integer activId) */
+//		System.out.println(activityMemberService.queryActvityMember(4, 2));
 		
 	}
 }
