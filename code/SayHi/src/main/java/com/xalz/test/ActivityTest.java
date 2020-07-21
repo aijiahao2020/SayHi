@@ -1,16 +1,12 @@
 package com.xalz.test;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.xalz.bean.Activity;
-import com.xalz.bean.User;
+import com.xalz.bean.ActivityUser;
 import com.xalz.service.ActivityService;
 
 
@@ -176,13 +172,20 @@ public class ActivityTest {
 		
 		/* 测试过活动名和地点进行活动查询 */	
 		
-		Map<Activity, List<User>> activUser =  activityService.getActivMapByNameAddress("新", "湖北省武汉市");
+//		Map<Activity, List<User>> activUser =  activityService.getActivMapByNameAddress("新", "湖北省武汉市");
+//		
+//		for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
+//           System.out.println(entry.getKey());
+//           for(User user : entry.getValue()) {
+//        	   System.out.println(user);
+//           }
+//        }
 		
-		for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
-           System.out.println(entry.getKey());
-           for(User user : entry.getValue()) {
-        	   System.out.println(user);
-           }
+		
+		List<ActivityUser> activUser =  activityService.getActivAndRecommentByActivId(5);
+		
+		for(ActivityUser activ : activUser){
+           System.out.println(activ);
         }
 		
 	}

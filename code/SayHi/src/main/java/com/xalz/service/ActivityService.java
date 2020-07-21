@@ -4,9 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.xalz.bean.Activity;
+import com.xalz.bean.ActivityUser;
 import com.xalz.bean.User;
-
-import tk.mybatis.mapper.entity.Example;
 
 
 public interface ActivityService {
@@ -19,11 +18,11 @@ public interface ActivityService {
 	 * @return
 	 */
 	
-	//通过活动名和地点进行活动查询
-	public Map<Activity, List<User>> getActivMapByNameAddress(String activName, String address);
-	
 	//通过活动id获取该活动以及相关推荐√
-	public Map<Activity, List<User>> getActivAndRecomment(Integer activId);
+	public List<ActivityUser> getActivAndRecommentByActivId(Integer activId);
+	
+	//通过活动名和地点进行活动查询
+	public List<ActivityUser> getActivMapByNameAddress(String activName, String address);
 	
 	//	获取所有活动 √
 	public List<Activity> getAllActiv();
@@ -47,16 +46,16 @@ public interface ActivityService {
 	public List<Activity> getActivListByEqual(Activity activity);
 	
 	//通过评论数进行排序√
-	public Map<Activity, List<User>> getActivListByCommentNumber (Activity activity);
+	public List<ActivityUser> getActivUserListByCommentNumber (Activity activity);
 	
 	//通过点赞数进行排序√
-	public Map<Activity, List<User>> getActivListByFavoriteInfo (Activity activity);
+	public List<ActivityUser> getActivUserListByFavoriteInfo (Activity activity);
 	
 	//通过活动属性进行模糊查询√
 	public List<Activity> getActivListByFuzzySearch(Activity activity);
 	
 	//通过综合活动各属性进行查询√
-	public Map<Activity, List<User>> getActivListByComprehensive(Activity activity);
+	public List<ActivityUser> getActivUserListByComprehensive(Activity activity);
 	
 	//通过发布时间进行查询
 	
@@ -67,5 +66,5 @@ public interface ActivityService {
 	public boolean updateActivFavorInfoSelfByPrimaryKey(Integer activId, Integer operator);
 	
 	//通过查询获取活动和用户的map集合√
-	public Map<Activity,List<User>> getActivUserMap(Activity activity);
+	public List<ActivityUser> convertActivListToActivUserList(List<Activity> activityList);
 }
