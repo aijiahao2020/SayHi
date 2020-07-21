@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xalz.bean.Activity;
-import com.xalz.bean.ActivityMember;
+import com.xalz.bean.ActivityUser;
 import com.xalz.bean.User;
 import com.xalz.mappers.ActivityMapper;
 import com.xalz.service.ActivityMemberService;
@@ -39,6 +40,40 @@ public class ActivityServiceImpl implements ActivityService{
 	@Autowired
 	ActivityMemberService activityMemberService;
 	
+	/**
+	 * 通过活动id获取该活动以及相关推荐
+	 */
+	public List<ActivityUser> getActivAndRecommentByActivId(Integer activId) {
+		
+		List<ActivityUser> activUserList = new LinkedList<ActivityUser>();
+		//通过活动id获取对应的活动
+		Activity activity = activityMapper.selectByPrimaryKey(activId);
+		//获取查询活动对应的用户成员列表
+		
+		//设置类似推荐的搜索条件
+		Activity activRecoment = new Activity();
+//		activRecoment.setActivState(activity.getActivState());
+//		activRecoment.setActivCity(activity.getActivCity());
+		activRecoment.setActivLabel(activity.getActivLabel());
+		activRecoment.setActivStarttime(new Date());
+		
+		List<Activity> activList = getActivListByFuzzySearch(activRecoment);
+		for(Activity activ : activList) {
+			if(activ.getActivId() != activity.getActivId()) {
+				//通过活动编号查询活动对应的用户成员列表
+				ActivityUser activUser = new ActivityUser();
+				activUser.setActivId(activ.getActivId());
+				activUser.setActivName(activ.getActivName());
+				activUser.setActivStart(activ.getActivStarttime());
+				activUser.setActivNum(activityMemberService.getActvityMemberCount(activ.getActivId()));
+				activUser.setActivBill(activ.getActivBill());
+				activUser.setUserList(activityMemberService.getUserListByActivity(activ.getActivId()));
+				activUserList.add(activUser);
+			}
+		}
+		
+		return activUserList;
+	}
 
 	/**
 	 * 通过活动名和地点进行活动查询
@@ -49,7 +84,7 @@ public class ActivityServiceImpl implements ActivityService{
 	 * ${activs.getkey().sss}
 	 */
 	@Override
-	public Map<Activity, List<User>> getActivMapByNameAddress(String activName, String address) {
+	public List<ActivityUser> getActivMapByNameAddress(String activName, String address) {
 		Activity activ = new Activity();
 		activ.setActivName(activName);
 		String activState = "";
@@ -69,38 +104,10 @@ public class ActivityServiceImpl implements ActivityService{
 		activ.setActivState(activState);
 		activ.setActivCity(activCity);
 		activ.setActivStarttime(new Date());
-		return getActivUserMap(activ);
+		return null;
 	}
 	
-	/**
-	 * 通过活动id获取该活动以及相关推荐
-	 */
-	@Override
-	public Map<Activity, List<User>> getActivAndRecomment(Integer activId) {
-		//通过活动id获取对应的活动
-		Activity activity = activityMapper.selectByPrimaryKey(activId);
-		//创建存放数据的LinkedHashMap
-		Map<Activity, List<User>> activUserMap = new LinkedHashMap<Activity, List<User>>();
-		//获取查询活动对应的用户成员列表
-		List<User> userMember = activityMemberService.getUserListByActivity(activId);
-		//将该活动的所有信息放入Map
-		activUserMap.put(activity, userMember);
-		//设置类似推荐的搜索条件
-		Activity activRecoment = new Activity();
-//		activRecoment.setActivState(activity.getActivState());
-//		activRecoment.setActivCity(activity.getActivCity());
-		activRecoment.setActivLabel(activity.getActivLabel());
-		activRecoment.setActivStarttime(new Date());
-		
-		List<Activity> activList = getActivListByFuzzySearch(activRecoment);
-		for(Activity activ : activList) {
-			if(activ.getActivId() != activity.getActivId()) {
-				List<User> userList = activityMemberService.getUserListByActivity(activ.getActivId());
-				activUserMap.put(activ, userList);
-			}
-		}
-		return activUserMap;
-	}
+	
 	
 	/**
 	 * 获取所有活动
@@ -173,48 +180,42 @@ public class ActivityServiceImpl implements ActivityService{
 	 * 通过评论数进行排序
 	 */
 	@Override
-	public Map<Activity, List<User>> getActivListByCommentNumber(Activity activity) {
-		Map<Activity, List<User>> activUserMap = getActivUserMap(activity);
+	public List<ActivityUser> getActivUserListByCommentNumber(Activity activity) {
+		//通过模糊查询获取符合条件的活动list集合
+		List<Activity> activList = getActivListByFuzzySearch(activity);
 		
-		Set<Map.Entry<Activity, List<User>>> mapEntries = activUserMap.entrySet();    //获取map集合的所有键值对的Set集合（于Set集合中无序存放）
-		List<Map.Entry<Activity,List<User>>> list = new ArrayList<Map.Entry<Activity,List<User>>>(mapEntries);
-		Collections.sort(list, new Comparator<Map.Entry<Activity,List<User>>>() {
+		//对取出的活动根据评论数排序
+		Collections.sort(activList, new Comparator<Activity>() {
 
 			@Override
-			public int compare(Entry<Activity, List<User>> o1, Entry<Activity, List<User>> o2) {
-				return o2.getKey().getCmtNum() - o1.getKey().getCmtNum();
+			public int compare(Activity o1, Activity o2) {
+				// TODO Auto-generated method stub
+				return o2.getCmtNum() - o1.getCmtNum();
 			}
-			
 		});
-		Map<Activity, List<User>> activUserMapByComNum = new LinkedHashMap<Activity, List<User>>();
-		for(Map.Entry<Activity, List<User>> entry : list) {
-			activUserMapByComNum.put(entry.getKey(), entry.getValue());
-		}
 		
-		return activUserMapByComNum;
+		
+		return convertActivListToActivUserList(activList);
 	}
 	/**
 	 * 通过点赞数进行排序
 	 */
 	@Override
-	public Map<Activity, List<User>> getActivListByFavoriteInfo(Activity activity) {
-		Map<Activity, List<User>> activUserMap = getActivUserMap(activity);
+	public List<ActivityUser> getActivUserListByFavoriteInfo(Activity activity) {
+		List<Activity> activList = getActivListByFuzzySearch(activity);
 		
-		Set<Map.Entry<Activity, List<User>>> mapEntries = activUserMap.entrySet();    //获取map集合的所有键值对的Set集合（于Set集合中无序存放）
-		List<Map.Entry<Activity,List<User>>> list = new ArrayList<Map.Entry<Activity,List<User>>>(mapEntries);
-		Collections.sort(list, new Comparator<Map.Entry<Activity,List<User>>>() {
+		//对取出的活动根据点赞数排序
+		Collections.sort(activList, new Comparator<Activity>() {
 
 			@Override
-			public int compare(Entry<Activity, List<User>> o1, Entry<Activity, List<User>> o2) {
-				return o2.getKey().getFavorNum() - o1.getKey().getFavorNum();
+			public int compare(Activity o1, Activity o2) {
+				// TODO Auto-generated method stub
+				return o2.getFavorNum() - o1.getFavorNum();
 			}
-			
 		});
-		Map<Activity, List<User>> activUserMapByFavorNum = new LinkedHashMap<Activity, List<User>>();
-		for(Map.Entry<Activity, List<User>> entry : list) {
-			activUserMapByFavorNum.put(entry.getKey(), entry.getValue());
-		}
-		return activUserMapByFavorNum;
+		
+		
+		return convertActivListToActivUserList(activList);
 	}
 
 	/**
@@ -263,25 +264,21 @@ public class ActivityServiceImpl implements ActivityService{
 	
 	
 	@Override
-	public Map<Activity, List<User>> getActivListByComprehensive(Activity activity) {
-		Map<Activity, List<User>> activUserMap = getActivUserMap(activity);
+	public List<ActivityUser> getActivUserListByComprehensive(Activity activity) {
+		List<Activity> activList = getActivListByFuzzySearch(activity);
 		
-		Set<Map.Entry<Activity, List<User>>> mapEntries = activUserMap.entrySet();    //获取map集合的所有键值对的Set集合（于Set集合中无序存放）
-		List<Map.Entry<Activity,List<User>>> list = new ArrayList<Map.Entry<Activity,List<User>>>(mapEntries);
-		Collections.sort(list, new Comparator<Map.Entry<Activity,List<User>>>() {
+		//对取出的活动按照点赞、评论进行综合排序
+		Collections.sort(activList, new Comparator<Activity>() {
 
 			@Override
-			public int compare(Entry<Activity, List<User>> o1, Entry<Activity, List<User>> o2) {
-				return (o2.getKey().getCmtNum() + o2.getKey().getFavorNum()) - (o1.getKey().getCmtNum() + o1.getKey().getFavorNum());
+			public int compare(Activity o1, Activity o2) {
+				// TODO Auto-generated method stub
+				return (o2.getCmtNum() + o2.getFavorNum()) - (o1.getCmtNum() + o1.getFavorNum());
 			}
-			
 		});
-		Map<Activity, List<User>> activUserMapByCphs = new LinkedHashMap<Activity, List<User>>();
-		for(Map.Entry<Activity, List<User>> entry : list) {
-			activUserMapByCphs.put(entry.getKey(), entry.getValue());
-		}
 		
-		return activUserMapByCphs;
+		
+		return convertActivListToActivUserList(activList);
 	}
 
 	/**
@@ -317,16 +314,27 @@ public class ActivityServiceImpl implements ActivityService{
 
 	
 	/**
-	 * 通过模糊查询获取活动和用户的map集合
+	 * 将
 	 */
-	public Map<Activity, List<User>> getActivUserMap(Activity activity) {
-		List<Activity> activList = getActivListByFuzzySearch(activity);
-		Map<Activity, List<User>> activUserMap = new LinkedHashMap<Activity, List<User>>();
+	public List<ActivityUser> convertActivListToActivUserList (List<Activity> activList) {
+		//创建ActivityUser类的list集合
+		List<ActivityUser> activUserList = new LinkedList<ActivityUser>();
+		//遍历活动list
 		for(Activity activ : activList) {
-			List<User> userList = activityMemberService.getUserListByActivity(activ.getActivId());
-			activUserMap.put(activ, userList);
+				//通过活动编号查询活动对应的用户成员列表
+				ActivityUser activUser = new ActivityUser();
+				activUser.setActivId(activ.getActivId());
+				activUser.setActivName(activ.getActivName());
+				activUser.setActivStart(activ.getActivStarttime());
+				//通过活动编号获取成员人数，赋值给ActivityUser对象的属性
+				activUser.setActivNum(activityMemberService.getActvityMemberCount(activ.getActivId()));
+				activUser.setActivBill(activ.getActivBill());
+				//通过活动编号获取成员详细信息，赋值给ActivityUser对象的属性
+				activUser.setUserList(activityMemberService.getUserListByActivity(activ.getActivId()));
+				//将ActivityUser对象添加进list集合中
+				activUserList.add(activUser);
 		}
-		return activUserMap;
+		return activUserList;
 	}
 
 	/**
