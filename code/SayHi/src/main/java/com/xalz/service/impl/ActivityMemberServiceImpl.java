@@ -34,10 +34,18 @@ public class ActivityMemberServiceImpl implements ActivityMemberService{
 	 * 添加活动成员
 	 */
 	@Override
-	public boolean addActvityMember(ActivityMember activityMember) {
-		if(activityMemberMapper.insert(activityMember) == 1)
-			return true;
-			else return false;
+	public boolean addActvityMember(Integer userId, Integer activId) {
+		ActivityMember activityMember = new ActivityMember();
+		activityMember.setActivId(activId);
+		activityMember.setUserId(userId);
+		if (activityMemberMapper.selectOne(activityMember) != null) {
+			return false;
+		}else {
+			if(activityMemberMapper.insert(activityMember) == 1)
+				return true;
+				else return false;
+		}
+		
 	}
 
 	/**
@@ -57,17 +65,22 @@ public class ActivityMemberServiceImpl implements ActivityMemberService{
 	 * 查询用户是否已经加入该活动
 	 */
 	@Override
-	public boolean queryActvityMember(ActivityMember activityMember) {
-		 if (activityMemberMapper.selectOne(activityMember) != null) {
-	            return true;
-	        } else return false;
+	public boolean queryActvityMember(Integer userId, Integer activId) {
+		ActivityMember activityMember = new ActivityMember();
+		activityMember.setActivId(activId);
+		activityMember.setUserId(userId);
+		if (activityMemberMapper.selectOne(activityMember) != null) {
+	           return true;
+	       } else return false;
 	}
 
 	/**
-	 * 查询活动成员的数量
+	 * 通过活动编号查询活动成员的数量
 	 */
 	@Override
-	public Integer getActvityMemberCount(ActivityMember activityMember) {
+	public Integer getActvityMemberCount(Integer activId) {
+		ActivityMember activityMember = new ActivityMember();
+		activityMember.setActivId(activId);
 		return activityMemberMapper.selectCount(activityMember);
 	}
 	
@@ -95,19 +108,6 @@ public class ActivityMemberServiceImpl implements ActivityMemberService{
 		}
 		return userList;
 	}
-
-	/**
-	 * 通过用户编号查询用户参加的活动
-	 */
-	@Override
-	public List<Activity> getActivIdByUserId(Integer userId) {
-		ActivityMember activityMember = new ActivityMember();
-		activityMember.setUserId(userId);
-		activityMemberMapper.select(activityMember);
-		
-		return null;
-	}
-
 
 	
 }

@@ -4,9 +4,8 @@ package com.xalz.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.LinkedHashMap;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -39,6 +38,65 @@ public class ActivityServiceImpl implements ActivityService{
 	
 	@Autowired
 	ActivityMemberService activityMemberService;
+	
+
+	/**
+	 * 通过活动名和地点进行活动查询
+	 */
+	@Override
+	public Map<Activity, List<User>> getActivMapByNameAddress(String activName, String address) {
+		Activity activ = new Activity();
+		activ.setActivName(activName);
+		String activState = "";
+		String activCity = "";
+		if(!address.isEmpty()) {
+			if(address.indexOf("省") == -1) {
+				activState = address.substring(0, address.indexOf("市") + 1);
+				address = address.substring(address.indexOf("市") + 1, address.length());
+				activCity = address.substring(0, address.indexOf("区") + 1);
+			}else {
+				activState = address.substring(0, address.indexOf("省") + 1);
+				address = address.substring(address.indexOf("省") + 1, address.length());
+				activCity = address.substring(0, address.indexOf("市") + 1);
+			}
+		}
+//		System.out.println(activState + ":" + activCity);
+		activ.setActivState(activState);
+		activ.setActivCity(activCity);
+		activ.setActivStarttime(new Date());
+		return getActivUserMap(activ);
+	}
+	
+	/**
+	 * 通过活动id获取该活动以及相关推荐
+	 */
+	@Override
+	public Map<Activity, List<User>> getActivAndRecomment(Integer activId) {
+		//通过活动id获取对应的活动
+		Activity activity = activityMapper.selectByPrimaryKey(activId);
+		//创建存放数据的LinkedHashMap
+		Map<Activity, List<User>> activUserMap = new LinkedHashMap<Activity, List<User>>();
+		//获取查询活动对应的用户成员列表
+		List<User> userMember = activityMemberService.getUserListByActivity(activId);
+		//将该活动的所有信息放入Map
+		activUserMap.put(activity, userMember);
+		//设置类似推荐的搜索条件
+		Activity activRecoment = new Activity();
+//		activRecoment.setActivState(activity.getActivState());
+//		activRecoment.setActivCity(activity.getActivCity());
+		activRecoment.setActivLabel(activity.getActivLabel());
+		activRecoment.setActivStarttime(new Date());
+		
+		List<Activity> activList = getActivListByFuzzySearch(activRecoment);
+		for(Activity activ : activList) {
+			if(activ.getActivId() != activity.getActivId()) {
+				List<User> userList = activityMemberService.getUserListByActivity(activ.getActivId());
+				activUserMap.put(activ, userList);
+			}
+		}
+		return activUserMap;
+	}
+	
 	/**
 	 * 获取所有活动
 	 */
@@ -52,15 +110,20 @@ public class ActivityServiceImpl implements ActivityService{
 	 */
 	@Override
 	public boolean createActiv(Activity activity) {
-		ActivityMember activityMemeber = new ActivityMember(activity.getUserId(), activity.getActivId());
-		activityMemberService.addActvityMember(activityMemeber);
 		activity.setCmtNum(0);
 		activity.setFavorNum(0);
-//		if(activity.getActivBill() != null) {
+		if(activity.getLimitExplain() == null) {
+			activity.setLimitExplain("暂无限制");
+		}
+//		if(activity.getActivBill() == null) {
 //			activity.setActivBill(image);
 //		}
 		if (activityMapper.insert(activity) == 1) {
-			return true;
+			Activity activ = activityMapper.selectOne(activity);
+			if(activityMemberService.addActvityMember(activ.getUserId(), activ.getActivId())) {
+				return true;
+			}
+			return false;
 		}else return false;
 	}
 	
@@ -69,6 +132,7 @@ public class ActivityServiceImpl implements ActivityService{
 	 */
 	@Override
 	public boolean updateActivByPrimaryKey(Activity activity) {
+		
 		if (activityMapper.updateByPrimaryKey(activity) == 1) {
 			return true;
 		}else return false;
@@ -169,6 +233,9 @@ public class ActivityServiceImpl implements ActivityService{
 			}
 			if(activity.getActivState() != null && activity.getActivState().length() > 0) {//设置活动省份查询条件
 				criteria.andLike("activState", "%" + activity.getActivState() + "%");
+			}
+			if(activity.getActivCity() != null && activity.getActivCity().length() > 0) {//设置活动省份查询条件
+				criteria.andLike("activCity", "%" + activity.getActivCity() + "%");
 			}
 			if(activity.getActivStarttime() != null && activity.getActivEndtime() != null) {//设置活动开始时间查询条件
 //				Calendar calendar = new GregorianCalendar(); 

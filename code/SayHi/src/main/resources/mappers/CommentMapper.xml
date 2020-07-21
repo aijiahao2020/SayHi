@@ -30,6 +30,7 @@
   		comment.activ_id=#{activId} 
   		and 
   		comment.user_id = user.user_id
+  		ORDER BY cmt_time DESC
   		
   </select>
   

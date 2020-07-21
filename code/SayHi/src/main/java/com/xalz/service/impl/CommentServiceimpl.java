@@ -1,6 +1,7 @@
 package com.xalz.service.impl;
 
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,11 @@ import org.springframework.stereotype.Service;
 import com.xalz.bean.Comment;
 import com.xalz.bean.UserAndComment;
 import com.xalz.mappers.CommentMapper;
+import com.xalz.service.ActivityService;
 import com.xalz.service.CommentService;
 
 import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.Example.Criteria;
 
 /**
  * 评论表操作实现类
@@ -24,24 +27,31 @@ public class CommentServiceimpl implements CommentService{
 	@Autowired
 	CommentMapper commentMapper;
 	
+	@Autowired
+	ActivityService activityService;
+	
 	/**
 	 * 添加评论
 	 */
 	@Override
-	public boolean addComment(Comment comment) {
-		if(commentMapper.insert(comment) == 1)
-		return true;
-		else return false;
+	public boolean addComment(Integer activId, Integer userId, String cmtContent) {
+		Comment comment = new Comment(null, userId, activId, new Date(), cmtContent);
+		if(commentMapper.insert(comment) == 1) {
+			activityService.updateActivCmtSelfByPrimaryKey(activId, 1);
+				return true;
+		}else return false;
 	}
 
 	/**
 	 *  删除评论
 	 */
 	@Override
-	public boolean deleteComment(Comment comment) {
-		if(commentMapper.delete(comment) != 0)
-			return true;
-			else return false;
+	public boolean deleteComments(Comment comment) {
+		Example example = new Example(Comment.class);
+		Criteria criteria = example.createCriteria();
+		
+		Integer num = commentMapper.deleteByExample(example);
+		return false;
 	}
 	
 	/**
@@ -49,9 +59,11 @@ public class CommentServiceimpl implements CommentService{
 	 */
 	@Override
 	public boolean deleteCommentByPrimaryKey(Integer cmtId) {
-		if(commentMapper.deleteByPrimaryKey(cmtId) == 1)
+		Comment comment = commentMapper.selectByPrimaryKey(cmtId);
+		if(commentMapper.deleteByPrimaryKey(cmtId) != 0) {
+			activityService.updateActivCmtSelfByPrimaryKey(comment.getActivId(), 0);
 			return true;
-			else return false;
+		}else return false;
 	}
 
 	/**
@@ -115,9 +127,10 @@ public class CommentServiceimpl implements CommentService{
 	 * 通过活动编号获取活动的评论及用户
 	 */
 	@Override
-	public List<UserAndComment> getUserCommentByActivId(Comment comment) {
-		
-		return commentMapper.selectUserCommentByActivId(comment);
+	public List<UserAndComment> getUserCommentByActivId(Integer activId) {
+		Comment comm = new Comment();
+		comm.setActivId(activId);
+		return commentMapper.selectUserCommentByActivId(comm);
 	}
 
 }

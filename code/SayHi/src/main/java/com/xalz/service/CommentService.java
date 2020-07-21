@@ -15,10 +15,10 @@ import tk.mybatis.mapper.entity.Example;
 public interface CommentService {
 	
 	//添加评论√
-	public boolean addComment(Comment comment);
+	public boolean addComment(Integer activId, Integer userId, String cmtContent);
 	
-	//删除评论√  (查询条件使用等号)
-	public boolean deleteComment(Comment comment);
+	//删除评论√  
+	public boolean deleteComments(Comment comment);
 	
 	//根据主键删除评论√
 	public boolean deleteCommentByPrimaryKey(Integer cmtId);
@@ -42,6 +42,6 @@ public interface CommentService {
 	public Integer getCommentCount(Comment comment);
 	
 	//通过活动编号获取活动的评论及用户√
-	public List<UserAndComment> getUserCommentByActivId(Comment comment);
+	public List<UserAndComment> getUserCommentByActivId(Integer activId);
 	
 }
