@@ -157,6 +157,13 @@ h3 {
 	margin-top: 15px;
 	margin-left: -350px;
 }
+
+#num {
+	margin-left: 70px;
+	font-size: 15px;
+	color: #767676;
+}
+
 </style>
 </head>
 <body>
@@ -170,14 +177,14 @@ h3 {
 		</c:if>
 		<c:if test="${!empty sessionScope.user}">
 			<a href="logout" id="registerbutton">退出</a>
-			<a href="person" id="loginbutton">${sessionScope.user.userName}</a>
+			<a href="myAttendingActiv" id="loginbutton">${sessionScope.user.userName}</a>
 		</c:if>
 	</div>
 
 	<div id="middle">
-		<form action="/index/search" method="post">
-			<input type="text" id="activity" placeholder=" 活动名"> <input
-				type="text" id="location" placeholder=" 地点"> <img alt=""
+		<form action="index/search" method="post">
+			<input name="activName" type="text" id="activity" placeholder=" 活动名"> <input
+				type="text" id="location" placeholder=" 地点" name="address"> <img alt=""
 				src="static/image/location.png" onclick="getPoi()" id="getlocation">
 			<input type="submit" value="搜索" id="search">
 		</form>
@@ -208,7 +215,6 @@ h3 {
 	<div class="container">
 		<form action="">
 			<input type="hidden" id="jd" /> <input type="hidden" id="wd" />
-
 		</form>
 	</div>
 
@@ -217,19 +223,28 @@ h3 {
 			<h1>活动推荐</h1>
 			<a id="all" href="getAll">全部</a>
 		</div>
-		<c:if test="${empty requestScope.activities }">
-		没有任何员工信息.
+		<c:if test="${empty requestScope.activityUsers }">
+		没有任何活动信息.
 		</c:if>
-		<c:if test="${!empty requestScope.activities }">
-			<c:forEach items="${requestScope.activities }" var="activs">
-				<div style="float: left">
-					<a href="index/${activs.activId}"><img
-						src="${activs.activBill}" id="img_a"></a>
-					<h4>${activs.activStarttime}</h4>
-					<a href="index/${activs.activId}"><h3>${activs.activName}</h3></a>
-				</div>
-			</c:forEach>
-		</c:if>
+		<c:if test="${!empty requestScope.activityUsers}">
+				<c:forEach items="${requestScope.activityUsers }"
+					var="activityUsers">
+					<div id="mid_act1">
+						<div style="float: left">
+							<a href="index/${activityUsers.activId}"><img
+								src="${activityUsers.activBill}" id="img_a"></a>
+							<h4>${activityUsers.activStart}</h4>
+							<a href="index/${activityUsers.activId}"><h3>${activityUsers.activName}</h3></a>
+							<div id="buttom_buttom">
+								<c:forEach items="${activityUsers.userList }" var="userList">
+									<img id="img_1" src="${userList.avatar}">
+								</c:forEach>
+								<div id="num">${activityUsers.activNum}</div>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+			</c:if>
 	</div>
 </body>
 </html>

@@ -170,11 +170,11 @@
 <body>
 	<div id="top">
 		<c:if test="${empty sessionScope.user}">
-			<a href="index"><img alt="" src="../static/image/SayHi.png"
+			<a href="../index"><img alt="" src="../static/image/SayHi.png"
 				style="padding-top: 10px; padding-left: 20px; height: 30px;"></a>
 		</c:if>
 		<c:if test="${!empty sessionScope.user}">
-			<a href="userIndex"><img alt="" src="../static/image/SayHi.png"
+			<a href="../userIndex"><img alt="" src="../static/image/SayHi.png"
 				style="padding-top: 10px; padding-left: 20px; height: 30px;"></a>
 		</c:if>
 		<c:if test="${empty sessionScope.user}">
@@ -184,7 +184,7 @@
 		</c:if>
 		<c:if test="${!empty sessionScope.user}">
 			<a href="logout" id="registerbutton">退出</a>
-			<a href="person" id="loginbutton">${sessionScope.user.userName}</a>
+			<a href="../myAttendingActiv" id="loginbutton">${sessionScope.user.userName}</a>
 		</c:if>
 	</div>
 	<div id="title">
@@ -199,9 +199,12 @@
 			</div>
 		</div>
 		<c:if test="${!empty sessionScope.user}">
-			<form action="">
-				<input type="submit" value="参加" id="join">
-			</form>
+		<c:if test="${requestScope.isAttented}">
+			<input type="submit" value="已参加" id="join">
+		</c:if>
+		<c:if test="${!requestScope.isAttented}">
+			<input type="submit" value="参加" id="join">
+		</c:if>
 		</c:if>
 	</div>
 	<div id="mid">
@@ -213,34 +216,40 @@
 			<p style="font-size: 12px;">${activity.limitExplain}</p>
 			<p style="font-family: PingFang SC; font-size: 22px;">期望人数：${activity.expNum}人</p>
 			<div id="joinmem">
-				<p style="font-family: PingFang SC; font-size: 22px;">参加人员（${activity.expNum}）</p>
-				<div id="mem">
-					<img id="mem_img" src="image/save.png">
-					<center>
-						<p style="font-family: PingFang SC; font-size: 10px;">是个人就行</p>
-						<p
-							style="font-family: PingFang SC; font-size: 5px; margin-top: -5px;">主办方</p>
-					</center>
-				</div>
+				<p style="font-family: PingFang SC; font-size: 22px;">参加人员（${memberNum}）</p>
+				<c:forEach items="${requestScope.activMem }" var="activMem" varStatus="status">
+					<div id="mem">
+						<a href="../getUserInfo/${activMem.userId}"><img id="mem_img" src="${activMem.avatar}"></a>
+						<center>
+							<p style="font-family: PingFang SC; font-size: 10px;">${activMem.userName}</p>
+							<c:if test="${status.count == 1}" >
+							<p style="font-family: PingFang SC; font-size: 5px; margin-top: -5px;">主办方</p>
+							</c:if>
+							<c:if test="${status.count != 1}">
+							<p style="font-family: PingFang SC; font-size: 5px; margin-top: -5px;">参与者</p>
+							</c:if>
+						</center>
+					</div>
+				</c:forEach>
 			</div>
 		</div>
 
 		<div id="recommend">
 			<h1 style="font-size: 30px; font-family: PingFang SC;">活动推荐</h1>
-			<c:if test="${empty requestScope.maps}">
+			<c:if test="${empty requestScope.activUsers}">
 		无类似推荐
 		</c:if>
-			<c:if test="${!empty requestScope.maps}">
-			<c:forEach items="${requestScope.maps }" var="maps">
-				<div style="float: left">
-					<img src="image/save.png" id="paster1">
-					<h4 style="margin-top: -0.5%">${maps.key.activStarttime}</h4>
-					<h3 style="margin-top: -1.5%">${maps.key.activName}</h3>
-					<img id="img_1" src="image/search.png"> <img id="img_2"
-						src="image/search.png"> <img id="img_3"
-						src="image/search.png">
-					<div style="margin-left: 80px; font-size: 20px; color: #767676">16</div>
-				</div>
+			<c:if test="${!empty requestScope.activUsers}">
+				<c:forEach items="${requestScope.activUsers }" var="activUsers">
+					<div style="float: left">
+						<img src="${activUsers.activBill}" id="paster1">
+						<h4 style="margin-top: -0.5%">${activUsers.activStart}</h4>
+						<h3 style="margin-top: -1.5%">${activUsers.activName}</h3>
+						<c:forEach items="${activUsers.userList }" var="userList">
+						<img id="img_1" src="${userList.avatar}">
+						</c:forEach>
+						<div style="margin-left: 80px; font-size: 20px; color: #767676">${activUsers.activNum}</div>
+					</div>
 				</c:forEach>
 			</c:if>
 		</div>

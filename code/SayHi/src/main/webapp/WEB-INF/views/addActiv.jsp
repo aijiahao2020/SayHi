@@ -260,7 +260,7 @@
 			style="padding-top: 10px; padding-left: 20px; height: 30px;"> <input
 			type="submit" value="退出" id="quit">
 		<div id="user">
-			<p>某某某</p>
+			<p><a href="myAttendingActiv">${sessionScope.user.userName}</a></p>
 		</div>
 
 	</div>

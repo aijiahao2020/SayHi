@@ -12,13 +12,17 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.xalz.bean.ActivityUser;
 import com.xalz.bean.User;
+import com.xalz.bean.UserLabel;
+import com.xalz.service.ActivityService;
+import com.xalz.service.UserLabelService;
 import com.xalz.service.UserService;
 import com.xalz.tool.ImageUtils;
 
@@ -32,8 +36,17 @@ import com.xalz.tool.ImageUtils;
 @Controller
 public class UserController {
 
+	// 用户操作类
 	@Autowired
 	UserService userService;
+
+	// 活动操作类
+	@Autowired
+	ActivityService activityService;
+	
+	//用户标签操作类
+	@Autowired
+	UserLabelService userLabelService;
 
 	@RequestMapping("/login1")
 	public String login1() {
@@ -44,37 +57,136 @@ public class UserController {
 	public String register1() {
 		return "register";
 	}
+
+	/**
+	 * 获取我正在进行的全部活动
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/myAttendingActiv")
+	public String myAttendingActiv(HttpSession session, Map<String, Object> map) {
+		User user = (User) session.getAttribute("user");
+		List<ActivityUser> activityUsers = userService.getAllAUMPgByUserId(user.getUserId());
+		map.put("activityUsers", activityUsers);
+		map.put("isDel", "");
+		return "personPage";
+	}
+
+	/**
+	 * 获取我发起的活动
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/myLaunchedActiv")
+	public ModelAndView myLaunchedActiv(HttpSession session, ModelAndView model) {
+		User user = (User) session.getAttribute("user");
+		List<ActivityUser> activityUsers = userService.getLaunchAUMPgByUserId(user.getUserId());
+		model.setViewName("personPage");
+		model.addObject("activityUsers", activityUsers);
+		model.addObject("isDel", "isDel");
+		return model;
+	}
 	
 	/**
-	 * 个人主页查询用户信息
+	 * 获取我点赞过的活动
+	 * 
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping("/getUserInfo")
-	public String getUserInfoByUserId(HttpSession session) {
-		User user =  (User) session.getAttribute("user");
-		userService.getUserByPrimaryKey(user.getUserId());
-		return null;
+	@RequestMapping("/myFavoriteActiv")
+	public String myFavoriteActiv(HttpSession session,Map<String, Object> map) {
+		User user = (User) session.getAttribute("user");
+		List<ActivityUser> activityUsers = userService.getFavorAUMPdByUserId(user.getUserId());
+		map.put("activityUsers", activityUsers);
+		map.put("isDel", "");
+		return "actHistory";
+	}
+
+	/**
+	 * 获取我评论过的活动
+	 * 
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/myCommentedActiv")
+	public String myCommentedActiv(HttpSession session,Map<String, Object> map) {
+		User user = (User) session.getAttribute("user");
+		List<ActivityUser> activityUsers = userService.getCmtAUMPdByUserId(user.getUserId());
+		map.put("activityUsers", activityUsers);
+		map.put("isDel", "");
+		return "actHistory";
+	}
+
+	/**
+	 * 我参加过的活动
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/myAttendedActiv")
+	public String myAttendedActiv(HttpSession session,Map<String, Object> map) {
+		User user = (User) session.getAttribute("user");
+		List<ActivityUser> activityUsers = userService.getAttendedAUMPdByUserId(user.getUserId());
+		map.put("activityUsers", activityUsers);
+		map.put("isDel", "");
+		return "actHistory";
+	}
+
+	/**
+	 * 个人主页查询我的user信息
+	 * 
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/myUserInfo")
+	public String getMyInfo(HttpSession session,Map<String, Object> map) {
+		User user = (User) session.getAttribute("user");
+//		User user2 =  userService.getUserByPrimaryKey(user.getUserId());
+		List<UserLabel> userLabels =  userLabelService.getMyUserByUserId(user.getUserId());
+		map.put("user", user);
+		map.put("userLabels", userLabels);
+		return "myInfoPage";
 	}
 	
 	/**
-	 * 修改用户信息
+	 * 获取用户信息
+	 * @param userId
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/getUserInfo/{id}")
+	public String getUserInfoByUserId(@PathVariable("id") Integer userId, Map<String, Object> map) {
+		//获取用户信息
+		User user = userService.getUserByPrimaryKey(userId);
+		//获取用户标签
+		List<UserLabel> userLabels = userLabelService.getMyUserByUserId(userId);
+		//获取用户正在参与的行动
+		List<ActivityUser> activityUsers = userService.getAllAUMPgByUserId(userId);
+		//存入map
+		map.put("user", user);
+		map.put("userLabels", userLabels);
+		map.put("activityUsers", activityUsers);
+		return "userInfo";
+	}
+
+	/**
+	 * 修改用户头像
+	 * 
 	 * @param user
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@RequestMapping("/updateUserInfo")
-	public String updateUserInfo(User user,HttpServletRequest request) throws IOException {
-		//1. 设置图像路径
+	public String updateUserInfo(User user, HttpServletRequest request) throws IOException {
+		// 1. 设置图像路径
 		ImageUtils.upload(request, user.getFile());
-		
-		
+//		userService.updateUserInformation(user, userLabelList);
+
 		return null;
 	}
-	
-	
+
 	/**
 	 * 查询所有用户
+	 * 
 	 * @param model
 	 * @return
 	 * @throws Exception
@@ -87,38 +199,38 @@ public class UserController {
 		return "userList";
 	}
 
-
 	@RequestMapping("/upload")
-	public String upload(User user,HttpServletRequest request,Model model) throws Exception{
-	  //保存数据库的路径
-	  String sqlPath = null; 
-	  //定义文件保存的本地路径
-      String localPath="D:\\File\\";
-      //定义 文件名
-      String filename=null;  
-      if(!user.getFile().isEmpty()){  
-          //生成uuid作为文件名称  
-          String uuid = UUID.randomUUID().toString().replaceAll("-","");  
-          //获得文件类型（可以判断如果不是图片，禁止上传）  
-          String contentType=user.getFile().getContentType();  
-          //获得文件后缀名 
-          String suffixName=contentType.substring(contentType.indexOf("/")+1);
-          //得到 文件名
-          filename=uuid+"."+suffixName; 
-          //文件保存路径
-          user.getFile().transferTo(new File(localPath+filename));  
-      }
-      //把图片的相对路径保存至数据库
-      sqlPath = "/images/"+filename;
-      System.out.println(sqlPath);
-      user.setAvatar(sqlPath);
-      userService.register(user);
-      model.addAttribute("user", user);
-	  return "redirect:/getAll";
+	public String upload(User user, HttpServletRequest request, Model model) throws Exception {
+		// 保存数据库的路径
+		String sqlPath = null;
+		// 定义文件保存的本地路径
+		String localPath = "D:\\File\\";
+		// 定义 文件名
+		String filename = null;
+		if (!user.getFile().isEmpty()) {
+			// 生成uuid作为文件名称
+			String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+			// 获得文件类型（可以判断如果不是图片，禁止上传）
+			String contentType = user.getFile().getContentType();
+			// 获得文件后缀名
+			String suffixName = contentType.substring(contentType.indexOf("/") + 1);
+			// 得到 文件名
+			filename = uuid + "." + suffixName;
+			// 文件保存路径
+			user.getFile().transferTo(new File(localPath + filename));
+		}
+		// 把图片的相对路径保存至数据库
+		sqlPath = "/images/" + filename;
+		System.out.println(sqlPath);
+		user.setAvatar(sqlPath);
+		userService.register(user);
+		model.addAttribute("user", user);
+		return "redirect:/getAll";
 	}
-	
+
 	/**
 	 * 登录
+	 * 
 	 * @param model
 	 * @param user
 	 * @return
@@ -126,8 +238,8 @@ public class UserController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView login(ModelAndView model, User user) {
 		if (userService.queryUser(user)) {
-			model.setViewName("index");
-			model.addObject("user", user);
+			model.setViewName("redirect:/index");
+			model.addObject("user", userService.getUserByExample(user));
 			System.out.println(user);
 			// 要加用户自定义活动
 			return model;
@@ -150,7 +262,7 @@ public class UserController {
 		}
 		return map;
 	}
-	
+
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();

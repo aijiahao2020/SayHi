@@ -114,9 +114,9 @@ cursor: pointer;
 </head>
 <body>
 <div id="top">
-    <img alt="" src="image/SayHi.png" style="padding-top:10px;padding-left:20px;height:30px;">
+    <img alt="" src="static/image/SayHi.png" style="padding-top:10px;padding-left:20px;height:30px;">
      <input type="submit" value="退出" id="quit">
-    <div id="user"><p>某某某</p></div>
+    <div id="user"><p><a href="myAttendingActiv">${sessionScope.user.userName}</a></p></div>
    
 </div>
 
