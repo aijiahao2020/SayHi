@@ -32,7 +32,7 @@ public class MessageController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping("/myMessage")
+	@RequestMapping("/delMessage")
 	public String delMessage(HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		Integer userId = user.getUserId();

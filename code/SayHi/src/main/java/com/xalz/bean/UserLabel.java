@@ -13,7 +13,7 @@ public class UserLabel {
 
     @Column(name = "label_name")
     private String labelName;
-
+    
     public UserLabel() {
 		super();
 	}

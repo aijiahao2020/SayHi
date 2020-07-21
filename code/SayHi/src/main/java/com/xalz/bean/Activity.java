@@ -3,6 +3,7 @@ package com.xalz.bean;
 import java.util.Date;
 import javax.persistence.*;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 public class Activity {
@@ -24,10 +25,13 @@ public class Activity {
 
 	@Column(name = "activ_address")
 	private String activAddress;
-
+	
+	//*****更改*****
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	@Column(name = "activ_starttime")
 	private Date activStarttime;
-
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	@Column(name = "activ_endtime")
 	private Date activEndtime;
 
