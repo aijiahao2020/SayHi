@@ -1,11 +1,13 @@
 package com.xalz.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.javassist.expr.NewArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.xalz.bean.Activity;
 import com.xalz.bean.Comment;
+import com.xalz.bean.FavoriteInfo;
 import com.xalz.bean.User;
+import com.xalz.bean.UserAndComment;
 import com.xalz.service.ActivityMemberService;
 import com.xalz.service.ActivityService;
 import com.xalz.service.CommentService;
 import com.xalz.service.FavoriteInfoService;
+import com.xalz.service.UserService;
 import com.xalz.tool.ImageUtils;
 
 import tk.mybatis.mapper.entity.Example;
@@ -49,26 +54,22 @@ public class ActivityController {
 	@Autowired
 	CommentService commentService;
 	
-	/**
-	 * 获取我点赞过的活动
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping("/myFavoriteActiv")
-	public String myFavoriteActiv(HttpSession session) {
-		User user =  (User) session.getAttribute("user");
-//		favoriteInfoService.
-		return null;
-	}
+	//用户操作类
+	@Autowired
+	UserService userService;
+	
+	//点赞
+	@Autowired
+	FavoriteInfoService foriteInfoService;
 	
 	/**
-	 * 我参加过的活动
+	 * 获取我正在进行的全部活动
 	 * @return
 	 */
-	@RequestMapping("/myAttendedActiv")
-	public String myAttendedActiv(HttpSession session) {
+	@RequestMapping("/myAttendingActiv")
+	public String myAttendingActiv(HttpSession session) {
 		User user =  (User) session.getAttribute("user");
-//		activityMemberService
+		userService.getAllAUMPgByUserId(user.getUserId());
 		return null;
 	}
 	
@@ -79,8 +80,47 @@ public class ActivityController {
 	@RequestMapping("/myLaunchedActiv")
 	public String myLaunchedActiv(HttpSession session) {
 		User user =  (User) session.getAttribute("user");
+		userService.getLaunchAUMPgByUserId(user.getUserId());
 		return null;
 	}
+	
+	
+	/**
+	 * 获取我评论过的活动
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/myCommentedActiv")
+	public String myCommentedActiv(HttpSession session) {
+		User user =  (User) session.getAttribute("user");
+		userService.getCmtAUMPdByUserId(user.getUserId());
+		return "";
+	}
+	
+	/**
+	 * 获取我点赞过的活动
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/myFavoriteActiv")
+	public String myFavoriteActiv(HttpSession session) {
+		User user =  (User) session.getAttribute("user");
+		userService.getFavorAUMPdByUserId(user.getUserId());
+		return "";
+	}
+	
+	/**
+	 * 我参加过的活动
+	 * @return
+	 */
+	@RequestMapping("/myAttendedActiv")
+	public String myAttendedActiv(HttpSession session) {
+		User user =  (User) session.getAttribute("user");
+		userService.getAttendedAUMPdByUserId(user.getUserId());
+		return null;
+	}
+	
+	
 	
 	/**
 	 * 添加活动
@@ -90,8 +130,10 @@ public class ActivityController {
 	 * @return
 	 * @throws IOException 
 	 */
-	@RequestMapping(value = "/index/addActiv", method = RequestMethod.POST)
-	public String addActivity(@ModelAttribute Activity activity,HttpServletRequest request,Model model) throws IOException {
+	@RequestMapping(value = "/addActiv", method = RequestMethod.POST)
+	public String addActivity(Activity activity,HttpServletRequest request,Model model) throws IOException {
+		System.out.println(activity);
+		activity.setUserId(1);
 		String activBill = ImageUtils.upload(request, activity.getFile());
 		activity.setActivBill(activBill);
 		activityService.createActiv(activity);
@@ -106,20 +148,48 @@ public class ActivityController {
 	 */
 	@RequestMapping("/index/search")
 	public String getActivByName(Map<String, Object> map){
-		Example example = new Example(Activity.class);
+//		activityService.getActivListByFuzzySearch(activity);
 //		map.put("activities", activityService.getActivListByExample(example));
 		return "index";
 	}
 	
-	@RequestMapping("/index/{id}")
-	public String getActivByActivId(@PathVariable("id") Integer activId) {
+	/**
+	 * 根据活动id查看活动详细内容
+	 * @param activId
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping(value = "/index/{id}",method=RequestMethod.GET)
+	public String getActivByActivId(@PathVariable("id") Integer activId,Map<String, Object> map) {
 		//1、根据activId获取活动信息
-		Activity activity = activityService.getActivByPrimaryKey(activId);
-		//2、根据activId获取评论信息
+		Map<Activity, List<User>> maps = activityService.getActivAndRecomment(activId);
+		System.out.println(maps);
+//		Activity activity = (Activity) maps.get(activityService.getActivByPrimaryKey(activId));
+//		Activity activity = activityService.getActivByPrimaryKey(activId);
+		
+//		System.out.println(activity);
+		List<User> users = activityMemberService.getUserListByActivity(activId);
+		//2、获取活动参加人数
+//		activityMemberService.
+		//3、根据activId获取评论信息
+		//设置活动id
 		Comment comment = new Comment();
 		comment.setActivId(activId);
-		return null;
+//		List<UserAndComment> comments = commentService.getUserCommentByActivId(comment);
+		//4、
+		//放入map中
+//		map.put("activity", activity);
+		map.put("maps",maps);
+//		map.put("comments",comments);
+		return "activSpecificInfo";
 	
+	}
+	
+	@RequestMapping("/favoriteActiv")
+	public String favoriteActiv(FavoriteInfo favoriteInfo) {
+		//添加点赞信息
+//		favoriteInfoService.addFavoriteInfo(favoriteInfo);
+		return null;
 	}
 	
 	/**
@@ -134,7 +204,12 @@ public class ActivityController {
 	  return "index";
 	}
 	
-	@RequestMapping("/index/")
+	/**
+	 * 获取所有活动：已登录
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/userIndex")
 	public String getAllActivByUser(Map<String, Object> map) {
 		System.out.println(activityService.getAllActiv());
 		map.put("activities", activityService.getAllActiv());

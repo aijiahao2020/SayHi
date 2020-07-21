@@ -48,8 +48,12 @@ public class ImageUtils {
 			pictureFile.transferTo(new File(localPath + filename));
 		}
 		// 把图片的相对路径保存至数据库
-		sqlPath = "/images/" + filename;
-		return sqlPath;
+		if (filename == null)
+			return null;
+		else {
+			sqlPath = "/images/" + filename;
+			return sqlPath;
+		}
 	}
 
 	/**

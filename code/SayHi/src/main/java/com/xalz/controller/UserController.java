@@ -1,11 +1,13 @@
 package com.xalz.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.xalz.bean.User;
 import com.xalz.service.UserService;
+import com.xalz.tool.ImageUtils;
 
 /**
  * 登录
@@ -41,29 +44,41 @@ public class UserController {
 	public String register1() {
 		return "register";
 	}
-
-//	@RequestMapping(value = "/addUser")
-//	public String addUser(HttpServletRequest request ,User user,MultipartFile pictureFile) throws Exception{
-//		
-//		//使用UUID给图片重命名，并去掉四个“-”
-//		String name = UUID.randomUUID().toString().replaceAll("-", "");
-//		//获取文件的扩展名
-//		String ext = FilenameUtils.getExtension(pictureFile.getOriginalFilename());
-//		//设置图片上传路径
-//		String url = request.getSession().getServletContext().getRealPath("/upload");
-//		System.out.println(url);
-//		//以绝对路径保存重名命后的图片
-//		pictureFile.transferTo(new File(url+"/"+name + "." + ext));
-//		//把图片存储路径保存到数据库
-//		user.setAvatar("upload/"+name + "." + ext);
-//		
-//		userService.register(user);
-//		//重定向到查询所有用户的Controller，测试图片回显
-//		return "redirect:/getAll";
-//		
-//	}
-//	
-//	//查询所有用户
+	
+	/**
+	 * 个人主页查询用户信息
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/getUserInfo")
+	public String getUserInfoByUserId(HttpSession session) {
+		User user =  (User) session.getAttribute("user");
+		userService.getUserByPrimaryKey(user.getUserId());
+		return null;
+	}
+	
+	/**
+	 * 修改用户信息
+	 * @param user
+	 * @return
+	 * @throws IOException 
+	 */
+	@RequestMapping("/updateUserInfo")
+	public String updateUserInfo(User user,HttpServletRequest request) throws IOException {
+		//1. 设置图像路径
+		ImageUtils.upload(request, user.getFile());
+		
+		
+		return null;
+	}
+	
+	
+	/**
+	 * 查询所有用户
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/getAll")
 	public String getAll(Model model) throws Exception {
 		List<User> userList = userService.getAllUserList();
@@ -72,15 +87,6 @@ public class UserController {
 		return "userList";
 	}
 
-//	@RequestMapping("/upload")
-//	public String upload(@ModelAttribute("userDto") UserDto userDto) throws Exception{
-//		User user = userDto.getUser();
-//		MultipartFile multipartFile = userDto.getMultipartFile();
-//		String imageName = UploadTool.uploadImage(multipartFile);
-//		user.setAvatar(imageName);
-//		userService.register(user);
-//		return"redirect:/getAll";
-//	}
 
 	@RequestMapping("/upload")
 	public String upload(User user,HttpServletRequest request,Model model) throws Exception{
@@ -110,7 +116,13 @@ public class UserController {
       model.addAttribute("user", user);
 	  return "redirect:/getAll";
 	}
-
+	
+	/**
+	 * 登录
+	 * @param model
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView login(ModelAndView model, User user) {
 		if (userService.queryUser(user)) {
@@ -137,6 +149,12 @@ public class UserController {
 			map.put("msg", "注册失败");
 		}
 		return map;
+	}
+	
+	@RequestMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/index";
 	}
 
 }
