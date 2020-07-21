@@ -43,6 +43,11 @@ public class ActivityServiceImpl implements ActivityService{
 	/**
 	 * 通过活动名和地点进行活动查询
 	 */
+	/**
+	 * Map<Activity, List<User>> maps = getActivMapByNameAddress();
+	 * map.put("activs",maps);
+	 * ${activs.getkey().sss}
+	 */
 	@Override
 	public Map<Activity, List<User>> getActivMapByNameAddress(String activName, String address) {
 		Activity activ = new Activity();

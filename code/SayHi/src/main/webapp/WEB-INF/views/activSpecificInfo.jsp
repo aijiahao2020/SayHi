@@ -227,29 +227,22 @@
 
 		<div id="recommend">
 			<h1 style="font-size: 30px; font-family: PingFang SC;">活动推荐</h1>
-			<div style="float: left">
-				<img src="image/save.png" id="paster1">
-				<h4 style="margin-top: -0.5%">星期六，8/1，2:00，下午</h4>
-				<h3 style="margin-top: -1.5%">公园野餐</h3>
-				<img id="img_1" src="image/search.png"> <img id="img_2"
-					src="image/search.png"> <img id="img_3"
-					src="image/search.png">
-				<div style="margin-left: 80px; font-size: 20px; color: #767676">16</div>
-			</div>
-
-			<div style="float: left; margin-left: 1%; margin-top: 13px;">
-				<img src="image/save.png" id="paster1">
-				<h4 style="margin-top: -0.5%">星期六，8/1，2:00，下午</h4>
-				<h3 style="margin-top: -1.5%">公园野餐</h3>
-				<img id="img_1" src="image/search.png"> <img id="img_2"
-					src="image/search.png"> <img id="img_3"
-					src="image/search.png">
-				<div style="margin-left: 80px; font-size: 20px; color: #767676">16</div>
-			</div>
-
-			<div></div>
-
-			<div></div>
+			<c:if test="${empty requestScope.maps}">
+		无类似推荐
+		</c:if>
+			<c:if test="${!empty requestScope.maps}">
+			<c:forEach items="${requestScope.maps }" var="maps">
+				<div style="float: left">
+					<img src="image/save.png" id="paster1">
+					<h4 style="margin-top: -0.5%">${maps.key.activStarttime}</h4>
+					<h3 style="margin-top: -1.5%">${maps.key.activName}</h3>
+					<img id="img_1" src="image/search.png"> <img id="img_2"
+						src="image/search.png"> <img id="img_3"
+						src="image/search.png">
+					<div style="margin-left: 80px; font-size: 20px; color: #767676">16</div>
+				</div>
+				</c:forEach>
+			</c:if>
 		</div>
 	</div>
 	<div id="comment">
@@ -258,20 +251,21 @@
 			没有任何评论.
 		</c:if>
 		<c:if test="${!empty requestScope.comments }">
-		<c:forEach items="${requestScope.comments }" var="comments">
-		<div id="comment_mem">
-			<div style="height: 130px;">
-				<div style="font-family: PingFang SC; font-size: 10px; float: left">
-					<img id="comment_mem_img" src="${comments.avatar}">
-					<p>${comments.userName}</p>
-					<p style="margin-top: -5px;">${comments.cmtTime}</p>
+			<c:forEach items="${requestScope.comments }" var="comments">
+				<div id="comment_mem">
+					<div style="height: 130px;">
+						<div
+							style="font-family: PingFang SC; font-size: 10px; float: left">
+							<img id="comment_mem_img" src="${comments.avatar}">
+							<p>${comments.userName}</p>
+							<p style="margin-top: -5px;">${comments.cmtTime}</p>
+						</div>
+						<div id="comment_comment">
+							<div id="comment_msg">${comments.cmtContent}</div>
+						</div>
+					</div>
 				</div>
-				<div id="comment_comment">
-					<div id="comment_msg">${comments.cmtContent}</div>
-				</div>
-			</div>
-		</div>
-		</c:forEach>
+			</c:forEach>
 		</c:if>
 	</div>
 </body>

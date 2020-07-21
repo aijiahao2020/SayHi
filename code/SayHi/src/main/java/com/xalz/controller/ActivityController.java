@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.javassist.expr.NewArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -147,28 +148,39 @@ public class ActivityController {
 	 */
 	@RequestMapping("/index/search")
 	public String getActivByName(Map<String, Object> map){
-		
 //		activityService.getActivListByFuzzySearch(activity);
 //		map.put("activities", activityService.getActivListByExample(example));
 		return "index";
 	}
 	
+	/**
+	 * 根据活动id查看活动详细内容
+	 * @param activId
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping(value = "/index/{id}",method=RequestMethod.GET)
 	public String getActivByActivId(@PathVariable("id") Integer activId,Map<String, Object> map) {
 		//1、根据activId获取活动信息
-		Activity activity = activityService.getActivByPrimaryKey(activId);
-		System.out.println(activity);
+		Map<Activity, List<User>> maps = activityService.getActivAndRecomment(activId);
+		System.out.println(maps);
+//		Activity activity = (Activity) maps.get(activityService.getActivByPrimaryKey(activId));
+//		Activity activity = activityService.getActivByPrimaryKey(activId);
+		
+//		System.out.println(activity);
+		List<User> users = activityMemberService.getUserListByActivity(activId);
 		//2、获取活动参加人数
 //		activityMemberService.
 		//3、根据activId获取评论信息
 		//设置活动id
 		Comment comment = new Comment();
 		comment.setActivId(activId);
-		List<UserAndComment> comments = commentService.getUserCommentByActivId(comment);
+//		List<UserAndComment> comments = commentService.getUserCommentByActivId(comment);
 		//4、
 		//放入map中
-		map.put("activity", activity);
-		map.put("comments",comments);
+//		map.put("activity", activity);
+		map.put("maps",maps);
+//		map.put("comments",comments);
 		return "activSpecificInfo";
 	
 	}
@@ -176,7 +188,7 @@ public class ActivityController {
 	@RequestMapping("/favoriteActiv")
 	public String favoriteActiv(FavoriteInfo favoriteInfo) {
 		//添加点赞信息
-		favoriteInfoService.addFavoriteInfo(favoriteInfo);
+//		favoriteInfoService.addFavoriteInfo(favoriteInfo);
 		return null;
 	}
 	
