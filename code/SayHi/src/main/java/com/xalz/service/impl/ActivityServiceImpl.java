@@ -108,8 +108,8 @@ public class ActivityServiceImpl implements ActivityService{
 	 * 获取所有活动
 	 */
 	@Override
-	public List<Activity> getAllActiv() {
-		return activityMapper.selectAll();
+	public List<ActivityUser> getAllActiv() {
+		return convertActivListToActivUserList(activityMapper.selectAll());
 	}
 
 	/**

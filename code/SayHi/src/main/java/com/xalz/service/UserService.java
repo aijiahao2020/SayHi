@@ -21,6 +21,9 @@ public interface UserService {
     //根据主键获取用户和用户标签信息 
     public User getUserByPrimaryKey(Integer userId);
     
+    //根据用户名和密码查询用户信息
+    public User getUserByExample(User user);
+    
     //根据用户编号获取进行中用户所有活动√
     public List<ActivityUser> getAllAUMPgByUserId(Integer userId);
     

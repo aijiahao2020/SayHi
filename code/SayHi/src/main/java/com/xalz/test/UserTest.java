@@ -41,13 +41,10 @@ public class UserTest {
 //        		System.out.println(au);
 //        	}
       //根据用户编号获取参加过得的历史活动
-//        Map<Activity, List<User>> activUser = userService.getAttendedAUMPdByUserId(1);
-//        for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
-//            System.out.println(entry.getKey());
-//            for(User user : entry.getValue()) {
-//         	   System.out.println(user);
-//            }
-//         }
+        	List<ActivityUser> activUser = userService.getAttendedAUMPdByUserId(1);
+	    	for(ActivityUser au : activUser){
+	    		System.out.println(au);
+	    	}
 	}
 	
 }
