@@ -1,10 +1,8 @@
 package com.xalz.test;
 
-import java.util.List;
-
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.xalz.bean.ActivityUser;
+import com.xalz.bean.User;
 import com.xalz.service.UserService;
 
 public class UserTest {
@@ -41,10 +39,12 @@ public class UserTest {
 //        		System.out.println(au);
 //        	}
       //根据用户编号获取参加过得的历史活动
-        	List<ActivityUser> activUser = userService.getAttendedAUMPdByUserId(1);
-	    	for(ActivityUser au : activUser){
-	    		System.out.println(au);
-	    	}
+//        	List<ActivityUser> activUser = userService.getAttendedAUMPdByUserId(1);
+//	    	for(ActivityUser au : activUser){
+//	    		System.out.println(au);
+//	    	}
+        User user = new User(1,"xqshib","12345",null);
+        System.out.println(userService.updateUserByPrimaryKey(user));
 	}
 	
 }

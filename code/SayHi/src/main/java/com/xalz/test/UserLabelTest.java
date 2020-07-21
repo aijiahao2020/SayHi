@@ -1,8 +1,10 @@
 package com.xalz.test;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.xalz.bean.UserLabel;
 import com.xalz.service.UserLabelService;
 
 public class UserLabelTest {
@@ -28,8 +30,14 @@ public class UserLabelTest {
 //		System.out.println(userLabelService.getUserLabel(userLabel));
 		
 		/* queryUserLabel(UserLabel userLabel) */
-		UserLabel userLabel = new UserLabel(null,1,"科技");
-		System.out.println(userLabelService.queryUserLabel(userLabel));
+//		UserLabel userLabel = new UserLabel(null,1,"科技");
+//		System.out.println(userLabelService.queryUserLabel(userLabel));
 		
+//		List<String> label = new LinkedList<String>();
+//		label.add("科技");
+//		label.add("人文");
+//		userLabelService.updateUserLabelByUserId(1, label);
+		System.out.println(userLabelService.queryUserLabelByUserId(2, 1));
+		System.out.println(userLabelService.queryUserLabelByUserId(2, 2));
 	}
 }

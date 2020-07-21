@@ -10,6 +10,9 @@ import com.xalz.bean.UserLabel;
 
 public interface UserService {
 	
+	//更据用户编号更新用户信息
+	public boolean updateUserByPrimaryKey(User user);
+	
 	//查询登录用户是否存在√
     public boolean queryUser(User user);
     

@@ -51,6 +51,19 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     MessageService messageService;
+    
+    
+    /**
+     * 用户登录
+     *
+     */
+    @Override
+	public boolean updateUserByPrimaryKey(User user) {
+		if (userMapper.updateByPrimaryKey(user) != 0) {
+            return true;
+        } else return false;
+	}
+    
 	/**
      * 用户登录
      *
@@ -243,6 +256,10 @@ public class UserServiceImpl implements UserService {
 	public User getUserByExample(User user) {
 		return userMapper.selectOne(user);
 	}
+
+	
+
+	
 
 }
 

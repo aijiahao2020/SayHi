@@ -162,8 +162,8 @@ public class ActivityController {
 	@RequestMapping(value = "/index/{id}",method=RequestMethod.GET)
 	public String getActivByActivId(@PathVariable("id") Integer activId,Map<String, Object> map) {
 		//1、根据activId获取活动信息
-		Map<Activity, List<User>> maps = activityService.getActivAndRecomment(activId);
-		System.out.println(maps);
+//		Map<Activity, List<User>> maps = activityService.getActivAndRecomment(activId);
+//		System.out.println(maps);
 //		Activity activity = (Activity) maps.get(activityService.getActivByPrimaryKey(activId));
 //		Activity activity = activityService.getActivByPrimaryKey(activId);
 		
@@ -179,7 +179,7 @@ public class ActivityController {
 		//4、
 		//放入map中
 //		map.put("activity", activity);
-		map.put("maps",maps);
+//		map.put("maps",maps);
 //		map.put("comments",comments);
 		return "activSpecificInfo";
 	
