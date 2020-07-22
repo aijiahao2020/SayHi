@@ -42,7 +42,7 @@ public class CommentController {
 		if(comment.getUserId() == null) {
 			map.put("message","未登录，请先登录");
 		}else {
-			commentService.addComment(comment.getActivId(),comment.getUserId(), comment.getCmtContent());
+			commentService.addComment(comment);
 		}
 		return "redirect:/index/"+comment.getActivId();
 	}

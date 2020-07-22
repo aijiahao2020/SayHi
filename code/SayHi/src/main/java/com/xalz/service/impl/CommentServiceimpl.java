@@ -34,10 +34,10 @@ public class CommentServiceimpl implements CommentService{
 	 * 添加评论
 	 */
 	@Override
-	public boolean addComment(Integer activId, Integer userId, String cmtContent) {
-		Comment comment = new Comment(null, userId, activId, new Date(), cmtContent);
+	public boolean addComment(Comment comment) {
+		comment.setCmtTime(new Date());
 		if(commentMapper.insert(comment) == 1) {
-			activityService.updateActivCmtSelfByPrimaryKey(activId, 1);
+			activityService.updateActivCmtSelfByPrimaryKey(comment.getActivId(), 1);
 				return true;
 		}else return false;
 	}

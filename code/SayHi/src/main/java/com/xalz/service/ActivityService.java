@@ -17,6 +17,10 @@ public interface ActivityService {
 	 * 
 	 * @return
 	 */
+	//首页活动推荐
+	public List<ActivityUser> getActivUserIndexRecom();
+	
+	
 	//根据固定标签查询活动√
 	public List<ActivityUser> getActivUserByActivLabel(String activLabel);
 	

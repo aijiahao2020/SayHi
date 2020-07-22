@@ -253,27 +253,20 @@ public class UserServiceImpl implements UserService {
 
 	/**
 	 * 根据用户编号和标签更新用户/标签 信息
-	 */
+	*/
 	@Override
 	public boolean updateUserInformation(User user, String[] labels) {
-		if (userMapper.updateByPrimaryKey(user) != 0) {
-			if (labels != null) {
+		if(userMapper.updateByPrimaryKey(user) != 0) {
+			if(labels != null) {
 				List<String> labelList = new LinkedList<String>();
-				for (int i = 0; i < labels.length; i++) {
+				for(int i = 0; i < labels.length; i++) {
 					labelList.add(labels[i]);
 				}
 				userLabelService.updateUserLabelByUserId(user.getUserId(), labelList);
-				return true;
+					return true;
 			}
 			return false;
-		} else
-			return false;
-	}
-
-	@Override
-	public boolean updateUserInformation(User user, List<String> userLabelList) {
-		// TODO Auto-generated method stub
-		return false;
+		}else return false;
 	}
 
 }
