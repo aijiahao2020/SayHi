@@ -1,26 +1,23 @@
 package com.xalz.service.impl;
 
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xalz.bean.Activity;
 import com.xalz.bean.ActivityUser;
+import com.xalz.bean.Message;
 import com.xalz.bean.User;
 import com.xalz.mappers.ActivityMapper;
 import com.xalz.service.ActivityMemberService;
 import com.xalz.service.ActivityService;
+import com.xalz.service.MessageService;
 
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
@@ -40,6 +37,20 @@ public class ActivityServiceImpl implements ActivityService{
 	@Autowired
 	ActivityMemberService activityMemberService;
 	
+	@Autowired
+	MessageService messageService;
+	
+	/**
+	 * 首页活动推荐(结束时间大于当前时间,期望人数为满,点赞/评论综合推荐)
+	 */
+	@Override
+	public List<ActivityUser> getActivUserIndexRecom() {
+		Activity activity = new Activity();
+		activity.getActivStarttime();
+		return getActivUserListByComprehensive(activity);
+	}
+
+
 	/**
 	 * 根据固定标签查询活动
 	 */
@@ -98,9 +109,9 @@ public class ActivityServiceImpl implements ActivityService{
 	public List<ActivityUser> getActivUserByNameAddress(String activName, String address) {
 		Activity activ = new Activity();
 		activ.setActivName(activName);
-		String activState = "";
-		String activCity = "";
-		if(!address.isEmpty()) {
+		String activState = null;
+		String activCity = null;
+		if(address != null) {
 			if(address.indexOf("省") == -1) {
 				activState = address.substring(0, address.indexOf("市") + 1);
 				address = address.substring(address.indexOf("市") + 1, address.length());
@@ -115,7 +126,8 @@ public class ActivityServiceImpl implements ActivityService{
 		activ.setActivState(activState);
 		activ.setActivCity(activCity);
 		activ.setActivStarttime(new Date());
-		return null;
+		List<Activity> activList = getActivListByFuzzySearch(activ);
+		return convertActivListToActivUserList(activList);
 	}
 	
 	
@@ -194,6 +206,23 @@ public class ActivityServiceImpl implements ActivityService{
 	 */
 	@Override
 	public boolean deleteActivByPrimaryKey(Integer activId) {
+		List<User> userList = activityMemberService.getUserListByActivity(activId);
+		Activity activity = activityMapper.selectByPrimaryKey(activId);
+		for(User user : userList) {
+			String messInfo = null;
+			Message message = new Message();
+			message.setUserId(user.getUserId());
+			message.setMessTime(new Date());
+			if(user.getUserId() == activity.getUserId()) {
+				messInfo = "您" + messInfo + "创建的活动 《";
+			}else {
+				messInfo = "您" + messInfo + "参加的活动 《";
+			}
+			
+			messInfo = messInfo + activity.getActivName() + "》已取消，特次提醒！";
+			message.setMessInfo(messInfo);
+			messageService.createMessage(message);
+		}
 		if (activityMapper.deleteByPrimaryKey(activId) == 1) {
 			return true;
 		}else return false;
@@ -298,6 +327,7 @@ public class ActivityServiceImpl implements ActivityService{
 			}
 		}
 		
+		
 		return activityMapper.selectByExample(example);
 	}
 	
@@ -362,7 +392,9 @@ public class ActivityServiceImpl implements ActivityService{
 		List<ActivityUser> activUserList = new LinkedList<ActivityUser>();
 		//遍历活动list
 		for(Activity activ : activList) {
-				//通过活动编号查询活动对应的用户成员列表
+//				
+				//通过活动编号查询活动对应的用户成员列表(过滤掉成员已满的)
+			if(activityMemberService.getActvityMemberCount(activ.getActivId()) < activ.getExpNum()) {
 				ActivityUser activUser = new ActivityUser();
 				activUser.setActivId(activ.getActivId());
 				activUser.setActivName(activ.getActivName());
@@ -374,6 +406,7 @@ public class ActivityServiceImpl implements ActivityService{
 				activUser.setUserList(activityMemberService.getUserListByActivity(activ.getActivId()));
 				//将ActivityUser对象添加进list集合中
 				activUserList.add(activUser);
+			}
 		}
 		return activUserList;
 	}
@@ -403,8 +436,5 @@ public class ActivityServiceImpl implements ActivityService{
 		return activityMapper.selectOneByExample(example);
 	}
 
-	
-
-	
 	
 }

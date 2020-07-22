@@ -2,11 +2,13 @@ package com.xalz.test;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.xalz.bean.Activity;
 import com.xalz.bean.ActivityUser;
+import com.xalz.bean.User;
 import com.xalz.service.ActivityService;
 
 
@@ -40,7 +42,7 @@ public class ActivityTest {
 		
 		
 /* 测试deleteActivByPrimaryKey(Integer activId) */	
-//		System.out.println(activityService.deleteActivByPrimaryKey(18));
+//		System.out.println(activityService.deleteActivByPrimaryKey(9));
 		
 /* 测试getActivListByExample(Example example) */	
 //		Example example = new Example(Activity.class);
@@ -172,21 +174,22 @@ public class ActivityTest {
 		
 		/* 测试过活动名和地点进行活动查询 */	
 		
-//		Map<Activity, List<User>> activUser =  activityService.getActivMapByNameAddress("新", "湖北省武汉市");
-//		
-//		for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
-//           System.out.println(entry.getKey());
-//           for(User user : entry.getValue()) {
-//        	   System.out.println(user);
-//           }
-//        }
+		String activName = null;
+		String activAddress = null;
+		
+		List<ActivityUser> activList =  activityService.getActivUserByNameAddress(activName, activAddress);
+		
+		for(ActivityUser activ : activList){
+          System.out.println(activ);
+       }
+		
 //		根据固定标签查询活动
 		
-		List<ActivityUser> activUser =  activityService.getActivUserByActivLabel("动漫");
-		
-		for(ActivityUser activ : activUser){
-           System.out.println(activ);
-        }
+//		List<ActivityUser> activUser =  activityService.getActivUserByActivLabel("动漫");
+//		
+//		for(ActivityUser activ : activUser){
+//           System.out.println(activ);
+//        }
 		
 	}
 	

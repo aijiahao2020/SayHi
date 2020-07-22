@@ -44,7 +44,7 @@ public interface UserService {
     public List<ActivityUser> getAttendedAUMPdByUserId(Integer userId);
     
     //根据传来的用户对象和用户标签集合更新用户的信息
-    public boolean updateUserInformation(User user, List<String> userLabelList);
+    public boolean updateUserInformation(User user, String[] labels);
     
     //获取所有用户列表
     public List<User> getAllUserList();

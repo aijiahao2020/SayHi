@@ -12,15 +12,14 @@ import com.xalz.bean.ActivityMember;
 import com.xalz.bean.ActivityUser;
 import com.xalz.bean.Comment;
 import com.xalz.bean.FavoriteInfo;
-import com.xalz.bean.Message;
 import com.xalz.bean.User;
-import com.xalz.bean.UserLabel;
 import com.xalz.mappers.UserMapper;
 import com.xalz.service.ActivityMemberService;
 import com.xalz.service.ActivityService;
 import com.xalz.service.CommentService;
 import com.xalz.service.FavoriteInfoService;
 import com.xalz.service.MessageService;
+import com.xalz.service.UserLabelService;
 import com.xalz.service.UserService;
 
 /**
@@ -50,7 +49,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     MessageService messageService;
     
-    
+    @Autowired
+    UserLabelService userLabelService;
     /**
 	 * 根据用户名和密码查询用户信息
 	*/
@@ -247,12 +247,21 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-	 * 根据用户编号获取参加过得的历史活动
+	 * 根据用户编号和标签更新用户/标签 信息
 	*/
 	@Override
-	public boolean updateUserInformation(User user, List<String> userLabelList) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateUserInformation(User user, String[] labels) {
+		if(userMapper.updateByPrimaryKey(user) != 0) {
+			if(labels != null) {
+				List<String> labelList = new LinkedList<String>();
+				for(int i = 0; i < labels.length; i++) {
+					labelList.add(labels[i]);
+				}
+				userLabelService.updateUserLabelByUserId(user.getUserId(), labelList);
+					return true;
+			}
+			return false;
+		}else return false;
 	}
 
 

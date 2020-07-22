@@ -43,8 +43,10 @@ public class UserTest {
 //	    	for(ActivityUser au : activUser){
 //	    		System.out.println(au);
 //	    	}
-        User user = new User(1,"xqshib","12345",null);
-        System.out.println(userService.updateUserByPrimaryKey(user));
+        User user = new User(4,"ajhhaoge","12345",null);
+//        String[] labels = {"爬山","动漫"};
+        String[] labels = null;
+        System.out.println(userService.updateUserInformation(user, labels));
 	}
 	
 }
