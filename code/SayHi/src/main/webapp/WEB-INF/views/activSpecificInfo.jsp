@@ -165,7 +165,89 @@
 	position: absolute;
 	margin-left: 30px;
 }
+
+#pubcom_input {
+	height: 100px;
+	width: 460px;
+	margin-top: 80px;
+	margin-left: -100px;
+	border-radius: 5px;
+	border: 1px solid gray;
+}
+
+p {
+	font-family: PingFang SC;
+}
+
+#pubcom_button1 {
+	margin-top: 10px;
+	margin-left: 410px;
+	width: 70px;
+	height: 20px;
+	background-color: #5B91A5;
+	cursor: pointer;
+	color: white;
+	border-radius: 5px;
+	outline: 0;
+	font-size: 12px;
+	border-style: solid;
+	border-color: #5B91A5;
+	border-width: 1px;
+	font-family: "PingFang SC";
+}
+
+#good {
+	height: 20px;
+	width: 20px;
+	margin-left: 350px;
+	margin-top: 35px;
+	position: absolute;
+	visibility: visible;
+}
+
+#gooded {
+	height: 20px;
+	width: 20px;
+	margin-left: 350px;
+	margin-top: 35px;
+	position: absolute;
+	visibility: hidden;
+}
+
+#goodnum {
+	height: 20px;
+	width: 40px;
+	margin-left: 380px;
+	margin-top: 35px;
+	position: absolute;
+	border: none;
+}
 </style>
+<script>
+      function good(){
+    	
+    	 var a = goodnum.value;
+    	 b = 1;
+    	 var c = parseInt(a) + parseInt(b);
+    	 goodnum.value = c;
+    	 var x = document.getElementById("good");
+    	 x.style.visibility ='hidden';
+    	 var y = document.getElementById("gooded");
+    	 y.style.visibility = 'visible';
+    	  
+      }
+    
+      function gooded(){
+    	 var a = goodnum.value;
+     	 b = 1;
+     	 var c = parseInt(a) - parseInt(b);
+     	 goodnum.value = c;
+     	 var x = document.getElementById("gooded");
+    	 x.style.visibility ='hidden';
+    	 var y = document.getElementById("good");
+    	 y.style.visibility = 'visible';
+      }
+</script>
 </head>
 <body>
 	<div id="top">
@@ -174,7 +256,7 @@
 				style="padding-top: 10px; padding-left: 20px; height: 30px;"></a>
 		</c:if>
 		<c:if test="${!empty sessionScope.user}">
-			<a href="../userIndex"><img alt="" src="../static/image/SayHi.png"
+			<a href="../index"><img alt="" src="../static/image/SayHi.png"
 				style="padding-top: 10px; padding-left: 20px; height: 30px;"></a>
 		</c:if>
 		<c:if test="${empty sessionScope.user}">
@@ -183,7 +265,7 @@
 
 		</c:if>
 		<c:if test="${!empty sessionScope.user}">
-			<a href="logout" id="registerbutton">退出</a>
+			<a href="../logout" id="registerbutton">退出</a>
 			<a href="../myAttendingActiv" id="loginbutton">${sessionScope.user.userName}</a>
 		</c:if>
 	</div>
@@ -199,12 +281,22 @@
 			</div>
 		</div>
 		<c:if test="${!empty sessionScope.user}">
-		<c:if test="${requestScope.isAttented}">
-			<input type="submit" value="已参加" id="join">
-		</c:if>
-		<c:if test="${!requestScope.isAttented}">
-			<input type="submit" value="参加" id="join">
-		</c:if>
+			<c:if test="${requestScope.isAttented}">
+				<form action="../leaveActiv" method="post">
+					<input type="hidden" name="userId"
+						value="${sessionScope.user.userId}"> <input type="hidden"
+						name="activId" value="${activity.activId}"> <input
+						type="submit" value="已参加" id="join">
+				</form>
+			</c:if>
+			<c:if test="${!requestScope.isAttented}">
+				<form action="../attendActiv" method="post">
+					<input type="hidden" name="userId"
+						value="${sessionScope.user.userId}"> <input type="hidden"
+						name="activId" value="${activity.activId}"> <input
+						type="submit" value="参加" id="join">
+				</form>
+			</c:if>
 		</c:if>
 	</div>
 	<div id="mid">
@@ -217,16 +309,20 @@
 			<p style="font-family: PingFang SC; font-size: 22px;">期望人数：${activity.expNum}人</p>
 			<div id="joinmem">
 				<p style="font-family: PingFang SC; font-size: 22px;">参加人员（${memberNum}）</p>
-				<c:forEach items="${requestScope.activMem }" var="activMem" varStatus="status">
+				<c:forEach items="${requestScope.activMem }" var="activMem"
+					varStatus="status">
 					<div id="mem">
-						<a href="../getUserInfo/${activMem.userId}"><img id="mem_img" src="${activMem.avatar}"></a>
+						<a href="../getUserInfo/${activMem.userId}"><img id="mem_img"
+							src="${activMem.avatar}"></a>
 						<center>
 							<p style="font-family: PingFang SC; font-size: 10px;">${activMem.userName}</p>
-							<c:if test="${status.count == 1}" >
-							<p style="font-family: PingFang SC; font-size: 5px; margin-top: -5px;">主办方</p>
+							<c:if test="${status.count == 1}">
+								<p
+									style="font-family: PingFang SC; font-size: 5px; margin-top: -5px;">主办方</p>
 							</c:if>
 							<c:if test="${status.count != 1}">
-							<p style="font-family: PingFang SC; font-size: 5px; margin-top: -5px;">参与者</p>
+								<p
+									style="font-family: PingFang SC; font-size: 5px; margin-top: -5px;">参与者</p>
 							</c:if>
 						</center>
 					</div>
@@ -246,7 +342,8 @@
 						<h4 style="margin-top: -0.5%">${activUsers.activStart}</h4>
 						<h3 style="margin-top: -1.5%">${activUsers.activName}</h3>
 						<c:forEach items="${activUsers.userList }" var="userList">
-						<img id="img_1" src="${userList.avatar}">
+							<a href="../getUserInfo/${activMem.userId}"><img id="img_1"
+								src="${userList.avatar}"></a>
 						</c:forEach>
 						<div style="margin-left: 80px; font-size: 20px; color: #767676">${activUsers.activNum}</div>
 					</div>
@@ -255,7 +352,34 @@
 		</div>
 	</div>
 	<div id="comment">
+
 		<p style="font-family: PingFang SC; font-size: 22px;">评论（${activity.cmtNum}）</p>
+		<div>
+			<div style="float: left">
+				<p style="font-size: 22px; float: left">评论</p>
+				<img src="../static/image/good.png" id="good" onclick=good()>
+				<img src="../static/image/gooded.png" id="gooded" onclick=gooded() >
+				<a><input type="number" id="goodnum"
+					value="${activity.favorNum}" readonly></a>
+				<p
+					style="font-size: 12px; color: gary; float: left; margin-left: 10px; margin-top: 30px;">(50/300)</p>
+				<img src="../static/image/good">
+			</div>
+
+			<div>
+				<form action="../addComment" method="post">
+					<input type="hidden" name="activId" value="${activity.activId}">
+					<input type="hidden" name="userId"
+						value="${sessionScope.user.userId}">
+					<textarea id="pubcom_input" name="cmtContent"></textarea>
+					<div id="pubcom_button">
+						<input type="submit" value="发布" id="pubcom_button1">
+					</div>
+				</form>
+				<font color="red">${requestScope.message}</font>
+			</div>
+		</div>
+
 		<c:if test="${empty requestScope.comments }">
 			没有任何评论.
 		</c:if>
@@ -265,7 +389,7 @@
 					<div style="height: 130px;">
 						<div
 							style="font-family: PingFang SC; font-size: 10px; float: left">
-							<img id="comment_mem_img" src="${comments.avatar}">
+							<a href="../getUserInfo/${comments.userId}"><img id="comment_mem_img" src="${comments.avatar}"></a>
 							<p>${comments.userName}</p>
 							<p style="margin-top: -5px;">${comments.cmtTime}</p>
 						</div>

@@ -16,7 +16,7 @@ public interface ActivityMemberService {
 	public boolean addActvityMember(Integer userId, Integer activId);
 	
 	// 通过用户编号删除活动成员√
-	public boolean deleteActvityMemberByUI(Integer userId);
+	public boolean deleteActvityMember(ActivityMember activityMember);
 	
 	// 通过用户编号删除活动成员√
 //	public boolean deleteActvityMemberByAI(Integer activId);

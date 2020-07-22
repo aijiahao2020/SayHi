@@ -52,10 +52,8 @@ public class ActivityMemberServiceImpl implements ActivityMemberService{
 	 * 删除活动成员
 	 */
 	@Override
-	public boolean deleteActvityMemberByUI(Integer userId) {
-		//通过用户编号删除活动成员
-		ActivityMember activityMember = new ActivityMember();
-		activityMember.setUserId(userId);
+	public boolean deleteActvityMember(ActivityMember activityMember) {
+		//通过用户编号和活动编号删除活动成员
 		if(activityMemberMapper.delete(activityMember) != 0)
 			return true;
 			else return false;

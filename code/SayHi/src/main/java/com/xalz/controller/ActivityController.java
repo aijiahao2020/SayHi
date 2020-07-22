@@ -21,10 +21,12 @@ import com.xalz.bean.ActivityUser;
 import com.xalz.bean.FavoriteInfo;
 import com.xalz.bean.User;
 import com.xalz.bean.UserAndComment;
+import com.xalz.bean.UserLabel;
 import com.xalz.service.ActivityMemberService;
 import com.xalz.service.ActivityService;
 import com.xalz.service.CommentService;
 import com.xalz.service.FavoriteInfoService;
+import com.xalz.service.UserLabelService;
 import com.xalz.service.UserService;
 import com.xalz.tool.ImageUtils;
 
@@ -60,9 +62,14 @@ public class ActivityController {
 	// 点赞
 	@Autowired
 	FavoriteInfoService foriteInfoService;
-	
+
+	// 用户标签
+	@Autowired
+	UserLabelService userLabelService;
+
 	/**
 	 * 跳转到添加用户界面
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/toAddActiv")
@@ -79,10 +86,9 @@ public class ActivityController {
 	 * @return
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/addActiv", method = RequestMethod.POST)
+	@RequestMapping(value = "/addActiv")
 	public String addActivity(Activity activity, HttpServletRequest request, Model model) throws IOException {
 		System.out.println(activity);
-		activity.setUserId(1);
 		String activBill = ImageUtils.upload(request, activity.getFile());
 		activity.setActivBill(activBill);
 		activityService.createActiv(activity);
@@ -95,10 +101,11 @@ public class ActivityController {
 	 * @param map
 	 * @return
 	 */
-	@RequestMapping("/index/search")
-	public String getActivByName(@RequestParam(value = "activName", required = false) String activName,
-			@RequestParam(value = "address", required = false) String address, Map<String, List<ActivityUser>> map) {
+	@RequestMapping("/search")
+	public String getActivByName(@RequestParam(value = "activName") String activName,
+			@RequestParam(value = "address") String address, Map<String, List<ActivityUser>> map) {
 		List<ActivityUser> activityUsers = activityService.getActivUserByNameAddress(activName, address);
+		System.out.println(activityUsers);
 		map.put("activityUsers", activityUsers);
 		return "index";
 	}
@@ -111,7 +118,7 @@ public class ActivityController {
 	 * @return
 	 */
 	@RequestMapping(value = "/index/{id}", method = RequestMethod.GET)
-	public String getActivByActivId(@PathVariable("id") Integer activId, Map<String, Object> map,HttpSession session) {
+	public String getActivByActivId(@PathVariable("id") Integer activId, Map<String, Object> map, HttpSession session) {
 		// 1、根据activId获取活动信息
 		Activity activity = activityService.getActivByPrimaryKey(activId);
 		System.out.println(activity);
@@ -122,7 +129,9 @@ public class ActivityController {
 		// 2.1、判断用户是否已参加
 		User user = (User) session.getAttribute("user");
 		System.out.println(user + "+++++++++++");
-		boolean isAttented = activityMemberService.queryActvityMember(user.getUserId(), activId);
+		boolean isAttented = false;
+		if(user != null)
+		isAttented = activityMemberService.queryActvityMember(user.getUserId(), activId);
 		System.out.println(isAttented);
 		// 3、根据activId获取评论信息
 		List<UserAndComment> comments = commentService.getUserCommentByActivId(activId);
@@ -154,10 +163,40 @@ public class ActivityController {
 	 * @return
 	 */
 	@RequestMapping("/index")
-	public String getAllActiv(Map<String, Object> map) {
+	public String getAllActiv(Map<String, Object> map, HttpSession session) {
 		System.out.println(activityService.getAllActiv());
+		User user = (User) session.getAttribute("user");
+		System.out.println(user+"sssssssssss");
+		// 主页两个标签
+		String userLabel1 = "摄影";
+		String userLabel2 = "食品";
+		// 根据标签获取的活动
+		List<ActivityUser> activUsers1 = null;
+		List<ActivityUser> activUsers2 = null;
+		if (user != null) {
+			// 获取用户第一个标签
+			userLabel1 = userLabelService.queryUserLabelByUserId(user.getUserId(), 1);
+			// 获取用户第二个标签
+			userLabel2 = userLabelService.queryUserLabelByUserId(user.getUserId(), 2);
+
+			// 根据用户标签获取活动
+			activUsers1 = activityService.getActivUserByActivLabel(userLabel1);
+			activUsers2 = activityService.getActivUserByActivLabel(userLabel2);
+
+			// 获取用户推荐活动
+
+			// .........
+
+		} else {
+			activUsers1 = activityService.getActivUserByActivLabel("科技");
+			activUsers2 = activityService.getActivUserByActivLabel("人文");
+		}
+//		activityService.getActivUserByActivLabel(activLabel);
 //		activityService.
-//		map.put("activities", activityService.get);
+		map.put("userLabel1", userLabel1);
+		map.put("userLabel2", userLabel2);
+		map.put("activUsers1", activUsers1);
+		map.put("activUsers2", activUsers2);
 		return "index";
 	}
 

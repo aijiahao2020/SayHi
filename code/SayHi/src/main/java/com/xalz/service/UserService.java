@@ -10,6 +10,9 @@ import com.xalz.bean.UserLabel;
 
 public interface UserService {
 	
+	//根据传来的用户对象和用户标签集合更新用户的信息
+    public boolean updateUserInformation(User user, String[] labels);
+	
 	//根据用户名和密码查询用户信息
 	public User getUserByExample(User user);
 	

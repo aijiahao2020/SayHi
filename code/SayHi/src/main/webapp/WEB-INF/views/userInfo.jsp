@@ -163,7 +163,7 @@ h3 {
 </head>
 <body>
 	<div id="top">
-		<a href="index"><img alt="" src="../static/image/SayHi.png"
+		<a href="../index"><img alt="" src="../static/image/SayHi.png"
 			style="padding-top: 10px; padding-left: 20px; height: 30px;"></a> <img
 			src="../static/image/ren.jpg" id="head_imag"> <a href=""><input
 			value="退出" id="quit"></a>
@@ -176,9 +176,9 @@ h3 {
 	</div>
 
 	<div id="mid">
-		<img src="image/head.jpg" id="mid_head">
-		<div id="mid_name">${requestScope.user.userName }</div>
-		<div id="mid_num">SayHi号：${requestScope.user.userId }</div>
+		<img src="${requestScope.user1.avatar }" id="mid_head">
+		<div id="mid_name">${requestScope.user1.userName }</div>
+		<div id="mid_num">SayHi号：${requestScope.user1.userId }</div>
 		<div id="mid_hab">
 			兴趣爱好：
 			<div id="mid_tags">
@@ -206,13 +206,13 @@ h3 {
 							var="activityUsers">
 							<div id="mid_act1">
 								<div style="float: left">
-									<a href="index/${activityUsers.activId}"><img
+									<a href="../index/${activityUsers.activId}"><img
 										src="${activityUsers.activBill}" id="img_a"></a>
 									<h4>${activityUsers.activStart}</h4>
-									<a href="index/${activityUsers.activId}"><h3>${activityUsers.activName}</h3></a>
+									<a href="../index/${activityUsers.activId}"><h3>${activityUsers.activName}</h3></a>
 									<div id="buttom_buttom">
 										<c:forEach items="${activityUsers.userList }" var="userList">
-											<img id="img_1" src="${userList.avatar}">
+											<a href="../getUserInfo/${userList.userId}"><img id="img_1" src="${userList.avatar}"></a>
 										</c:forEach>
 										<div id="num">${activityUsers.activNum}</div>
 										<c:if test="${requestScope.isDel == 'isDel'}">

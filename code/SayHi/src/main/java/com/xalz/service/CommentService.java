@@ -44,4 +44,5 @@ public interface CommentService {
 	//通过活动编号获取活动的评论及用户√
 	public List<UserAndComment> getUserCommentByActivId(Integer activId);
 	
+	
 }

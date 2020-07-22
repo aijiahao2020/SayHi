@@ -75,19 +75,19 @@ public class UserLabelServiceImpl implements UserLabelService {
 		List<UserLabel> userLabelList = userLabelMapper.select(userLabel);
 		if(index == 1) {
 			if(userLabelList.isEmpty()) {
-				return "科教";
+				return "摄影";
 			}else{
 				return userLabelList.get(0).getLabelName();
 			}
 		}else{
 			if(userLabelList.isEmpty()) {
-				return "人文";
+				return "食品";
 			}else if(userLabelList.size() == 1){
-				userLabel.setLabelName("人文");
+				userLabel.setLabelName("食品");
 				if(userLabelMapper.selectOne(userLabel) != null) {
-					return "科教";
+					return "摄影";
 				}else {
-					return "人文";
+					return "食品";
 				}
 			}else {
 				return userLabelList.get(1).getLabelName();
