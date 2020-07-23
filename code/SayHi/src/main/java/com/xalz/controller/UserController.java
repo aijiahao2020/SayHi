@@ -2,6 +2,7 @@ package com.xalz.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -10,11 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,7 +35,6 @@ import com.xalz.tool.ImageUtils;
  * @author po
  *
  */
-@SessionAttributes("user")
 @Controller
 public class UserController {
 
@@ -43,8 +45,8 @@ public class UserController {
 	// 活动操作类
 	@Autowired
 	ActivityService activityService;
-	
-	//用户标签操作类
+
+	// 用户标签操作类
 	@Autowired
 	UserLabelService userLabelService;
 
@@ -86,7 +88,7 @@ public class UserController {
 		model.addObject("isDel", "isDel");
 		return model;
 	}
-	
+
 	/**
 	 * 获取我点赞过的活动
 	 * 
@@ -94,7 +96,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping("/myFavoriteActiv")
-	public String myFavoriteActiv(HttpSession session,Map<String, Object> map) {
+	public String myFavoriteActiv(HttpSession session, Map<String, Object> map) {
 		User user = (User) session.getAttribute("user");
 		List<ActivityUser> activityUsers = userService.getFavorAUMPdByUserId(user.getUserId());
 		map.put("activityUsers", activityUsers);
@@ -109,7 +111,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping("/myCommentedActiv")
-	public String myCommentedActiv(HttpSession session,Map<String, Object> map) {
+	public String myCommentedActiv(HttpSession session, Map<String, Object> map) {
 		User user = (User) session.getAttribute("user");
 		List<ActivityUser> activityUsers = userService.getCmtAUMPdByUserId(user.getUserId());
 		map.put("activityUsers", activityUsers);
@@ -123,7 +125,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping("/myAttendedActiv")
-	public String myAttendedActiv(HttpSession session,Map<String, Object> map) {
+	public String myAttendedActiv(HttpSession session, Map<String, Object> map) {
 		User user = (User) session.getAttribute("user");
 		List<ActivityUser> activityUsers = userService.getAttendedAUMPdByUserId(user.getUserId());
 		map.put("activityUsers", activityUsers);
@@ -138,50 +140,65 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping("/myUserInfo")
-	public String getMyInfo(HttpSession session,Map<String, Object> map) {
-		User user = (User) session.getAttribute("user");
+	public String getMyInfo(HttpServletRequest request, Map<String, Object> map) {
+		User user = (User) request.getSession().getAttribute("user");
 //		User user2 =  userService.getUserByPrimaryKey(user.getUserId());
-		List<UserLabel> userLabels =  userLabelService.getMyUserByUserId(user.getUserId());
-		map.put("user", user);
+		System.out.println(user+"mmmmmmmmmmmmm");
+		List<UserLabel> userLabels = userLabelService.getMyUserByUserId(user.getUserId());
+//		map.put("user", user);
 		map.put("userLabels", userLabels);
 		return "myInfoPage";
 	}
-	
+
 	/**
 	 * 获取用户信息
+	 * 
 	 * @param userId
 	 * @param map
 	 * @return
 	 */
 	@RequestMapping("/getUserInfo/{id}")
 	public String getUserInfoByUserId(@PathVariable("id") Integer userId, Map<String, Object> map) {
-		//获取用户信息
+		// 获取用户信息
 		User user = userService.getUserByPrimaryKey(userId);
-		//获取用户标签
+		// 获取用户标签
 		List<UserLabel> userLabels = userLabelService.getMyUserByUserId(userId);
-		//获取用户正在参与的行动
+		// 获取用户正在参与的行动
 		List<ActivityUser> activityUsers = userService.getAllAUMPgByUserId(userId);
-		//存入map
-		map.put("user", user);
+		// 存入map
+		map.put("user1", user);
 		map.put("userLabels", userLabels);
 		map.put("activityUsers", activityUsers);
 		return "userInfo";
 	}
 
 	/**
-	 * 修改用户头像
+	 * 修改用户信息
 	 * 
 	 * @param user
 	 * @return
 	 * @throws IOException
 	 */
 	@RequestMapping("/updateUserInfo")
-	public String updateUserInfo(User user, HttpServletRequest request) throws IOException {
-		// 1. 设置图像路径
-		ImageUtils.upload(request, user.getFile());
-//		userService.updateUserInformation(user, userLabelList);
-
-		return null;
+	public String updateUserInfo(User user,@RequestParam(value = "userLabels", required = false) String[] userLabels, HttpServletRequest request) throws IOException {
+		// 1. 获取 user 信息
+		User user1 = (User) request.getSession().getAttribute("user");
+		System.out.println(user1 + "uuuuuuuuuuuu");
+		user.setUserId(user1.getUserId());
+		user.setPassword(user1.getPassword());
+		//2. 设置 图片
+		String avatar = ImageUtils.upload(request, user.getFile());
+		System.out.println("avatar" + avatar);
+		if(avatar != null)
+		user.setAvatar(avatar);
+		else {
+			user.setAvatar(user1.getAvatar());
+		}
+		request.getSession().setAttribute("user",user);
+		System.out.println(userLabels);
+		System.out.println(user);
+		userService.updateUserInformation(user, userLabels);
+		return "redirect:/myUserInfo";
 	}
 
 	/**
@@ -236,11 +253,12 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ModelAndView login(ModelAndView model, User user) {
+	public ModelAndView login(ModelAndView model, User user,HttpServletRequest request) {
 		if (userService.queryUser(user)) {
 			model.setViewName("redirect:/index");
-			model.addObject("user", userService.getUserByExample(user));
-			System.out.println(user);
+//			model.addObject("user", userService.getUserByExample(user));
+			request.getSession().setAttribute("user", userService.getUserByExample(user));
+			System.out.println(userService.getUserByExample(user) + "ddddddddd");
 			// 要加用户自定义活动
 			return model;
 		} else {
@@ -264,8 +282,8 @@ public class UserController {
 	}
 
 	@RequestMapping("/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
+	public String logout(HttpServletRequest request) {
+		request.getSession().invalidate();
 		return "redirect:/index";
 	}
 

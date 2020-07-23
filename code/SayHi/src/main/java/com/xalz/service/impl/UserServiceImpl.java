@@ -24,72 +24,77 @@ import com.xalz.service.UserService;
 
 /**
  * 用户类
+ * 
  * @author po
  *
  */
 @Service("userService")
 public class UserServiceImpl implements UserService {
-	
-	//用户 dao
-    @Autowired
-    UserMapper userMapper;
-    
-    @Autowired
-    ActivityService activityService;
-    
-    @Autowired
-    ActivityMemberService activityMemberService;
-    
-    @Autowired
-    FavoriteInfoService favoriteInfoService;
-    
-    @Autowired
-    CommentService commentService;
-    
-    @Autowired
-    MessageService messageService;
-    
-    @Autowired
-    UserLabelService userLabelService;
-    /**
+
+	// 用户 dao
+	@Autowired
+	UserMapper userMapper;
+
+	@Autowired
+	ActivityService activityService;
+
+	@Autowired
+	ActivityMemberService activityMemberService;
+
+	@Autowired
+	FavoriteInfoService favoriteInfoService;
+
+	@Autowired
+	CommentService commentService;
+
+	@Autowired
+	MessageService messageService;
+
+	@Autowired
+	UserLabelService userLabelService;
+
+	/**
 	 * 根据用户名和密码查询用户信息
-	*/
+	 */
 	@Override
 	public User getUserByExample(User user) {
 		return userMapper.selectOne(user);
 	}
-	
+
 	/*
-     * 用户登录
-     *
-     */
-    @Override
+	 * 用户登录
+	 *
+	 */
+	@Override
 	public boolean updateUserByPrimaryKey(User user) {
 		if (userMapper.updateByPrimaryKey(user) != 0) {
-            return true;
-        } else return false;
+			return true;
+		} else
+			return false;
 	}
-    
+
 	/**
-     * 用户登录
-     *
-     * @param user
-     * @return
-     */
-    public boolean queryUser(User user) {
-        if (userMapper.selectOne(user) != null) {
-            return true;
-        } else return false;
-    }
-    
-    /**
-            * 注册
-     */
+	 * 用户登录
+	 *
+	 * @param user
+	 * @return
+	 */
+	public boolean queryUser(User user) {
+		if (userMapper.selectOne(user) != null) {
+			return true;
+		} else
+			return false;
+	}
+
+	/**
+	 * 注册
+	 */
 	@Override
 	public boolean register(User user) {
 		if (userMapper.insert(user) == 1) {
 			return true;
-		}else return false;
+		} else
+			return false;
 //		int flag = 0;
 //		try {
 //			flag = userMapper.insert(user);
@@ -100,12 +105,12 @@ public class UserServiceImpl implements UserService {
 //		if (flag == 1) {
 //			return true;
 //		}else return false;
-		
+
 	}
 
 	/**
 	 * 根据主键获取用户信息
-	*/
+	 */
 	@Override
 	public User getUserByPrimaryKey(Integer userId) {
 		return userMapper.selectByPrimaryKey(userId);
@@ -113,7 +118,7 @@ public class UserServiceImpl implements UserService {
 
 	/**
 	 * 获取所有用户列表
-	*/
+	 */
 	@Override
 	public List<User> getAllUserList() {
 		return userMapper.selectAll();
@@ -121,25 +126,25 @@ public class UserServiceImpl implements UserService {
 
 	/**
 	 * 根据用户编号获取进行中用户所有活动
-	*/
+	 */
 	@Override
 	public List<ActivityUser> getAllAUMPgByUserId(Integer userId) {
 		ActivityMember activityMember = new ActivityMember();
 		Activity activ = new Activity();
 		activityMember.setUserId(userId);
 		Date date = new Date();
-		//通过用户编号获取对应的活动成员List集合
+		// 通过用户编号获取对应的活动成员List集合
 		List<ActivityMember> activMemList = activityMemberService.getAllActvityMember(activityMember);
 		List<Activity> activList = new LinkedList<Activity>();
-		//根据活动编号获取对应的活动，并放入活动集合
-		for(ActivityMember activMem : activMemList) {
-			//设置活动的编号和开始时间，通过CQB查询唯一对应的活动
+		// 根据活动编号获取对应的活动，并放入活动集合
+		for (ActivityMember activMem : activMemList) {
+			// 设置活动的编号和开始时间，通过CQB查询唯一对应的活动
 			activ.setActivId(activMem.getActivId());
 			activ.setActivStarttime(date);
 			Activity activKey = activityService.getActivListByPKAndTime(activ);
-			
-			//查询结果不为空，通过活动主键查询参加该活动的用户详细信息
-			if(activKey != null) {
+
+			// 查询结果不为空，通过活动主键查询参加该活动的用户详细信息
+			if (activKey != null) {
 				activList.add(activKey);
 			}
 		}
@@ -148,98 +153,98 @@ public class UserServiceImpl implements UserService {
 
 	/**
 	 * 根据用户编号获取进行中用户发起活动
-	*/
+	 */
 	@Override
 	public List<ActivityUser> getLaunchAUMPgByUserId(Integer userId) {
 		Activity activity = new Activity();
 		activity.setUserId(userId);
 		activity.setActivStarttime(new Date());
-		//通过模糊查询获取活动集合
-		List<Activity> activList =  activityService.getActivListByFuzzySearch(activity);
+		// 通过模糊查询获取活动集合
+		List<Activity> activList = activityService.getActivListByFuzzySearch(activity);
 		return activityService.convertActivListToActivUserList(activList);
 	}
 
 	/**
 	 * 根据用户编号获取用户点赞过的活动
-	*/
+	 */
 	@Override
 	public List<ActivityUser> getFavorAUMPdByUserId(Integer userId) {
 		FavoriteInfo favorInfo = new FavoriteInfo();
 		Activity activ = new Activity();
 		favorInfo.setUserId(userId);
 		Date date = new Date();
-		//通过用户编号获取用户对应的所有点赞信息，进而获取对应的活动编号
+		// 通过用户编号获取用户对应的所有点赞信息，进而获取对应的活动编号
 		List<FavoriteInfo> favorInfoList = favoriteInfoService.getAllFavoriteInfo(favorInfo);
-		
+
 		List<Activity> activList = new LinkedList<Activity>();
-		
-		//根据活动编号获取对应的活动，并放入活动集合
-		for(FavoriteInfo favor : favorInfoList) {
-			//设置活动的编号和开始时间，通过CQB查询唯一对应的活动
+
+		// 根据活动编号获取对应的活动，并放入活动集合
+		for (FavoriteInfo favor : favorInfoList) {
+			// 设置活动的编号和开始时间，通过CQB查询唯一对应的活动
 //			activ.setActivId(favor.getActivId());
 //			activ.setActivEndtime(date);
 			Activity activKey = activityService.getActivByPrimaryKey(favor.getActivId());
-			//查询结果不为空，通过活动主键查询参加该活动的用户详细信息
-			if(activKey != null) {
+			// 查询结果不为空，通过活动主键查询参加该活动的用户详细信息
+			if (activKey != null) {
 				activList.add(activKey);
 			}
-			
+
 		}
 		return activityService.convertActivListToActivUserList(activList);
 	}
 
 	/**
 	 * 根据用户编号获取用户过的评论的活动
-	*/
+	 */
 	@Override
 	public List<ActivityUser> getCmtAUMPdByUserId(Integer userId) {
-		Comment comment  = new Comment();
+		Comment comment = new Comment();
 		Activity activ = new Activity();
 		comment.setUserId(userId);
 		Date date = new Date();
-		//通过用户编号获取用户对应的所有评论信息，进而获取对应的活动编号
+		// 通过用户编号获取用户对应的所有评论信息，进而获取对应的活动编号
 		List<Comment> commentList = commentService.getCommentListByEqual(comment);
-		
+
 		List<Activity> activList = new LinkedList<Activity>();
-		
-		//根据活动编号获取对应的活动，并放入活动集合
-		for(Comment com : commentList) {
-			//设置活动的编号和开始时间，通过CQB查询唯一对应的活动
+
+		// 根据活动编号获取对应的活动，并放入活动集合
+		for (Comment com : commentList) {
+			// 设置活动的编号和开始时间，通过CQB查询唯一对应的活动
 //			activ.setActivId(com.getActivId());
 //			activ.setActivEndtime(date);
 			Activity activKey = activityService.getActivByPrimaryKey(com.getActivId());
-			//查询结果不为空，通过活动主键查询参加该活动的用户详细信息
-			if(activKey != null) {
+			// 查询结果不为空，通过活动主键查询参加该活动的用户详细信息
+			if (activKey != null) {
 				activList.add(activKey);
 			}
-			
+
 		}
-		
+
 		return activityService.convertActivListToActivUserList(activList);
 	}
 
 	/**
 	 * 根据用户编号获取参加过得的历史活动
-	*/
+	 */
 	@Override
 	public List<ActivityUser> getAttendedAUMPdByUserId(Integer userId) {
 		ActivityMember activityMember = new ActivityMember();
 		Activity activ = new Activity();
 		activityMember.setUserId(userId);
 		Date date = new Date();
-		//通过用户编号获取对应的活动成员List集合
+		// 通过用户编号获取对应的活动成员List集合
 		List<ActivityMember> activMemList = activityMemberService.getAllActvityMember(activityMember);
-		
+
 		List<Activity> activList = new LinkedList<Activity>();
-		//根据活动编号获取对应的活动，并放入活动集合
-		for(ActivityMember activMem : activMemList) {
-			//设置活动的编号和开始时间，通过CQB查询唯一对应的活动
+		// 根据活动编号获取对应的活动，并放入活动集合
+		for (ActivityMember activMem : activMemList) {
+			// 设置活动的编号和开始时间，通过CQB查询唯一对应的活动
 			activ.setActivId(activMem.getActivId());
 //			activ.setActivEndtime(date);
 			Activity activKey = activityService.getActivListByPKAndTime(activ);
-			
-			//查询结果不为空，通过活动主键查询参加该活动的用户详细信息
-			if(activKey != null) {
+
+			// 查询结果不为空，通过活动主键查询参加该活动的用户详细信息
+			if (activKey != null) {
 				activList.add(activKey);
 			}
 		}
@@ -264,10 +269,4 @@ public class UserServiceImpl implements UserService {
 		}else return false;
 	}
 
-
-	
-
-	
-
 }
-

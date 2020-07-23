@@ -34,7 +34,7 @@ public interface ActivityService {
 	public List<ActivityUser> getActivUserByNameAddress(String activName, String address);
 	
 	//	获取所有活动 √
-	public List<ActivityUser> getAllActiv();
+	public List<Activity> getAllActiv();
 	
 	// 创建一个新的活动 √ 
 	public boolean createActiv(Activity activity);

@@ -14,6 +14,11 @@ import com.xalz.bean.Message;
 import com.xalz.bean.User;
 import com.xalz.service.MessageService;
 
+/**
+ * 用户消息
+ * @author po
+ *
+ */
 @Controller
 public class MessageController {
 	

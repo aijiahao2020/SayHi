@@ -1,7 +1,6 @@
 package com.xalz.service.impl;
 
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -42,7 +41,7 @@ public class ActivityServiceImpl implements ActivityService{
 	@Autowired
 	MessageService messageService;
 	
-
+	
 	/**
 	 * 根据分类之下传来的字符串进行查询
 	 */
@@ -234,8 +233,9 @@ public class ActivityServiceImpl implements ActivityService{
 	 * 获取所有活动
 	 */
 	@Override
-	public List<ActivityUser> getAllActiv() {
-		return convertActivListToActivUserList(activityMapper.selectAll());
+	public List<Activity> getAllActiv() {
+//		return convertActivListToActivUserList(activityMapper.selectAll());
+		return activityMapper.selectAll();
 	}
 
 	/**

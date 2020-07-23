@@ -256,11 +256,13 @@
 </head>
 <body>
 	<div id="top">
-		<img alt="" src="static/image/SayHi.png"
-			style="padding-top: 10px; padding-left: 20px; height: 30px;"> <input
-			type="submit" value="退出" id="quit">
+		<a href="index"><img alt="" src="static/image/SayHi.png"
+			style="padding-top: 10px; padding-left: 20px; height: 30px;"></a><a
+			href="../logout" id="registerbutton">退出</a>
 		<div id="user">
-			<p><a href="myAttendingActiv">${sessionScope.user.userName}</a></p>
+			<p>
+				<a href="myAttendingActiv">${sessionScope.user.userName}</a>
+			</p>
 		</div>
 
 	</div>
@@ -276,6 +278,7 @@
 		<div id="act">
 			<form action="addActiv" method="post" enctype="multipart/form-data"
 				onsubmit="get();">
+				<input type="hidden" name="userId" value="${sessionScope.user.userId}">
 				<div id="act_name">
 					活动名: <input type="text" id="act_name_input" name="activName">
 				</div>
@@ -299,28 +302,32 @@
 
 
 				<div id="act_starttime">
-					开始时间：
-					<input name="activStarttime" type="datetime"
+					开始时间： <input name="activStarttime" type="datetime"
 						class="Wdate form-controls"
 						onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm',maxDate:'#F{$dp.$D(\'endDate\')}'})"
 						id="startDate"
 						style="margin-left: 13px; border-width: 1.5px; border-color: #8F8F8F;">
 				</div>
 				<div id="act_endtime">
-					结束时间： <input name="activEndtime"  type="datetime" class="Wdate form-controls"
+					结束时间： <input name="activEndtime" type="datetime"
+						class="Wdate form-controls"
 						onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm',minDate:'#F{$dp.$D(\'startDate\')}'})"
-						id="endDate" style="margin-left: 13px; border-width: 1.5px; border-color: #8F8F8F;">
+						id="endDate"
+						style="margin-left: 13px; border-width: 1.5px; border-color: #8F8F8F;">
 				</div>
 
 				<div id="act_tag">
 					活动标签: <select id="act_tag_select" name="activLabel"
 						style="margin-left: 30px; width: 60px; border-radius: 5px; border-width: 1.5px; border-color: #8F8F8F; font-size: 14px; font-family: PingFang SC;">
-						<option value="爬山">爬山</option>
-						<option value="科技">科技</option>
-						<option value="人文">人文</option>
-						<option value="足球">足球</option>
+						<option value="摄影">摄影</option>
+						<option value="食品">食品</option>
 						<option value="电影">电影</option>
-						<option value="轰趴">轰趴</option>
+						<option value="宠物">宠物</option>
+						<option value="艺术">艺术</option>
+						<option value="运动">运动</option>
+						<option value="游戏">游戏</option>
+						<option value="写作">写作</option>
+						<option value="科技">科技</option>
 					</select>
 				</div>
 
@@ -345,8 +352,7 @@
 				</div>
 
 				<div id="act_poster">
-					活动海报：
-					<input type="file" name="file">
+					活动海报： <input type="file" name="file">
 				</div>
 
 				<center>

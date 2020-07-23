@@ -163,7 +163,6 @@ h3 {
 	font-size: 15px;
 	color: #767676;
 }
-
 </style>
 </head>
 <body>
@@ -177,16 +176,17 @@ h3 {
 		</c:if>
 		<c:if test="${!empty sessionScope.user}">
 			<a href="logout" id="registerbutton">退出</a>
+			<%-- <img alt="" src="${sessionScope.user.avatar}" style="size: 10px "> --%>
 			<a href="myAttendingActiv" id="loginbutton">${sessionScope.user.userName}</a>
 		</c:if>
 	</div>
 
 	<div id="middle">
-		<form action="index/search" method="post">
-			<input name="activName" type="text" id="activity" placeholder=" 活动名"> <input
-				type="text" id="location" placeholder=" 地点" name="address"> <img alt=""
-				src="static/image/location.png" onclick="getPoi()" id="getlocation">
-			<input type="submit" value="搜索" id="search">
+		<form action="getAll/search" method="post">
+			<input name="activName" type="text" id="activity" placeholder=" 活动名">
+			<input type="text" id="location" placeholder=" 地点" name="address">
+			<img alt="" src="static/image/location.png" onclick="getPoi()"
+				id="getlocation"> <input type="submit" value="搜索" id="search">
 		</form>
 	</div>
 
@@ -221,30 +221,88 @@ h3 {
 	<div id="bottom">
 		<div id="bottom_top">
 			<h1>活动推荐</h1>
-			<a id="all" href="getAll">全部</a>
+			<a id="all" href="getAll/全部+全部+全部+综合推荐">全部</a>
 		</div>
 		<c:if test="${empty requestScope.activityUsers }">
 		没有任何活动信息.
 		</c:if>
 		<c:if test="${!empty requestScope.activityUsers}">
-				<c:forEach items="${requestScope.activityUsers }"
-					var="activityUsers">
-					<div id="mid_act1">
-						<div style="float: left">
-							<a href="index/${activityUsers.activId}"><img
-								src="${activityUsers.activBill}" id="img_a"></a>
-							<h4>${activityUsers.activStart}</h4>
-							<a href="index/${activityUsers.activId}"><h3>${activityUsers.activName}</h3></a>
-							<div id="buttom_buttom">
-								<c:forEach items="${activityUsers.userList }" var="userList">
-									<img id="img_1" src="${userList.avatar}">
-								</c:forEach>
-								<div id="num">${activityUsers.activNum}</div>
-							</div>
+			<c:forEach items="${requestScope.activityUsers }" var="activityUsers">
+				<div id="mid_act1">
+					<div style="float: left">
+						<a href="index/${activityUsers.activId}"><img
+							src="${activityUsers.activBill}" id="img_a"></a>
+						<h4>${activityUsers.activStart}</h4>
+						<a href="index/${activityUsers.activId}"><h3>${activityUsers.activName}</h3></a>
+						<div id="buttom_buttom">
+							<c:forEach items="${activityUsers.userList }" var="userList">
+								<a href="getUserInfo/${userList.userId}"><img id="img_1"
+									src="${userList.avatar}"></a>
+							</c:forEach>
+							<div id="num">${activityUsers.activNum}</div>
 						</div>
 					</div>
-				</c:forEach>
+				</div>
+			</c:forEach>
+		</c:if>
+
+		<div>
+			<c:if test="${ !empty requestScope.userLabel1}">
+				<font size="20px">${ requestScope.userLabel1}</font>
 			</c:if>
+			<a id="all" href="getAll/${ requestScope.userLabel1}+全部+全部+综合推荐">全部</a>
+		</div>
+		<c:if test="${empty requestScope.activUsers1 }">
+		没有任何活动信息.
+		</c:if>
+		<c:if test="${!empty requestScope.activUsers1}">
+			<c:forEach items="${requestScope.activUsers1 }" var="activUsers1">
+				<div id="mid_act1">
+					<div style="float: left">
+						<a href="index/${activUsers1.activId}"><img
+							src="${activUsers1.activBill}" id="img_a"></a>
+						<h4>${activUsers1.activStart}</h4>
+						<a href="index/${activUsers1.activId}"><h3>${activUsers1.activName}</h3></a>
+						<div id="buttom_buttom">
+							<c:forEach items="${activUsers1.userList }" var="userList">
+								<a href="getUserInfo/${userList.userId}"><img id="img_1"
+									src="${userList.avatar}"></a>
+							</c:forEach>
+							<div id="num">${activUsers1.activNum}</div>
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+		</c:if>
+
+		<div>
+			<c:if test="${ !empty requestScope.userLabel2}">
+				<font size="20px">${ requestScope.userLabel2}</font>
+			</c:if>
+			<a id="all" href="getAll/${ requestScope.userLabel2}+全部+全部+综合推荐">全部</a>
+		</div>
+		<c:if test="${empty requestScope.activUsers2 }">
+		没有任何活动信息.
+		</c:if>
+		<c:if test="${!empty requestScope.activUsers2}">
+			<c:forEach items="${requestScope.activUsers2 }" var="activUsers2">
+				<div id="mid_act1">
+					<div style="float: left">
+						<a href="index/${activUsers2.activId}"><img
+							src="${activUsers2.activBill}" id="img_a"></a>
+						<h4>${activUsers2.activStart}</h4>
+						<a href="index/${activUsers2.activId}"><h3>${activUsers2.activName}</h3></a>
+						<div id="buttom_buttom">
+							<c:forEach items="${activUsers2.userList }" var="userList">
+								<a href="getUserInfo/${userList.userId}"><img id="img_1"
+									src="${userList.avatar}"></a>
+							</c:forEach>
+							<div id="num">${activUsers2.activNum}</div>
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+		</c:if>
 	</div>
 </body>
 </html>

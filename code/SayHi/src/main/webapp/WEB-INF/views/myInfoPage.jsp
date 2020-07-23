@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -155,7 +155,7 @@ body {
 	margin-left: 80px;
 	outline: none;
 	border-radius: 5px;
-	border: solid;
+	border: none;
 	border-width: 1px;
 	border-color: #A1A1A1;
 }
@@ -177,28 +177,84 @@ body {
 
 #checkbox {
 	margin-left: 30px;
+	visibility: hidden;
 }
 
 body {
 	font-family: "PingFang SC";
 }
+
+#img_upload {
+	visibility: hidden;
+}
+
+#save_button {
+	width: 200px;
+	height: 50px;
+	visibility: hidden;
+	font-size: 15px;
+	border: none;
+	margin-top: 20px;
+	margin-left: 200px;
+	color: black;
+	outline: none;
+}
+
+#labels{
+	visibility:visible;
+}
+
+#test{
+}
+
 </style>
+<script src="static/js/jquery-1.12.4.min.js"></script>
 <script>
-	function change() {
-		var a = mid_msg_button.value;
-		if (a == "修改")
-			mid_msg_button.value = "保存";
-		else
-			mid_msg_button.value = "修改";
+   function change(){
+	   mid_msg_name_input.style.border='solid';
+	   mid_msg_name_input.style.borderWidth='1px'; 
+	   labels.style.visibility="hidden";
+	   
+	   mid_msg_name_input.readOnly=false;
+	    /* img_upload.style.visibility='visible';   */
+	   save_button.style.visibility='visible';
+	   var list = document.getElementsByTagName("input");
+	   var inputList = document.getElementsByName("test");
+	   $(document).ready(function(){
+		    $('#mid_msg_head_img').click(function(){
+		        $('#img_upload').click();
+		    });
+
+		});
+	
+	for(i=0;i<list.length;i++){
+
+	
+	inputList[i].style.visibility = 'visible';
 
 	}
-</script>
+}
+   function change1(){
+	   mid_msg_name_input.style.border='none';
+	   save_button.style.visibility='hidden';
+	   /* img_upload.style.visibility='hidden';  */
+	   mid_msg_name_input.readOnly=true;
+	   var list = document.getElementsByTagName("input");
+	   var inputList = document.getElementsByName("test");
+	
+	for(i=0;i<list.length;i++){
+		inputList[i].style.visibility = 'hidden';
+	
+	}
+	   
+   }
+   </script>
+
 </head>
 <body>
 	<div id="top">
 		<a href="index"><img alt="" src="static/image/SayHi.png"
-			style="padding-top: 10px; padding-left: 20px; height: 30px;"></a>
-			 <img
+			style="padding-top: 10px; padding-left: 20px; height: 30px;"></a> <img
 			src="static/image/ren.jpg" id="head_imag"> <a href=""><input
 			value="退出" id="quit"></a>
 		<div id="user">
@@ -218,41 +274,48 @@ body {
 			</tr>
 		</table>
 		<div id="mid_msg">
-			<form action="">
-			<input type="submit" value="修改" id="mid_msg_button" onclick=change()
-				name="">
-			<div id="mid_msg_head">头像:</div>
-			<img src="${requestScope.user.avatar}" id="mid_msg_head_img">
-			<!-- <div><a ></a></div> -->
-			<form action="updateAvatar" method="post" enctype="multipart/form-data">
-				<input type="file" name="file">
-			</form> 
-			<div id="mid_msg_num">SayHi号:${requestScope.user.userId}</div>
-			<div id="mid_msg_name">
-				用户名: <input id="mid_msg_name_input" name="userName" value="${requestScope.user.userName}">
-			</div>
-			<div id="mid_msg_tag">
-				兴趣标签:
-				<c:if test="${empty requestScope.userLabels}">
+			<form action="updateUserInfo" method="post" enctype="multipart/form-data">
+				<input type="button" value="修改" id="mid_msg_button" onclick=change()
+					name="">
+				<div id="mid_msg_head">头像:</div>
+				<img src="${sessionScope.user.avatar}" id="mid_msg_head_img">
+				<input type="file" id="img_upload" name="file" />
+				<div id="mid_msg_num">SayHi号:${sessionScope.user.userId}</div>
+				<div id="mid_msg_name">
+					用户名: <input id="mid_msg_name_input"
+						value="${sessionScope.user.userName}" name="userName" type="text"
+						readOnly>
+				</div>
+				<div id="mid_msg_tag">
+					兴趣标签:
+					<div id="labels">
+					<c:if test="${empty requestScope.userLabels}">
 					无标签
-				</c:if>
-				<c:if test="${!empty requestScope.userLabels}">
-					<c:forEach items="${requestScope.userLabels }"
-					var="userLabels">
+					</c:if>
+					<c:if test="${!empty requestScope.userLabels}">
+						<c:forEach items="${requestScope.userLabels }" var="userLabels">
 						${userLabels.labelName}
 					</c:forEach>
-				</c:if>
-				<!-- <div id="mid_msg_tag_check">
-					<input type="checkbox" value="爬山" name="" id="checkbox"> 爬山
-					<input type="checkbox" value="电影" name="" id="checkbox"> 电影
-					<input type="checkbox" value="跑步" name="" id="checkbox"> 跑步
-					<input type="checkbox" value="下水" name="" id="checkbox"> 下水
-					<input type="checkbox" value="打架" name="" id="checkbox"> 打架
-				</div> -->
-			</div>
+					</c:if>
+					</div>
+					<div id="mid_msg_tag_check">
+						<div name="test" id="checkbox"><input type="checkbox" value="摄影" name="userLabels">摄影</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="食品" name="userLabels">食品</div>
+						<div name="test" id="checkbox"> <input type="checkbox" value="电影" name="userLabels">电影</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="宠物" name="userLabels" >宠物</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="艺术" name="userLabels">艺术</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="运动" name="userLabels">运动</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="游戏" name="userLabels">游戏</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="写作" name="userLabels">写作</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="科技" name="userLabels">科技</div>
+					</div>
+				</div>
+				<div>
+					<input id="save_button" type="submit" value="保存" onclick=change1() />
+				</div>
 			</form>
 			<div id="mid_add">
-				<a href="toAddActiv"><img src="static/image/add.png" id="mid_add_img"></a>
+				<a><img src="image/add.png" id="mid_add_img"></a>
 			</div>
 		</div>
 
