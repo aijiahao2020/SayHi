@@ -174,15 +174,15 @@ public class ActivityTest {
 		
 		/* 测试过活动名和地点进行活动查询 */	
 		
-		String activName = null;
-		String activAddress = null;
-		
-		List<ActivityUser> activList =  activityService.getActivUserByNameAddress(activName, activAddress);
-		
-		for(ActivityUser activ : activList){
-          System.out.println(activ);
-       }
-		
+//		String activName = null;
+//		String activAddress = null;
+//		
+//		List<ActivityUser> activList =  activityService.getActivUserByNameAddress(activName, activAddress);
+//		
+//		for(ActivityUser activ : activList){
+//          System.out.println(activ);
+//       }
+//		
 //		根据固定标签查询活动
 		
 //		List<ActivityUser> activUser =  activityService.getActivUserByActivLabel("动漫");
@@ -191,6 +191,12 @@ public class ActivityTest {
 //           System.out.println(activ);
 //        }
 		
+//		根据分类之下传来的字符串进行查询
+		String classifyString = "全部+武汉+近一周+讨论最多";
+		List<ActivityUser> activUser = activityService.getActivUserInClassify(classifyString);
+		for(ActivityUser activ : activUser){
+          System.out.println(activ);
+       }
 	}
 	
 

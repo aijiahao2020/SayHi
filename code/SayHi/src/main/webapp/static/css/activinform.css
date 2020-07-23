@@ -1,0 +1,150 @@
+@charset "UTF-8";
+
+
+
+#inform {
+	width: 1000px;
+	height: 690px;
+	margin: 33px auto 45px auto;
+	background: white;
+	border-radius: 5px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#inform::-webkit-scrollbar {
+	width: 0px;
+}
+
+#inform_top {
+	width: 1000px;
+	height: 99px;
+}
+
+#topplus {
+	width: 1000px;
+	height: 99px;
+	position: fixed;
+	background: rgba(255, 255, 255, 1);
+}
+
+#img_return {
+	width: 30px;
+	height: 30px;
+	float: left;
+	margin: 19px auto auto 32px;
+}
+
+#img_modify {
+	width: 25px;
+	height: 25px;
+	float: right;
+	border: 0;
+	margin: 19px 32px auto auto;
+}
+
+.inform_top {
+	width: 100px;
+	height: 20px;
+	font-size: 20px;
+	margin-left: 108px;
+	margin-bottom: 26px;
+}
+
+.inform_table {
+	margin-left: 300px;
+}
+
+input {
+	width: 292px;
+	height: 19px;
+	padding-left: 5px;
+	border-color: #979797;
+	border-radius: 5px;
+	outline: 0;
+	border-width: 1px;
+	border-style: solid;
+}
+
+ul {
+	list-style: none;
+}
+
+.label li {
+	float: left;
+}
+
+.type_li {
+	height: 30px;
+	width: 87px;
+	margin-right: 5px;
+    margin-left: 5px;
+	margin-top:5px;
+	text-align: center;
+	line-height: 30px;
+	border:1px solid #BFBFBF;
+	border-radius: 5px;
+	cursor: pointer;
+
+}
+
+#label_select {
+	width: 277px;
+	height:auto;
+}
+
+.textarea {
+	width: 277px;
+	height: 40px;
+	border-color: #979797;
+	border-radius: 5px;
+	outline: 0;
+	border-width: 1px;
+	border-style: solid;
+	font-size: 12px;
+	padding-top: 8px;
+	padding-left: 10px;
+	padding-right: 10px;
+	resize: none;
+	font-family: auto;
+}
+
+td {
+	font-size: 16px;
+}
+
+.pc {
+	height: 19px;
+	width: 80px;
+	font-size: 12px;
+	border-color: #979797;
+	border-radius: 5px;
+	outline: 0;
+	border-width: 1px;
+	border-style: solid;
+	text-align: center;
+	text-align-last: center;
+}
+
+.ymd select {
+	height: 22px;
+	width: 96px;
+	font-size: 16px;
+	border-color: #979797;
+	border-radius: 5px;
+	outline: 0;
+	border-width: 1px;
+	border-style: solid;
+	text-align: center;
+	text-align-last: center;
+}
+
+.ymd option {
+	font-size: 16px;
+	text-align: center;
+	text-align-last: center;
+}
+
+.pc option {
+	font-size: 12px;
+}

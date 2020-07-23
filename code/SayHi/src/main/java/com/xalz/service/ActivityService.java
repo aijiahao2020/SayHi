@@ -17,9 +17,12 @@ public interface ActivityService {
 	 * 
 	 * @return
 	 */
+	
+	//根据分类之下传来的字符串进行查询
+	public List<ActivityUser> getActivUserInClassify(String classifyString);
+		
 	//首页活动推荐
 	public List<ActivityUser> getActivUserIndexRecom();
-	
 	
 	//根据固定标签查询活动√
 	public List<ActivityUser> getActivUserByActivLabel(String activLabel);
