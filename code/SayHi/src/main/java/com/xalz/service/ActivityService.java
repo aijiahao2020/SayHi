@@ -10,6 +10,8 @@ import com.xalz.bean.User;
 
 public interface ActivityService {
 	
+	//根据分类之下传来的字符串进行查询
+	public List<ActivityUser> getActivUserInClassify(String classifyString);
 	
 	/**
 	 * 待解决问题:添加操作，当数据库字段为非空，而封装的实体对象的该属性设置为空时，
@@ -31,7 +33,7 @@ public interface ActivityService {
 	public List<ActivityUser> getActivUserByNameAddress(String activName, String address);
 	
 	//	获取所有活动 √
-	public List<ActivityUser> getAllActiv();
+	public List<Activity> getAllActiv();
 	
 	// 创建一个新的活动 √ 
 	public boolean createActiv(Activity activity);

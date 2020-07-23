@@ -12,4 +12,11 @@
     <typeAliases>
         <package name="com.xalz.bean"/>
     </typeAliases>
+    
+    <plugins>
+		<plugin interceptor="com.github.pagehelper.PageInterceptor">
+			<!--分页参数合理化  -->
+			<property name="reasonable" value="true"/>
+		</plugin>
+	</plugins>
 </configuration>

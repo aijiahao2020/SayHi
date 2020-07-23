@@ -1,6 +1,7 @@
 package com.xalz.service.impl;
 
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -39,6 +40,101 @@ public class ActivityServiceImpl implements ActivityService{
 	
 	@Autowired
 	MessageService messageService;
+	
+	/**
+	 * 根据分类之下传来的字符串进行查询
+	 */
+	@Override
+	public List<ActivityUser> getActivUserInClassify(String classifyString) {
+		String activLabel = null;
+		String activCity = null;
+		String activStarttime = null;
+		String condition = null;
+		//获取分类之下传来的字符串并进行分割
+		Activity activ = new Activity();
+		String[] arr = classifyString.split("\\+");
+		if(arr != null) {
+			if(arr.length == 4) {
+				//根据不同的字符串对活动属性进行赋值
+				
+				if(!arr[0].equals("全部")) {
+					activLabel = arr[0];
+					activ.setActivLabel(activLabel);
+				}
+				if(!arr[1].equals("全部")) {
+					activCity = arr[1];
+					activ.setActivCity(activCity);
+				}
+				
+				if(arr[2].equals("今天")){
+					Date nowDate = new Date();
+					activ.setActivStarttime(nowDate);
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(nowDate);
+					calendar.add(Calendar.DATE, 1);
+					calendar.set(Calendar.HOUR_OF_DAY, 0);
+					calendar.set(Calendar.MINUTE, 0);
+					calendar.set(Calendar.SECOND, 0);
+					activ.setActivEndtime(calendar.getTime());
+					System.out.println(calendar.getTime());
+				}else if(arr[2].equals("明天")){
+					Date nowDate = new Date();
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(nowDate);
+					calendar.add(Calendar.DATE, 1);
+					calendar.set(Calendar.HOUR_OF_DAY, 0);
+					calendar.set(Calendar.MINUTE, 0);
+					calendar.set(Calendar.SECOND, 0);
+					activ.setActivStarttime(calendar.getTime());
+					calendar.add(Calendar.DATE, 1);
+					activ.setActivEndtime(calendar.getTime());
+				}else if(arr[2].equals("后天")){
+					Date nowDate = new Date();
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(nowDate);
+					calendar.add(Calendar.DATE, 2);
+					calendar.set(Calendar.HOUR_OF_DAY, 0);
+					calendar.set(Calendar.MINUTE, 0);
+					calendar.set(Calendar.SECOND, 0);
+					activ.setActivStarttime(calendar.getTime());
+					calendar.add(Calendar.DATE, 1);
+					activ.setActivEndtime(calendar.getTime());
+				}else if(arr[2].equals("近一周")) {
+					Date nowDate = new Date();
+					activ.setActivStarttime(nowDate);
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(nowDate);
+					calendar.add(Calendar.DATE, 7);
+					calendar.set(Calendar.HOUR_OF_DAY, 0);
+					calendar.set(Calendar.MINUTE, 0);
+					calendar.set(Calendar.SECOND, 0);
+					activ.setActivEndtime(calendar.getTime());
+				}else if(arr[2].equals("其他")){
+					Date nowDate = new Date();
+					
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(nowDate);
+					calendar.add(Calendar.DATE, 7);
+					calendar.set(Calendar.HOUR_OF_DAY, 0);
+					calendar.set(Calendar.MINUTE, 0);
+					calendar.set(Calendar.SECOND, 0);
+					activ.setActivStarttime(calendar.getTime());
+				}else {
+					activ.setActivStarttime(new Date());
+				}
+				condition = arr[3];
+			}else {
+				activ.setActivStarttime(new Date());
+			}
+		}
+		if(condition.equals("讨论最多")) {
+			return getActivUserListByCommentNumber(activ);
+		}else if(condition.equals("点赞最多")){
+			return getActivUserListByFavoriteInfo(activ);
+		}else {
+			return getActivUserListByComprehensive(activ);
+		}
+	}
 	
 	/**
 	 * 首页活动推荐(结束时间大于当前时间,期望人数为满,点赞/评论综合推荐)
@@ -136,8 +232,9 @@ public class ActivityServiceImpl implements ActivityService{
 	 * 获取所有活动
 	 */
 	@Override
-	public List<ActivityUser> getAllActiv() {
-		return convertActivListToActivUserList(activityMapper.selectAll());
+	public List<Activity> getAllActiv() {
+//		return convertActivListToActivUserList(activityMapper.selectAll());
+		return activityMapper.selectAll();
 	}
 
 	/**

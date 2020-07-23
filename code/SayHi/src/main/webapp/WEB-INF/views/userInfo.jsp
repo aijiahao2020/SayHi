@@ -163,14 +163,17 @@ h3 {
 </head>
 <body>
 	<div id="top">
-		<a href="../index"><img alt="" src="../static/image/SayHi.png"
-			style="padding-top: 10px; padding-left: 20px; height: 30px;"></a> <img
-			src="../static/image/ren.jpg" id="head_imag"> <a href=""><input
-			value="退出" id="quit"></a>
-		<div id="user">
-			<p style="float: right;">
-				<a href="../myAttendingActiv">${sessionScope.user.userName}</a>
-			</p>
+		<img alt="" src="../static/image/SayHi.png"
+			style="padding-top: 10px; padding-left: 20px; height: 30px;">
+		<c:if test="${empty sessionScope.user}">
+			<a href="register1" id="registerbutton">注册</a>
+			<a href="login1" id="loginbutton">登录</a>
+		</c:if>
+		<c:if test="${!empty sessionScope.user}">
+			<a href="logout" id="registerbutton">退出</a>
+			<img alt="" src="${sessionScope.user.avatar}" style="size: 10px ">
+			<a href="myAttendingActiv" id="loginbutton">${sessionScope.user.userName}</a>
+		</c:if>
 		</div>
 
 	</div>

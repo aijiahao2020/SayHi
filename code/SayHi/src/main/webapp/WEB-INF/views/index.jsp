@@ -182,7 +182,7 @@ h3 {
 	</div>
 
 	<div id="middle">
-		<form action="search" method="post">
+		<form action="getAll/search" method="post">
 			<input name="activName" type="text" id="activity" placeholder=" 活动名">
 			<input type="text" id="location" placeholder=" 地点" name="address">
 			<img alt="" src="static/image/location.png" onclick="getPoi()"
@@ -221,7 +221,7 @@ h3 {
 	<div id="bottom">
 		<div id="bottom_top">
 			<h1>活动推荐</h1>
-			<a id="all" href="getAll">全部</a>
+			<a id="all" href="getAll/全部+全部+全部+综合推荐">全部</a>
 		</div>
 		<c:if test="${empty requestScope.activityUsers }">
 		没有任何活动信息.
@@ -236,7 +236,8 @@ h3 {
 						<a href="index/${activityUsers.activId}"><h3>${activityUsers.activName}</h3></a>
 						<div id="buttom_buttom">
 							<c:forEach items="${activityUsers.userList }" var="userList">
-								<a href="getUserInfo/${userList.userId}"><img id="img_1" src="${userList.avatar}"></a>
+								<a href="getUserInfo/${userList.userId}"><img id="img_1"
+									src="${userList.avatar}"></a>
 							</c:forEach>
 							<div id="num">${activityUsers.activNum}</div>
 						</div>
@@ -244,7 +245,13 @@ h3 {
 				</div>
 			</c:forEach>
 		</c:if>
-		<div><font size="20px">${ requestScope.userLabel1}</font></div>
+
+		<div>
+			<c:if test="${ !empty requestScope.userLabel1}">
+				<font size="20px">${ requestScope.userLabel1}</font>
+			</c:if>
+			<a id="all" href="getAll/${ requestScope.userLabel1}+全部+全部+综合推荐">全部</a>
+		</div>
 		<c:if test="${empty requestScope.activUsers1 }">
 		没有任何活动信息.
 		</c:if>
@@ -258,7 +265,8 @@ h3 {
 						<a href="index/${activUsers1.activId}"><h3>${activUsers1.activName}</h3></a>
 						<div id="buttom_buttom">
 							<c:forEach items="${activUsers1.userList }" var="userList">
-								<a href="getUserInfo/${userList.userId}"><img id="img_1" src="${userList.avatar}"></a>
+								<a href="getUserInfo/${userList.userId}"><img id="img_1"
+									src="${userList.avatar}"></a>
 							</c:forEach>
 							<div id="num">${activUsers1.activNum}</div>
 						</div>
@@ -267,7 +275,12 @@ h3 {
 			</c:forEach>
 		</c:if>
 
-		<div><font size="20px">${ requestScope.userLabel2}</font></div>
+		<div>
+			<c:if test="${ !empty requestScope.userLabel2}">
+				<font size="20px">${ requestScope.userLabel2}</font>
+			</c:if>
+			<a id="all" href="getAll/${ requestScope.userLabel2}+全部+全部+综合推荐">全部</a>
+		</div>
 		<c:if test="${empty requestScope.activUsers2 }">
 		没有任何活动信息.
 		</c:if>
@@ -281,7 +294,8 @@ h3 {
 						<a href="index/${activUsers2.activId}"><h3>${activUsers2.activName}</h3></a>
 						<div id="buttom_buttom">
 							<c:forEach items="${activUsers2.userList }" var="userList">
-								<a href="getUserInfo/${userList.userId}"><img id="img_1" src="${userList.avatar}"></a>
+								<a href="getUserInfo/${userList.userId}"><img id="img_1"
+									src="${userList.avatar}"></a>
 							</c:forEach>
 							<div id="num">${activUsers2.activNum}</div>
 						</div>

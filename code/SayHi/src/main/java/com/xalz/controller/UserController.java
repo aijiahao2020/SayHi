@@ -188,8 +188,12 @@ public class UserController {
 		user.setPassword(user1.getPassword());
 		//2. 设置 图片
 		String avatar = ImageUtils.upload(request, user.getFile());
+		System.out.println("avatar" + avatar);
 		if(avatar != null)
 		user.setAvatar(avatar);
+		else {
+			user.setAvatar(user1.getAvatar());
+		}
 		request.getSession().setAttribute("user",user);
 		System.out.println(userLabels);
 		System.out.println(user);

@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xalz.bean.Activity;
 import com.xalz.bean.ActivityUser;
 import com.xalz.bean.FavoriteInfo;
 import com.xalz.bean.User;
 import com.xalz.bean.UserAndComment;
-import com.xalz.bean.UserLabel;
 import com.xalz.service.ActivityMemberService;
 import com.xalz.service.ActivityService;
 import com.xalz.service.CommentService;
@@ -101,9 +102,25 @@ public class ActivityController {
 	 * @param map
 	 * @return
 	 */
-	@RequestMapping("/search")
+	@RequestMapping("/getAll/search")
 	public String getActivByName(@RequestParam(value = "activName") String activName,
-			@RequestParam(value = "address") String address, Map<String, List<ActivityUser>> map) {
+			@RequestParam(value = "address") String address, Map<String, Object> map) {
+		List<ActivityUser> activityUsers = activityService.getActivUserByNameAddress(activName, address);
+		System.out.println(activityUsers);
+		map.put("activUsers", activityUsers);
+		map.put("info","全部+全部+全部+综合推荐");
+		return "classify";
+	}
+	
+	/**
+	 * 分类页面查询活动
+	 * 
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/search")
+	public String getClarifiedActivByName(@RequestParam(value = "activName") String activName,
+			@RequestParam(value = "address") String address,Map<String, List<ActivityUser>> map) {
 		List<ActivityUser> activityUsers = activityService.getActivUserByNameAddress(activName, address);
 		System.out.println(activityUsers);
 		map.put("activityUsers", activityUsers);
@@ -148,7 +165,93 @@ public class ActivityController {
 		map.put("activUsers", activUsers);
 		return "activSpecificInfo";
 	}
-
+	
+	/**
+	 * 删除活动
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/delActiv/{id}",method = RequestMethod.GET)
+	public String delActiv(@PathVariable("id") Integer activId) {
+		//根据活动id删除活动
+		activityService.deleteActivByPrimaryKey(activId);
+		return "redirect:/myLaunchedActiv";
+	}
+	
+	/**
+	 * 首页进入分类界面
+	 * @param info
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping(value = "/getAll/{info}",method = RequestMethod.GET)
+	public String getAll(@PathVariable("info") String info,Map<String, Object> map) {
+		
+		//获取查询到内容
+		
+		List<ActivityUser> activUsers = activityService.getActivUserInClassify(info);
+		//返回查询信息
+		map.put("info", info);
+		//返回查询到内容
+		map.put("activUsers", activUsers);
+		
+		return "classify";
+		
+	}
+	
+	/**
+	 * 分类界面的搜索
+	 * @param info
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping(value = "/getAll/getClarifiedActiv",method = RequestMethod.POST)
+	public String getClarifiedActiv(HttpServletRequest request,Map<String, Object> map) {
+		
+		//获取查询到内容
+		String info = request.getParameter("info");
+		System.out.println(info + "+++++++++++");
+		List<ActivityUser> activUsers = activityService.getActivUserInClassify(info);
+		//返回查询信息
+		map.put("info", info);
+		//返回查询到内容
+		map.put("activUsers", activUsers);
+		
+		return "classify";
+		
+	}
+	
+	/**
+	 * 查询员工数据（分页查询）
+	 * 
+	 * @return
+	 */
+	 @RequestMapping("/emps")
+	public String getEmps(
+			@RequestParam(value = "pn", defaultValue = "2") Integer pn,
+			Model model) {
+		// 这不是一个分页查询；
+		// 引入PageHelper分页插件
+		// 在查询之前只需要调用，传入页码，以及每页的大小
+		PageHelper.startPage(pn, 1);
+//		// startPage后面紧跟的这个查询就是一个分页查询
+		List<UserAndComment> comments = commentService.getUserCommentByActivId(25);
+////		List<Activity> users = activityService.getAllActiv();
+//		// 使用pageInfo包装查询后的结果，只需要将pageInfo交给页面就行了。
+//		// 封装了详细的分页信息,包括有我们查询出来的数据，传入连续显示的页数
+		PageInfo<UserAndComment> page = new PageInfo<UserAndComment>(comments,3);
+		System.out.println(page.getPageNum());
+		//创建Page类
+		model.addAttribute("pageInfo", page);
+		return "list";
+	}
+	
+	
+	/**
+	 * 添加点赞信息
+	 * @param favoriteInfo
+	 * @return
+	 */
 	@RequestMapping("/favoriteActiv")
 	public String favoriteActiv(FavoriteInfo favoriteInfo) {
 		// 添加点赞信息

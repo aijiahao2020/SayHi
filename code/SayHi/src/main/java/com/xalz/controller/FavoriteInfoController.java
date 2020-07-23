@@ -33,6 +33,16 @@ public class FavoriteInfoController {
 	}
 	
 	/**
+	 * 点赞
+	 * @return
+	 */
+	@RequestMapping("/addFavoriteInfo1")
+	public void addFavoriteInfo1() {
+//		User user = (User) session.getAttribute("user");
+		favoriteInfoService.addFavoriteInfo(1, 25);
+	}
+	
+	/**
 	 * 取消点赞
 	 * @return
 	 */

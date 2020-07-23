@@ -237,7 +237,7 @@ h3 {
 								</c:forEach>
 								<div id="num">${activityUsers.activNum}</div>
 								<c:if test="${requestScope.isDel == 'isDel'}">
-									<a href="#">删除活动</a>
+									<a href="delActiv/${activityUsers.activId}">删除活动</a>
 								</c:if>
 							</div>
 						</div>

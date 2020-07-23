@@ -342,7 +342,7 @@ p {
 						<h4 style="margin-top: -0.5%">${activUsers.activStart}</h4>
 						<h3 style="margin-top: -1.5%">${activUsers.activName}</h3>
 						<c:forEach items="${activUsers.userList }" var="userList">
-							<a href="../getUserInfo/${activMem.userId}"><img id="img_1"
+							<a href="../getUserInfo/${userList.userId}"><img id="img_1"
 								src="${userList.avatar}"></a>
 						</c:forEach>
 						<div style="margin-left: 80px; font-size: 20px; color: #767676">${activUsers.activNum}</div>
