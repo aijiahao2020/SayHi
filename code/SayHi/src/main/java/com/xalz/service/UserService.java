@@ -10,6 +10,9 @@ import com.xalz.bean.UserLabel;
 
 public interface UserService {
 	
+	//通过用户编号删除用户
+	public boolean deleteUserByUserId(Integer userId);
+	
 	//根据传来的用户对象和用户标签集合更新用户的信息
     public boolean updateUserInformation(User user, String[] labels);
 	

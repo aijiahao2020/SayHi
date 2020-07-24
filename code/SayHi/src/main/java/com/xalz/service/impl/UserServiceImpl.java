@@ -54,6 +54,16 @@ public class UserServiceImpl implements UserService {
 	UserLabelService userLabelService;
 
 	/**
+	 * 通过用户编号删除用户
+	 */
+	@Override
+	public boolean deleteUserByUserId(Integer userId) {
+		if(userMapper.deleteByPrimaryKey(userId) != 0) {
+			return true;
+		}return false;
+	}
+	
+	/**
 	 * 根据用户名和密码查询用户信息
 	 */
 	@Override
@@ -268,5 +278,7 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}else return false;
 	}
+
+	
 
 }

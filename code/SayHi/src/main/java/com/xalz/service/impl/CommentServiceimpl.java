@@ -31,6 +31,23 @@ public class CommentServiceimpl implements CommentService{
 	ActivityService activityService;
 	
 	/**
+	 * 通过评论编号获取评论信息
+	 */
+	public Comment getCommentByCmtId(Integer cmtId){
+		return commentMapper.selectByPrimaryKey(cmtId);
+	}
+	
+	/**
+	 * 获取所有的评论
+	 */
+	
+	@Override
+	public List<Comment> getAllComment() {
+		return commentMapper.selectAll();
+	}
+
+	
+	/**
 	 * 添加评论
 	 */
 	@Override

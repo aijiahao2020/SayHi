@@ -1,15 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>评论管理</title>
+<%
+	pageContext.setAttribute("APP_PATH", request.getContextPath());
+%>
+<script type="text/javascript"
+	src="${APP_PATH }/static/js/jquery-1.12.4.min.js"></script>
+<link
+	href="${APP_PATH }/static/bootstrap-3.3.7-dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="${APP_PATH }/static/css/activadmin.css" rel="stylesheet"
+	type="text/css" />
+<script
+	src="${APP_PATH }/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <style type="text/css">
 #counter {
 	width: 1143px;
 	height: 820px;
-	background: url(static/image/back_admin.png) no-repeat;
+	background: url(../static/image/back_admin.png) no-repeat;
 	float: right;
 }
 
@@ -133,6 +146,7 @@
 	font-size: 16px;
 	color: white;
 	font-weight: normal;
+	text-align: center;
 	background-color: #4F93B6;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 	border-right: 1px solid #F4F4F4;
@@ -161,53 +175,16 @@
 	cursor: pointer;
 }
 
-#usermag_result_bottom {
-	width: 1000px;
-	height: 90px;
-	line-height: 90px;
-}
-
-#page {
-	width: 35px;
-	height: 35px;
-	background-color: #62A1C2;
-	border-radius: 5px;
-	text-align: center;
-	line-height: 35px;
-	color: white;
-	margin-top: 27.5px;
-	margin-left: 22px;
-	margin-right: 22px;
+#row_info {
 	float: left;
+	margin-top: 10px;
+	padding-left: 40px;
 }
 
-#after_page {
-	color: #4A4A4A;
-	font-size: 16px;
-	float: left;
-}
-
-#next_page {
-	color: #4A4A4A;
-	font-size: 16px;
-	float: left;
-}
-
-#jump_page {
-	width: 170px;
-	height: 90px;
-	font-size: 16px;
-	color: #4A4A4A;
+#row_select {
 	float: right;
-}
-
-#jump_page select {
-	width: 69px;
-	height: 22px;
-	border-radius: 5px;
-	color: #4A4A4A;
-	text-align: center;
-	text-align-last: center;
+	text-align: right;
+	padding-right: 40px;
 }
 </style>
 </head>
@@ -249,43 +226,62 @@
 							style="width: 148px; border-right: 1px solid rgba(0, 0, 0, 0.3)">
 							操作</th>
 					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td><a href=""><img src="static/image/search_admin.png"
-								class="img_search"></a> <a href=""><img
-								src="static/image/add_admin.png" class="img_add"></a> <a href=""
-							class="delete"><img src="static/image/delete_admin.png"
-								class="img_delete"></a></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td><a href=""><img src="static/image/search_admin.png"
-								class="img_search"></a> <a href=""><img
-								src="static/image/add_admin.png" class="img_add"></a> <a href=""
-							class="delete"><img src="static/image/delete_admin.png"
-								class="img_delete"></a></td>
-					</tr>
+					<c:if test="${empty pageInfo.list }">
+						没有任何活动信息.
+					</c:if>
+					<c:if test="${!empty pageInfo.list}">
+						<c:forEach items="${pageInfo.list }" var="users" varStatus="id">
+							<tr>
+								<td>${id.index + 1 }</td>
+								<td>${users.userId }</td>
+								<td>${users.userName }</td>
+								<td>${users.avatar }</td>
+								<td><a href="userAdmin/${users.userId }"><img
+										src="static/image/search_admin.png" class="img_search"></a>
+									<a href=""><img src="static/image/add_admin.png"
+										class="img_add"></a> <a href="delUserAdmin/${users.userId }" class="delete"><img
+										src="static/image/delete_admin.png" class="img_delete"></a></td>
+							</tr>
+						</c:forEach>
+					</c:if>
 				</table>
 			</div>
-			<div id="usermag_result_bottom">
-				<div id="page">1</div>
-				<div id="after_page">
-					<a href="">上一页</a>
-				</div>
-				<div id="next_page">
-					<a href="">下一页</a>
-				</div>
+			<!-- 显示分页信息 -->
+			<div class="row">
+				<!--分页文字信息  -->
+				<div class="col-md-6" id="row_info">当前 ${pageInfo.pageNum }页,总${pageInfo.pages }
+					页,总 ${pageInfo.total } 条记录</div>
+				<!-- 分页条信息 -->
+				<div class="col-md-6" id="row_select">
+					<nav aria-label="Page navigation">
+						<ul class="pagination">
+							<li><a href="${APP_PATH }/userAdmin?pn=1">首页</a></li>
+							<c:if test="${pageInfo.hasPreviousPage }">
+								<li><a
+									href="${APP_PATH }/userAdmin?pn=${pageInfo.pageNum-1}"
+									aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+								</a></li>
+							</c:if>
 
-				<div id="jump_page">
-					跳转到 <select id="jpage">
 
-					</select> 页
+							<c:forEach items="${pageInfo.navigatepageNums }" var="page_Num">
+								<c:if test="${page_Num == pageInfo.pageNum }">
+									<li class="active"><a href="#">${page_Num }</a></li>
+								</c:if>
+								<c:if test="${page_Num != pageInfo.pageNum }">
+									<li><a href="${APP_PATH }/userAdmin?pn=${page_Num }">${page_Num }</a></li>
+								</c:if>
+
+							</c:forEach>
+							<c:if test="${pageInfo.hasNextPage }">
+								<li><a
+									href="${APP_PATH }/userAdmin?pn=${pageInfo.pageNum+1 }"
+									aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+								</a></li>
+							</c:if>
+							<li><a href="${APP_PATH }/userAdmin?pn=${pageInfo.pages}">末页</a></li>
+						</ul>
+					</nav>
 				</div>
 			</div>
 		</div>

@@ -46,9 +46,9 @@
         <!-- 默认规则：table_dept→TableDept -->
         <!-- 不符合默认规则时需要使用tableName和domainObjectName两个属性明确指定 -->
         <!-- 活动信息表 -->
-        <table tableName="activity" domainObjectName="Activity">
+        <!-- <table tableName="activity" domainObjectName="Activity">
             <generatedKey column="id" sqlStatement="Mysql" identity="true" />
-        </table> 
+        </table>  -->
         <!-- 活动成员表 -->
         <!-- <table tableName="activity_member" domainObjectName="ActivityMember">
             配置主键生成策略
@@ -61,10 +61,10 @@
         <table tableName="favorite_info" domainObjectName="FavoriteInfo">
         </table> -->
         <!-- 消息表 -->
-        <table tableName="message" domainObjectName="Message">
-           <!--  配置主键生成策略 -->
+        <!-- <table tableName="message" domainObjectName="Message">
+            配置主键生成策略
             <generatedKey column="id" sqlStatement="Mysql" identity="true" />
-        </table>
+        </table> -->
        <!--  用户表 -->
         <!-- <table tableName="user" domainObjectName="User">
             配置主键生成策略
@@ -75,6 +75,10 @@
             配置主键生成策略
             <generatedKey column="id" sqlStatement="Mysql" identity="true" />
         </table> -->
+        <table tableName="administrator" domainObjectName="Administrator">
+            <!-- 配置主键生成策略 -->
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>
         
     </context>
 </generatorConfiguration>

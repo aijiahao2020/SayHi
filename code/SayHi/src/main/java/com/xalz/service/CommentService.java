@@ -14,6 +14,12 @@ import tk.mybatis.mapper.entity.Example;
  */
 public interface CommentService {
 	
+	//通过评论编号获取评论信息
+	public Comment getCommentByCmtId(Integer cmtId);
+	
+	//获取所有的评论
+	public List<Comment> getAllComment();
+	
 	//添加评论√
 //	public boolean addComment(Integer activId, Integer userId, String cmtContent);
 	

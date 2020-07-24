@@ -17,6 +17,7 @@ public class Message {
     @Column(name = "mess_time")
     private Date messTime;
 
+    
     public Message() {
 		super();
 	}

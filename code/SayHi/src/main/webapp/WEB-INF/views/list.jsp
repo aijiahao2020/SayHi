@@ -53,9 +53,9 @@
 					<c:forEach items="${pageInfo.list }" var="emp">
 						<tr>
 							<th>${emp.userId }</th>
-							<th>${emp.cmtId }</th>
+							<%-- <th>${emp.cmtId }</th> --%>
 							<th>${emp.userName }</th>
-							<th>${emp.cmtContent }</th>
+							<%-- <th>${emp.cmtContent }</th> --%>
 							<th>
 								<button class="btn btn-primary btn-sm">
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>

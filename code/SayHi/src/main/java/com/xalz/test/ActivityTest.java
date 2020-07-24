@@ -192,11 +192,13 @@ public class ActivityTest {
 //        }
 		
 //		根据分类之下传来的字符串进行查询
-		String classifyString = "全部+武汉+近一周+讨论最多";
-		List<ActivityUser> activUser = activityService.getActivUserInClassify(classifyString);
-		for(ActivityUser activ : activUser){
-          System.out.println(activ);
-       }
+//		String classifyString = "全部+武汉+近一周+讨论最多";
+//		List<ActivityUser> activUser = activityService.getActivUserInClassify(classifyString);
+//		for(ActivityUser activ : activUser){
+//          System.out.println(activ);
+//       }
+		//查询是否为主班方
+		System.out.println(activityService.queryActivSponsor(1001, 1102));
 	}
 	
 

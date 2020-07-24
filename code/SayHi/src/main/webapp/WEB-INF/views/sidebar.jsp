@@ -95,6 +95,9 @@ ul {
 }
 </style>
 <title>左边框</title>
+<%
+	pageContext.setAttribute("APP_PATH", request.getContextPath());
+%>
 <script type="text/javascript" src="scripts/jquery-3.4.1.js"></script>
 
 </head>
@@ -102,21 +105,21 @@ ul {
 	<div id="left">
 		<div id="top">
 
-			<a href=""><div id="logout">
-					<img src="static/image/logout_admin.png">
+			<a href="${APP_PATH }/logoutAdmin"><div id="logout">
+					<img src="${APP_PATH }/static/image/logout_admin.png">
 				</div></a>
 			<div id="user">艾佳豪</div>
 		</div>
 		<div id="main">
 			<ul>
-				<a href=""><li class="table_li" id="activ_mamager">活动管理</li></a>
-				<a href=""><li class="table_li" id="cmt_mamager">评论管理</li></a>
-				<a href=""><li class="table_li" id="user_mamager">用户管理</li></a>
+				<a href="${APP_PATH }/activAdmin"><li class="table_li" id="activ_mamager">活动管理</li></a>
+				<a href="${APP_PATH }/commentAdmin"><li class="table_li" id="cmt_mamager">评论管理</li></a>
+				<a href="${APP_PATH }/userAdmin"><li class="table_li" id="user_mamager">用户管理</li></a>
 			</ul>
 		</div>
 		<div id="bottom">
 			<center>
-				<img src="static/image/SayHi_white.png" id="bottom_img">
+				<img src="${APP_PATH }/static/image/SayHi_white.png" id="bottom_img">
 			</center>
 		</div>
 	</div>
