@@ -1,12 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<jsp:include page="head.jsp" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>消息</title>
+<%
+	pageContext.setAttribute("APP_PATH", request.getContextPath());
+%>
 <style>
+a {
+	text-decoration: none;
+	color: black;
+}
+
 #top {
 	border-bottom: solid;
 	border-width: 2px;
@@ -37,7 +46,11 @@
 #head_imag {
 	height: 30px;
 	width: 30px;
-	margin-left: 1170px;
+	float: right;
+	border-radius: 50%;
+	overflow: hidden;
+	margin-top: 7px;
+	margin-right: 5px;
 }
 
 body {
@@ -55,7 +68,6 @@ body {
 	border-bottom-color: #B1B1B1;
 	border-left-color: #D3D3D3;
 	border-right-color: #D3D3D3;
-	margin-top: 330px;
 	margin-left: 250px;
 	margin-bottom: 100px;
 	border-radius: 5px;
@@ -66,27 +78,19 @@ body {
 }
 
 #th_bom {
-	width: 100px;
-	font-size: 16px;
+	width: 120px;
+	font-size: 17px;
 	font-family: "PingFang SC";
 	height: 30px;
 }
 
-#th_bom1:hover {
+#th_bom:hover {
 	background-color: #BFBFBF;
 }
 
 #th_bom1 {
-	width: 100px;
-	font-size: 16px;
-	font-family: "PingFang SC";
-	height: 50px;
-	background: white;
-}
-
-#th_bom2 {
-	width: 80px;
-	font-size: 16px;
+	width: 120px;
+	font-size: 17px;
 	font-family: "PingFang SC";
 	height: 50px;
 	background: #5B91A5;
@@ -146,56 +150,62 @@ body {
 }
 
 #mid_add {
-	margin-left: 1000px;
-	margin-top: 20px;
+	right: 150px;
+	position: fixed;
+	z-index: 999;
+	bottom: 100px;
 }
 
 #mid_add_img {
-	height: 100px;
-	width: 100px;
+	height: 80px;
+	width: 80px;
 }
 </style>
 </head>
 
 <body>
-	<div id="top">
+	<%-- <div id="top">
 		<a href="index"><img alt="" src="static/image/SayHi.png"
-			style="padding-top: 10px; padding-left: 20px; height: 30px;"></a> <img
-			src="static/image/ren.jpg" id="head_imag"> <a href=""><input
-			value="退出" id="quit"></a>
+			style="padding-top: 10px; padding-left: 20px; height: 30px;"></a> 
+			 <a href=""><input value="退出" id="quit"></a>
 		<div id="user">
 			<p style="float: right;">
 				<a href="myAttendingActiv">${sessionScope.user.userName}</a>
 			</p>
 		</div>
+       <img src="${sessionScope.user.avatar}" id="head_imag">
+	</div> --%>
 
-	</div>
+	<img src="static/image/publish.png"
+		style="height: 300px; width: 1390px;">
+
 	<div id="mid">
 		<table id="mid_table1">
 			<tr>
-				<th id="th_bom1"><a href="myAttendingActiv">进行中的活动</a></th>
-				<th id="th_bom"><a href="myFavoriteActiv">活动历史</a></th>
-				<th id="th_bom"><a href="myUserInfo">我的账号</a></th>
-				<th id="th_bom"><a href="myMessage">消息</a></th>
+				<th id="th_bom"><a href="${APP_PATH }/myAttendingActiv">进行中的活动</a></th>
+				<th id="th_bom"><a href="${APP_PATH }/myFavoriteActiv">活动历史</a></th>
+				<th id="th_bom"><a href="${APP_PATH }/myUserInfo">我的账号</a></th>
+				<th id="th_bom1"><a href="${APP_PATH }/myMessage">消息</a></th>
 			</tr>
 		</table>
 
 		<c:if test="${empty requestScope.messages}">
-					无消息
-				</c:if>
+			<div style="margin-left: 100px; font-size: 25px; padding-top: 30px;">无消息</div>
+		</c:if>
 		<c:if test="${!empty requestScope.messages}">
 			<c:forEach items="${requestScope.messages }" var="messages">
 				<div id="mid_msg">
 					<div id="mid_msg_title">系统通知</div>
-					<input id="mid_msg_delete" type="button" name="">
-					<a href="delMessage/${messages.msgId }">删除</a>
+					<input id="mid_msg_delete" type="button" name=""> <a
+						href="${APP_PATH }/delMessage/${messages.msgId }">删除</a>
 					<div id="mid_msg_msg">${messages.messInfo }</div>
 					${messages.messTime}
 				</div>
 			</c:forEach>
 		</c:if>
 		<div id="mid_add">
-			<a href="toAddActiv"><img src="static/image/add.png" id="mid_add_img"></a>
+			<a href="toAddActiv"><img src="${APP_PATH }/static/image/add.png"
+				id="mid_add_img"></a>
 		</div>
 	</div>
 </body>

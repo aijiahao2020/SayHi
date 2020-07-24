@@ -41,6 +41,18 @@ public class ActivityServiceImpl implements ActivityService{
 	@Autowired
 	MessageService messageService;
 	
+	/**
+	 * 查询该用户是否为该活动的主办方
+	 */
+	@Override
+	public boolean queryActivSponsor(Integer activId, Integer userId) {
+		Activity activ = new Activity();
+		activ.setActivId(activId);
+		activ.setUserId(userId);
+		if(activityMapper.selectOne(activ) != null) {
+			return true;
+		}else return false;
+	}
 	
 	/**
 	 * 根据分类之下传来的字符串进行查询
@@ -312,9 +324,9 @@ public class ActivityServiceImpl implements ActivityService{
 			message.setUserId(user.getUserId());
 			message.setMessTime(new Date());
 			if(user.getUserId() == activity.getUserId()) {
-				messInfo = "您" + messInfo + "创建的活动 《";
+				messInfo = "您创建的活动 《";
 			}else {
-				messInfo = "您" + messInfo + "参加的活动 《";
+				messInfo = "您参加的活动 《";
 			}
 			
 			messInfo = messInfo + activity.getActivName() + "》已取消，特次提醒！";

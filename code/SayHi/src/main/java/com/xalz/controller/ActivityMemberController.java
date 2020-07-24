@@ -33,8 +33,9 @@ public class ActivityMemberController {
 	 */
 	@RequestMapping(value = "/leaveActiv",method = RequestMethod.POST)
 	public String leaveActiv(ActivityMember activityMember) {
-		
 		activityMemberService.deleteActvityMember(activityMember);
+		System.out.println(activityMemberService.deleteActvityMember(activityMember));
+		
 		return "redirect:/index/" + activityMember.getActivId();
 	}
 

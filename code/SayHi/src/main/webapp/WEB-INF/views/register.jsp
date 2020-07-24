@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<jsp:include page="head.jsp"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -135,7 +136,7 @@ function checkPassword()
 {
  if(document.getElementById("password").value==null||document.getElementById("password").value=="")
  {
-  document.getElementById("spanPassword").innerHTML = "<font color='red'>请输入密码 *</font>";
+  document.getElementById("spanPassword").innerHTML = "<font color='red'>请输入密码 </font>";
   return false;
  }
 }
@@ -144,7 +145,7 @@ function checkPasswordConfig()
 {
  var a=document.getElementById("password").value;
  var b=document.getElementById("passwordConfig").value;
- 
+ if(a!="") document.getElementById("spanPassword").innerHTML = "";
  if(b==null||b=="")
  {
   document.getElementById("spanPasswordConfig").innerHTML = "<font color='red'>请您确认密码！ </font>";
@@ -158,29 +159,39 @@ function checkPasswordConfig()
  
  if(a==b)
 	 {
-	 document.getElementById("button3").style.visibility="visible";
-	 document.getElementById("button1").style.visibility="hidden";
-	 
+/* 	 document.getElementById("button3").style.visibility="visible";
+	 document.getElementById("button1").style.visibility="hidden"; */
+	 document.getElementById("spanPasswordConfig").innerHTML = "<font color='red'>密码一致！ </font>";
 	 }
+}
+
+function tip(){
+	var a=document.getElementById("password").value;
+	var b=document.getElementById("passwordConfig").value;
+	
+	if(users.value!=""&&a==b&&a!="")
+	window.alert("注册成功！");
+	else
+	window.alert("注册失败！");
 }
 </script>
 </head>
 <body>
 
-	<div id="top">
-		<img alt="" src="static/image/SayHi.png"
-			style="padding-top: 10px; padding-left: 20px;">
-	</div>
+	<!-- <div id="top">
+		<a href="index"><img alt="" src="static/image/SayHi.png"
+			style="padding-top: 10px; padding-left: 20px;"></a>
+	</div> -->
 
 	<div id="login">
 		<div id="logintop">
-			<h1 style="padding-left: 5%;">登录</h1>
+			<h1 style="padding-left: 5%;">注册</h1>
 		</div>
 		<div id="loginbottom">
 			<form action="register" method="post">
 				<div id="user">
 					<h3 style="padding-left: 5%; margin-top: 5%;">账号:</h3>
-					<input type="text" id="users" name="userName">
+					<input type="text" id="users" name="userName" onkeyup=checkPassword()>
 				</div>
 				<div id="psw">
 					<h3 style="padding-left: 5%; margin-top: 5%;">密码:</h3>
@@ -194,7 +205,7 @@ function checkPasswordConfig()
 						id="spanPasswordConfig"></span>
 				</div>
 				<div id="button">
-					<input type="submit" value="注册" id="button1">
+					<input type="submit" value="注册" id="button1" onclick=tip()>
 					<c:if test="${!empty requestScope.msg}"></c:if>
 					<font color="red">
 						${requestScope.message }

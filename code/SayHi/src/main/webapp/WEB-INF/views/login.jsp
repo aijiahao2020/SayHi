@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:include page="head.jsp"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -25,21 +26,21 @@ img {
 	border-color: #d8d8d8;
 	border-width: 1px;
 	margin-top: 3%;
-	height: 400px;
-	width: 50%;
-	margin-left: 25%;
-	margin-right: 25%;
+	height: 430px;
+	width: 40%;
+	margin-left: 30%;
+	margin-right: 30%;
 	border-radius: 5px;
 }
 
 #logintop {
 	border-style: solid;
-	border-color: black;
+	border-color: #5B91A5;
 	border-width: 1px;
 	height: 80px;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
-	background-color: blue;
+    background-color: #5B91A5;
 }
 
 #input1 {
@@ -51,7 +52,7 @@ img {
 	margin-left: 5%;
 	margin-right: 5%;
 	height: 50px;
-	margin-top: -3%;
+	margin-top: ;
 	padding-left: 2%;
 }
 
@@ -80,10 +81,6 @@ h1 {
 </head>
 <body>
 
-	<div id="top">
-		<img alt="" src="static/image/SayHi.png"
-			style="padding-top: 10px; padding-left: 20px;">
-	</div>
 
 	<div id="login">
 		<div id="logintop">

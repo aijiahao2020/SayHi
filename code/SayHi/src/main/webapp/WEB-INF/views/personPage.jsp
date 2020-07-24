@@ -1,14 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<jsp:include page="head.jsp"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>我发起的</title>
-
+<%
+	pageContext.setAttribute("APP_PATH", request.getContextPath());
+%>
 <style>
-#top {
+/* #top {
 	border-bottom: solid;
 	border-width: 2px;
 	border-color: darkgray;
@@ -33,12 +36,16 @@
 	font-size: 14px;
 	font-family: "PingFang SC";
 	float: right;
-}
+} */
 
 #head_imag {
-	height: 30px;
-	width: 30px;
-	margin-left: 1170px;
+	  height:30px;
+  width:30px;
+  float:right;
+  border-radius:50%; 
+	overflow:hidden;
+	margin-top:7px;
+	margin-right:5px;
 }
 
 body {
@@ -56,7 +63,7 @@ body {
 	border-bottom-color: #B1B1B1;
 	border-left-color: #D3D3D3;
 	border-right-color: #D3D3D3;
-	margin-top: 330px;
+
 	margin-left: 250px;
 	margin-bottom: 100px;
 	border-radius: 5px;
@@ -78,6 +85,7 @@ body {
 	height: 30px;
 	border-bottom: solid;
 	border-color: white;
+	padding-left:20px;
 }
 
 #th1 {
@@ -90,8 +98,8 @@ body {
 }
 
 #th_bom {
-	width: 100px;
-	font-size: 16px;
+	width: 120px;
+	font-size: 17px;
 	font-family: "PingFang SC";
 	height: 30px;
 }
@@ -101,8 +109,8 @@ body {
 }
 
 #th_bom1 {
-	width: 100px;
-	font-size: 16px;
+	width: 120px;
+	font-size: 17px;
 	font-family: "PingFang SC";
 	height: 50px;
 	background: #5B91A5;
@@ -127,12 +135,15 @@ body {
 #img_a {
 	height: 140px;
 	width: 250px;
+	
 }
 
 #img_1 {
 	height: 20px;
 	width: 20px;
 	position: absolute;
+	border-radius:50%; 
+	overflow:hidden;
 }
 
 #img_2 {
@@ -140,6 +151,8 @@ body {
 	width: 20px;
 	position: absolute;
 	margin-left: 15px;
+	border-radius:50%; 
+	overflow:hidden;
 }
 
 #img_3 {
@@ -147,6 +160,8 @@ body {
 	width: 20px;
 	position: absolute;
 	margin-left: 30px;
+	border-radius:50%; 
+	overflow:hidden;
 }
 
 h4 {
@@ -181,38 +196,78 @@ h3 {
 	border-radius: 5px;
 	margin-top: 10px;
 }
+a{
+ text-decoration:none;
+  color:black;
+}
+#mid_add{
+  right:150px;
+    position: fixed;
+    z-index: 999;
+    bottom:100px;
+}
+#mid_add_img{
+   height:80px;
+   width:80px;
+} 
+#delete_act{
+  border:solid;
+  border-color:#5B91A5;
+  background-color:#5B91A5;
+  border-width:1px;
+  color:white;
+  font-size:17px;
+  width:250px;
+ text-align:center;
+  border-radius:5px;
+  margin-top:5px;
+}
 </style>
+<script>
+    function change()
+    {
+    	th1.style.borderColor='#5B91A5';
+    	th2.style.borderColor='white';
+    }
+
+    function change1()
+    {
+    	th2.style.borderColor='#5B91A5';
+    	th1.style.borderColor='white';
+    }
+</script>
+
 </head>
 
 <body>
 
-	<div id="top">
+<%-- 	<div id="top">
 		<a href="index"><img alt="" src="static/image/SayHi.png"
-			style="padding-top: 10px; padding-left: 20px; height: 30px;"></a> <img
-			src="static/image/ren.jpg" id="head_imag"> <a href=""><input
-			value="退出" id="quit"></a>
+			style="padding-top: 10px; padding-left: 20px; height: 30px;"></a> 
+			 <a href=""><input value="退出" id="quit"></a>
 		<div id="user">
 			<p style="float: right;">
 				<a href="myAttendingActiv">${sessionScope.user.userName}</a>
 			</p>
 		</div>
-
-	</div>
-
+         <img src="${sessionScope.user.avatar}" id="head_imag">
+	</div> --%>
+	
+	 <img  src="static/image/publish.png"  style="height:300px;width:1390px;">
 	<div id="mid">
 		<div id="mid_msg">
 			<table id="mid_msg_table1">
 				<tr>
-					<th id="th_bom1"><a href="myAttendingActiv">进行中的活动</a></th>
-					<th id="th_bom"><a href="myFavoriteActiv">活动历史</a></th>
-					<th id="th_bom"><a href="myUserInfo">我的账号</a></th>
-					<th id="th_bom"><a href="myMessage">消息</a></th>
+					<th id="th_bom1"><a href="${APP_PATH }/myAttendingActiv">进行中的活动</a></th>
+					<th id="th_bom"><a href="${APP_PATH }/myFavoriteActiv">活动历史</a></th>
+					<th id="th_bom"><a href="${APP_PATH }/myUserInfo">我的账号</a></th>
+					<th id="th_bom"><a href="${APP_PATH }/myMessage">消息</a></th>
 				</tr>
 			</table>
 			<table id="mid_msg_table2">
 				<tr>
-					<th id="th1"><a href="myAttendingActiv">全部</a></th>
-					<th id="th2"><a href="myLaunchedActiv">我发起的</a></th>
+					<th id="th1" onclick=change()><a href="myAttendingActiv">全部</a></th>
+					<th id="th2" onclick=change1()><a href="myLaunchedActiv">我发起的</a></th>
 				</tr>
 
 			</table>
@@ -220,7 +275,7 @@ h3 {
 
 		<div id="mid_act">
 			<c:if test="${empty requestScope.activityUsers}">
-    		无活动
+    		<div style="margin-left:50px;font-size:25px;">无活动</div>
 		</c:if>
 			<c:if test="${!empty requestScope.activityUsers}">
 				<c:forEach items="${requestScope.activityUsers }"
@@ -233,17 +288,21 @@ h3 {
 							<a href="index/${activityUsers.activId}"><h3>${activityUsers.activName}</h3></a>
 							<div id="buttom_buttom">
 								<c:forEach items="${activityUsers.userList }" var="userList">
-									<img id="img_1" src="${userList.avatar}">
+									<a href="getUserInfo/${userList.userId}"><img id="img_1" src="${userList.avatar}"></a>
 								</c:forEach>
 								<div id="num">${activityUsers.activNum}</div>
 								<c:if test="${requestScope.isDel == 'isDel'}">
-									<a href="delActiv/${activityUsers.activId}">删除活动</a>
+									<a href="${APP_PATH }/delActiv/${activityUsers.activId}"><div id="delete_act">删除活动</div></a>
 								</c:if>
 							</div>
 						</div>
 					</div>
 				</c:forEach>
 			</c:if>
+		</div>
+		
+		<div id="mid_add">
+			<a href="toAddActiv"><img src="${APP_PATH }/static/image/add.png" id="mid_add_img"></a>
 		</div>
 	</div>
 </body>

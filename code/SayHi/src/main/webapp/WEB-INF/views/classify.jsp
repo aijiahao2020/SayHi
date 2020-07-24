@@ -1,11 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<jsp:include page="head.jsp"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>分类之下</title>
+<%
+	pageContext.setAttribute("APP_PATH", request.getContextPath());
+%>
 <style>
 #top {
 	margin-top: 1%;
@@ -610,7 +614,7 @@ ul {
 </script>
 </head>
 <body>
-	<div id="top">
+	<%-- <div id="top">
 		<img alt="" src="../static/image/SayHi.png"
 			style="padding-top: 10px; padding-left: 20px; height: 30px;">
 		<c:if test="${empty sessionScope.user}">
@@ -622,10 +626,10 @@ ul {
 			<img alt="" src="${sessionScope.user.avatar}" style="size: 10px ">
 			<a href="myAttendingActiv" id="loginbutton">${sessionScope.user.userName}</a>
 		</c:if>
-	</div>
+	</div> --%>
 
 	<div id="middle">
-		<form action="search" method="post">
+		<form action="${APP_PATH }/getAll/search" method="post">
 			<input name="activName" type="text" id="activity" placeholder=" 活动名"> <input
 				name="address" type="text" id="location" placeholder=" 地点"> <input
 				type="submit" value="搜索" id="search">
@@ -705,17 +709,17 @@ ul {
 			<c:forEach items="${requestScope.activUsers }" var="activUsers">
 				<div class="show_activ">
 					<div class="show_img">
-						<a href="../index/${activUsers.activId}"><img
+						<a href="${APP_PATH }/index/${activUsers.activId}"><img
 							src="${activUsers.activBill}"></a>
 					</div>
 					<div class="show_time">${activUsers.activStart}</div>
 					<div class="show_name">
-						<a href="../index/${activUsers.activId}">${activUsers.activName}</a>
+						<a href="${APP_PATH }/index/${activUsers.activId}">${activUsers.activName}</a>
 					</div>
 					<div class="show_user">
 						<c:forEach items="${activUsers.userList }" var="userList">
 							<div class="show_user_avatar">
-								<a href="../getUserInfo/${userList.userId}"><img
+								<a href="${APP_PATH }/getUserInfo/${userList.userId}"><img
 									src="${userList.avatar}"></a>
 							</div>
 						</c:forEach>
