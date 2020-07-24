@@ -20,6 +20,7 @@ public interface ActivityService {
 	
 	//查询该用户是否为该活动的主办方
 	public boolean queryActivSponsor(Integer activId, Integer userId);
+
 	
 	//根据分类之下传来的字符串进行查询
 	public List<ActivityUser> getActivUserInClassify(String classifyString);

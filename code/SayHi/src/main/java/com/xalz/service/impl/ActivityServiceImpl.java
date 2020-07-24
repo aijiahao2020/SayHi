@@ -54,7 +54,7 @@ public class ActivityServiceImpl implements ActivityService{
 		}else return false;
 	}
 
-	
+
 	/**
 	 * 根据分类之下传来的字符串进行查询
 	 */

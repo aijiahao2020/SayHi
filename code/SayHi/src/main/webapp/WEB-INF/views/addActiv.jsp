@@ -1,11 +1,31 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+
+<jsp:include page="head.jsp" />
 <!DOCTYPE html>
 <html class="ui-mobile">
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>发起活动</title>
+<%
+	pageContext.setAttribute("APP_PATH", request.getContextPath());
+%>
+<%-- <script type="text/javascript" src="${APP_PATH }/static/js/geo2.js"></script> --%>
+<script type="text/javascript" src="${APP_PATH }/static/js/jsAddress.js"></script>
+<!-- <script type="text/javascript">
+	$(document).ready(function() {
+
+		$("#order_table").css("background-color", "#8DB9CF");
+		$("body").on("load", init());
+	});
+</script> -->
 <style type="text/css">
+a {
+	text-decoration: none;
+	color: black;
+}
+
 #top {
 	border-bottom: solid;
 	border-width: 2px;
@@ -20,9 +40,20 @@
 	font-size: 14px;
 	color: gray;
 	font-family: "PingFang SC";
-	margin-right: 3%;
+	margin-right: 70px;
 	margin-top: 14px;
 	float: right;
+	width: 50px;
+}
+
+#head_imag {
+	height: 30px;
+	width: 30px;
+	float: right;
+	border-radius: 50%;
+	overflow: hidden;
+	margin-top: 7px;
+	margin-right: 5px;
 }
 
 #user {
@@ -250,22 +281,22 @@
 	font-family: PingFang SC;
 }
 </style>
-<script type="text/javascript" src="static/js/jsAddress.js"></script>
+<!-- <script type="text/javascript" src="static/js/jsAddress.js"></script> -->
 <script src="static/js/My97DatePicker/WdatePicker.js"></script>
 
 </head>
 <body>
-	<div id="top">
+	<%-- <div id="top">
 		<a href="index"><img alt="" src="static/image/SayHi.png"
-			style="padding-top: 10px; padding-left: 20px; height: 30px;"></a><a
-			href="../logout" id="registerbutton">退出</a>
+			style="padding-top: 10px; padding-left: 20px; height: 30px;"></a>
+	    <a href=""><input value="退出" id="quit"></a>
 		<div id="user">
-			<p>
+			<p style="float: right;">
 				<a href="myAttendingActiv">${sessionScope.user.userName}</a>
 			</p>
 		</div>
-
-	</div>
+      <img src="${sessionScope.user.avatar}" id="head_imag">
+	</div> --%>
 
 	<div id="publish">
 
@@ -276,24 +307,25 @@
 		</div>
 
 		<div id="act">
-			<form action="addActiv" method="post" enctype="multipart/form-data"
-				onsubmit="get();">
-				<input type="hidden" name="userId" value="${sessionScope.user.userId}">
+			<form action="${APP_PATH }/addActiv" method="post"
+				enctype="multipart/form-data" onsubmit="get();">
+				<input type="hidden" name="userId"
+					value="${sessionScope.user.userId}">
 				<div id="act_name">
 					活动名: <input type="text" id="act_name_input" name="activName">
 				</div>
 
 
 				<div id="act_location">
-					活动地点: <select id="province" runat="server" name="activState"
+					活动地点:
+					 <select id="province" runat="server" name="activState"
 						onchange="provincechange(this.selectedIndex)">
 					</select> <select id="city" runat="server" name="activCity">
 					</select>
-					<!-- <select id="county" runat="server" >
-				</select> -->
-					<!-- <input  id="activState" value="" name="activState" >
-				<input  id="activCity" value=""  name="activCity" > -->
-					<script type="text/javascript">
+					<!-- <select class="pc" name="province" id="param_province"
+						onchange="provincechange(this.selectedIndex)"><option></option></select>
+					<select class="pc" name="city" id="param_city"><option>城市</option></select> -->
+					 <script type="text/javascript">
 						setup()
 					</script>
 				</div>
@@ -356,7 +388,8 @@
 				</div>
 
 				<center>
-					<input type="submit" id="act_button" value="确认发布">
+					<a href="toMyInfoPage"><input type="submit" id="act_button"
+						value="确认发布"></a>
 				</center>
 			</form>
 		</div>

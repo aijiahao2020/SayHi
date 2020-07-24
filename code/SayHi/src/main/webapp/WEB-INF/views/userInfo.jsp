@@ -1,16 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<jsp:include page="head.jsp"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>他人视角</title>
+<%
+	pageContext.setAttribute("APP_PATH", request.getContextPath());
+%>
 <style>
 body {
 	font-family: "PingFang SC";
 }
 
+a{
+ text-decoration:none;
+  color:black;
+}
 #top {
 	border-bottom: solid;
 	border-width: 2px;
@@ -42,6 +50,8 @@ body {
 	height: 30px;
 	width: 30px;
 	margin-left: 1170px;
+	border-radius:50%; 
+	overflow:hidden;
 }
 
 #mid {
@@ -52,7 +62,7 @@ body {
 }
 
 #mid_head {
-	height: 300px;
+	height: 270px;
 	width: 250px;
 	margin-top: -20px;
 	float: left;
@@ -98,7 +108,7 @@ body {
 	border-width: 2px;
 	font-size: 20px;
 	margin-left: 200px;
-	margin-top: -50px;
+	margin-top: -60px;
 	width: 170px;
 	height: 20px;
 	border-color: #5B91A5;
@@ -119,6 +129,7 @@ body {
 #img_a {
 	height: 140px;
 	width: 250px;
+	border-radius:10px;
 }
 
 #img_1 {
@@ -162,21 +173,18 @@ h3 {
 </style>
 </head>
 <body>
-	<div id="top">
-		<img alt="" src="../static/image/SayHi.png"
-			style="padding-top: 10px; padding-left: 20px; height: 30px;">
-		<c:if test="${empty sessionScope.user}">
-			<a href="register1" id="registerbutton">注册</a>
-			<a href="login1" id="loginbutton">登录</a>
-		</c:if>
-		<c:if test="${!empty sessionScope.user}">
-			<a href="logout" id="registerbutton">退出</a>
-			<img alt="" src="${sessionScope.user.avatar}" style="size: 10px ">
-			<a href="myAttendingActiv" id="loginbutton">${sessionScope.user.userName}</a>
-		</c:if>
+<%-- 	<div id="top">
+		<a href="../index"><img alt="" src="../static/image/SayHi.png"
+			style="padding-top: 10px; padding-left: 20px; height: 30px;"></a> <img
+			src="${sessionScope.user.avatar}" id="head_imag"> <a href=""><input
+			value="退出" id="quit"></a>
+		<div id="user">
+			<p style="float: right;">
+				<a href="../myAttendingActiv">${sessionScope.user.userName}</a>
+			</p>
 		</div>
 
-	</div>
+	</div> --%>
 
 	<div id="mid">
 		<img src="${requestScope.user1.avatar }" id="mid_head">
@@ -194,7 +202,7 @@ h3 {
 					</c:forEach>
 				</c:if>
 			</div>
-
+	      </div>
 		</div>
 		<div id="bottom">
 			<div id="bottom_joined">正在参与的活动</div>
@@ -209,13 +217,13 @@ h3 {
 							var="activityUsers">
 							<div id="mid_act1">
 								<div style="float: left">
-									<a href="../index/${activityUsers.activId}"><img
+									<a href="${APP_PATH }/index/${activityUsers.activId}"><img
 										src="${activityUsers.activBill}" id="img_a"></a>
 									<h4>${activityUsers.activStart}</h4>
-									<a href="../index/${activityUsers.activId}"><h3>${activityUsers.activName}</h3></a>
+									<a href="${APP_PATH }/index/${activityUsers.activId}"><h3>${activityUsers.activName}</h3></a>
 									<div id="buttom_buttom">
 										<c:forEach items="${activityUsers.userList }" var="userList">
-											<a href="../getUserInfo/${userList.userId}"><img id="img_1" src="${userList.avatar}"></a>
+											<a href="${APP_PATH }/getUserInfo/${userList.userId}"><img id="img_1" src="${userList.avatar}"></a>
 										</c:forEach>
 										<div id="num">${activityUsers.activNum}</div>
 										<c:if test="${requestScope.isDel == 'isDel'}">
@@ -230,7 +238,7 @@ h3 {
 
 			</div>
 
-
-		</div>
+          </div>
+	
 </body>
 </html>

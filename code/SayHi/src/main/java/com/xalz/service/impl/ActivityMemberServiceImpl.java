@@ -81,8 +81,6 @@ public class ActivityMemberServiceImpl implements ActivityMemberService{
 				return true;
 				else return false;
 		}
-		
-		
 	}
 
 	/**
