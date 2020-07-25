@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="head.jsp" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -15,13 +16,16 @@ a {
 	text-decoration: none;
 	color: black;
 }
-/* #top {
-	border-bottom: solid;
+ #top {
+	border:none;
 	border-width: 2px;
 	border-color: darkgray;
+	margin-top:-8px;
+	background:transparent;
+	position:static;
 }
 
-#quit {
+/*#quit {
 	cursor: pointer;
 	border: none;
 	background: white;
@@ -57,18 +61,26 @@ body {
 	background-size: 1350px 330px;
 	background-repeat: no-repeat;
 }
-
-#mid {
-	width: 1130px;
-	height: 450px;
-	border: solid;
+#imag{
+   width:1150px;
+   height:330px;
+   margin-top:-55px;
+   margin-left:150px;
+}
+#mid1{
+    width: 1180px;
+     min-height:550px;
+   height:auto;
+    border: solid;
 	border-top-color: #F7F7F7;
 	border-bottom-color: #B1B1B1;
 	border-left-color: #D3D3D3;
-	border-right-color: #D3D3D3;
-	margin-left: 250px;
+	border-right-color: #D3D3D3; 
+	   margin-left: 170px;
 	margin-bottom: 100px;
-	border-radius: 5px;
+	border-radius: 10px;
+	margin-top:15px;
+	float:left;
 }
 
 #mid_msg_table1 {
@@ -96,7 +108,7 @@ body {
 	height: 30px;
 	padding-left: 10px;
 	border-bottom: solid;
-	border-color: #5B91A5;
+	border-color: white;
 }
 
 #th3 {
@@ -144,39 +156,18 @@ body {
 }
 
 #mid_act {
-	margin-left: 50px;
+	margin-left: 60px;
 	margin-top: 50px;
 }
 
 #mid_act1 {
 	margin-left: 30px;
 	float: left;
+	
+	margin-bottom:20px;
+	margin-right:10px;
 }
 
-#img_a {
-	height: 140px;
-	width: 250px;
-}
-
-#img_1 {
-	height: 20px;
-	width: 20px;
-	position: absolute;
-}
-
-#img_2 {
-	height: 20px;
-	width: 20px;
-	position: absolute;
-	margin-left: 15px;
-}
-
-#img_3 {
-	height: 20px;
-	width: 20px;
-	position: absolute;
-	margin-left: 30px;
-}
 
 h4 {
 	margin-top: 10px;
@@ -192,55 +183,76 @@ h3 {
 }
 
 #num {
-	margin-left: 70px;
-	font-size: 15px;
+	margin-left: 10px;
+	font-size: 16px;
 	color: #767676;
+    float:left;
+}
+#img_a {
+	 height: 110px;
+	width: 200px;
+	border-radius: 5px;
 }
 
+#img_1 {
+	height: 25px;
+	width:25px;
+	border-radius:50%; 
+	overflow:hidden;
+    float:left;
+	
+}
 #mid_add {
-	right: 150px;
+	right: 380px;
 	position: fixed;
 	z-index: 999;
-	bottom: 100px;
+	bottom: 50px;
 }
 
 #mid_add_img {
 	height: 80px;
 	width: 80px;
 }
+#black{
+  width:100%;
+background-color:#F5F9FA;
+  height:200px;
+  margin-top:250px;
+  float:left;
+}
 </style>
 <script>
             
-            function change1(){
-                th1.style.borderColor="#5B91A5";
-                th2.style.borderColor="white";
-                th3.style.borderColor="white";
-             }
-            function change2(){
-               th2.style.borderColor="#5B91A5";
-               th1.style.borderColor="white";
-               th3.style.borderColor="white";
-            }
-            function change3(){
-                th3.style.borderColor="#5B91A5";
-                th1.style.borderColor="white";
-                th2.style.borderColor="white";
-             }
-            </script>
+function check()
+{
+	var a  = choose.value;    /*  x是input的id */
+	if(a==1)
+	{
+	th1.style.borderColor='#5B91A5';   /* th1是点赞过的 */
+	}
+	else if(a==2){
+	th2.style.borderColor='#5B91A5';   /* th2是评论过的 */
+	}
+	else{
+	th3.style.borderColor='#5B91A5';  /* th3是参加过的 */
+		
+	}
+	
+}
+</script>
 </head>
 
-<body>
+<body onload = "check()";>
 
-
-	<img src="${APP_PATH }/static/image/publish.png"
-		style="height: 300px; width: 1390px;">
-
+	<input id="choose" type="hidden" value="${requestScope.choose}">
+	<img src="${APP_PATH }/static/image/publish.png" id="imag">
+     <div id="mid1">
 	<div id="mid">
 		<div id="mid_msg">
 			<table id="mid_msg_table1">
 				<tr>
 					<th id="th_bom"><a href="${APP_PATH }/myAttendingActiv">进行中的活动</a></th>
-					<th id="th_bom1"><a href="${APP_PATH }/myFavoriteActiv">活动历史</a></th>
+					<th id="th_bom1"><a href="${APP_PATH }/myFavoriteActiv" style="color:white">活动历史</a></th>
 					<th id="th_bom"><a href="${APP_PATH }/myUserInfo">我的账号</a></th>
 					<th id="th_bom"><a href="${APP_PATH }/myMessage">消息</a></th>
 				</tr>
@@ -261,7 +273,7 @@ h3 {
 
 		<div id="mid_act">
 			<c:if test="${empty requestScope.activityUsers}">
-				<div style="margin-left: 50px; font-size: 25px;">无活动</div>
+				<div style="margin-left: 500px; font-size: 20px; padding-top: 100px;color:#A4A4A4">无活动</div>
 			</c:if>
 			<c:if test="${!empty requestScope.activityUsers}">
 				<c:forEach items="${requestScope.activityUsers }"
@@ -270,7 +282,7 @@ h3 {
 						<div style="float: left">
 							<a href="${APP_PATH }/index/${activityUsers.activId}"><img
 								src="${activityUsers.activBill}" id="img_a"></a>
-							<h4>${activityUsers.activStart}</h4>
+						 <h4><fmt:formatDate value="${activityUsers.activStart}" pattern="yyyy-MM-dd hh:mm:ss" /></h4>
 							<a href="${APP_PATH }/index/${activityUsers.activId}"><h3>${activityUsers.activName}</h3></a>
 							<div id="buttom_buttom">
 								<c:forEach items="${activityUsers.userList }" var="userList">
@@ -288,11 +300,95 @@ h3 {
 			</c:if>
 
 		</div>
+		</div>
 		<div id="mid_add">
 			<a href="toAddActiv"><img src="static/image/add.png"
 				id="mid_add_img"></a>
 		</div>
 	</div>
-
+<div id="black"></div>
 </body>
 </html>
+<%-- <c:if test="${!empty requestScope.userLabels}">
+					<c:forEach items="${requestScope.labels }" var="labels" begin="0" end="0">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="摄影" name="userLabels">摄影</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="摄影" name="userLabels">摄影</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="1" end="1">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="食品" name="userLabels">食品</div>						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input type="checkbox" value="食品" name="userLabels">食品</div>						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="2" end="2">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="电影" name="userLabels">电影</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="电影" name="userLabels">电影</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="3" end="3">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="宠物" name="userLabels">宠物</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="宠物" name="userLabels">宠物</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="4" end="4">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="艺术" name="userLabels">艺术</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="艺术" name="userLabels">艺术</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="5" end="5">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="运动" name="userLabels">运动</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="运动" name="userLabels">运动</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="6" end="6">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="游戏" name="userLabels">游戏</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="游戏" name="userLabels">游戏</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="7" end="7">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="写作" name="userLabels">写作</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="写作" name="userLabels">写作</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="8" end="8">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="科技" name="userLabels">科技</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="科技" name="userLabels">科技</div>
+						</c:if>
+					</c:forEach>
+					</c:if>
+					<c:if test="${empty requestScope.userLabels}">
+						<div name="test" id="checkbox"><input type="checkbox" value="摄影" name="userLabels">摄影</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="食品" name="userLabels">食品</div>
+						<div name="test" id="checkbox"> <input type="checkbox" value="电影" name="userLabels">电影</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="宠物" name="userLabels" >宠物</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="艺术" name="userLabels">艺术</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="运动" name="userLabels">运动</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="游戏" name="userLabels">游戏</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="写作" name="userLabels">写作</div>
+						 <div name="test" id="checkbox"><input type="checkbox" value="科技" name="userLabels">科技</div>
+					</c:if> --%>

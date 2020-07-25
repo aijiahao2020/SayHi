@@ -15,12 +15,15 @@
 	height: 50px;
 	width: 88%;
 	margin-left: 10%;
+	
 }
 
 img {
 	height: 30px;
 }
-
+#login1{
+    padding-top:30px;
+}
 #login {
 	border-style: solid;
 	border-color: #d8d8d8;
@@ -101,30 +104,9 @@ img {
 }
 
 #button1:hover {
-	background-color: blue;
+	background-color: #5B91A5;
 }
 
-#button3 {
-	margin-left: 80%;
-	margin-top: -3%;
-	visibility: hidden;
-	width: 15%;
-	height: 30px;
-	background-color: #d8d8d8;
-	cursor: pointer;
-	color: white;
-	border-radius: 5px;
-	outline: 0;
-	font-size: 16px;
-	border-style: solid;
-	border-color: #d8d8d8;
-	border-width: 1px;
-	font-family: "PingFang SC";
-}
-
-#button3:hover {
-	background-color: blue;
-}
 
 h1 {
 	font-family: "PingFang SC";
@@ -136,7 +118,7 @@ function checkPassword()
 {
  if(document.getElementById("password").value==null||document.getElementById("password").value=="")
  {
-  document.getElementById("spanPassword").innerHTML = "<font color='red'>请输入密码 </font>";
+  document.getElementById("spanPassword").innerHTML = "<font color='red' style='margin-left:50px'>请输入密码 </font>";
   return false;
  }
 }
@@ -148,12 +130,12 @@ function checkPasswordConfig()
  if(a!="") document.getElementById("spanPassword").innerHTML = "";
  if(b==null||b=="")
  {
-  document.getElementById("spanPasswordConfig").innerHTML = "<font color='red'>请您确认密码！ </font>";
+  document.getElementById("spanPasswordConfig").innerHTML = "<font color='red' style='margin-left:50px'>请您确认密码！ </p>";
   return false;
  }
  if(a!=b)
  {
-  document.getElementById("spanPasswordConfig").innerHTML = "<font color='red'>您两次输入的密码不一致！ </font>";
+  document.getElementById("spanPasswordConfig").innerHTML = "<font color='red'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp您两次输入的密码不一致！ </font>";
   return false;
  }
  
@@ -161,7 +143,7 @@ function checkPasswordConfig()
 	 {
 /* 	 document.getElementById("button3").style.visibility="visible";
 	 document.getElementById("button1").style.visibility="hidden"; */
-	 document.getElementById("spanPasswordConfig").innerHTML = "<font color='red'>密码一致！ </font>";
+	 document.getElementById("spanPasswordConfig").innerHTML = "<font color='red'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp密码一致！ </font>";
 	 }
 }
 
@@ -182,7 +164,7 @@ function tip(){
 		<a href="index"><img alt="" src="static/image/SayHi.png"
 			style="padding-top: 10px; padding-left: 20px;"></a>
 	</div> -->
-
+<div id="login1">
 	<div id="login">
 		<div id="logintop">
 			<h1 style="padding-left: 5%;">注册</h1>
@@ -214,7 +196,7 @@ function tip(){
 			</form>
 		</div>
 
-
+        </div>
 	</div>
 </body>
 </html>

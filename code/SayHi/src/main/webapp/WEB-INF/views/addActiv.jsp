@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="head.jsp" />
 <!DOCTYPE html>
 <html class="ui-mobile">
@@ -27,9 +28,10 @@ a {
 }
 
 #top {
-	border-bottom: solid;
-	border-width: 2px;
-	border-color: darkgray;
+	border:none;
+height:65px;
+position:static;
+background:transparent;
 }
 
 #quit {
@@ -64,8 +66,8 @@ a {
 }
 
 #publish {
-	width: 80%;
-	margin-left: 10%;
+	width: 60%;
+	margin-left: 20%;
 	height: 800px;
 	border-style: solid;
 	border-width: 2px;
@@ -91,13 +93,13 @@ a {
 }
 
 #act_name {
-	margin-left: 30%;
+	margin-left: 300px;
 	font-size: 18px;
 	font-family: PingFang SC;
 }
 
 #act_name_input {
-	margin-left: 5%;
+	margin-left: 7%;
 	width: 30%;
 	border-radius: 5px;
 	border-width: 1.5px;
@@ -113,7 +115,7 @@ a {
 
 #act_location_input {
 	margin-top: 10px;
-	margin-left: 39%;
+	margin-left: 410px;
 	width: 20%;
 	height: 70px;
 	border-radius: 5px;
@@ -129,7 +131,9 @@ a {
 	font-family: PingFang SC;
 	margin-top: 20px;
 }
-
+#act{
+   margin-top:30px;
+}
 #act_endtime {
 	margin-left: 30%;
 	font-size: 18px;
@@ -280,6 +284,13 @@ a {
 	font-size: 14px;
 	font-family: PingFang SC;
 }
+#black{
+  width:100%;
+background-color:#F5F9FA;
+  height:200px;
+  margin-top:250px;
+  float:left;
+}
 </style>
 <!-- <script type="text/javascript" src="static/js/jsAddress.js"></script> -->
 <script src="static/js/My97DatePicker/WdatePicker.js"></script>
@@ -305,14 +316,22 @@ a {
 				<div id="title_wd">发起活动</div>
 			</center>
 		</div>
-
+		
+		<%-- <c:if test="${requestScope.isAdd != '未提交'}">
+		<c:if test="${requestScope.isAdd}">
+			<center><font>发布成功</font></center>
+			<c:if test="${!requestScope.isAdd}">
+			<center><font>发布失败</font></center>
+			</c:if>
+			</c:if>
+		</c:if> --%>
 		<div id="act">
 			<form action="${APP_PATH }/addActiv" method="post"
 				enctype="multipart/form-data" onsubmit="get();">
 				<input type="hidden" name="userId"
 					value="${sessionScope.user.userId}">
 				<div id="act_name">
-					活动名: <input type="text" id="act_name_input" name="activName">
+					活动名: <input value="${activity.activName}" type="text" id="act_name_input" name="activName">
 				</div>
 
 
@@ -322,26 +341,23 @@ a {
 						onchange="provincechange(this.selectedIndex)">
 					</select> <select id="city" runat="server" name="activCity">
 					</select>
-					<!-- <select class="pc" name="province" id="param_province"
-						onchange="provincechange(this.selectedIndex)"><option></option></select>
-					<select class="pc" name="city" id="param_city"><option>城市</option></select> -->
 					 <script type="text/javascript">
 						setup()
 					</script>
 				</div>
 				<!-- 具体地址 -->
-				<textarea id="act_location_input" name="activAddress"></textarea>
+				<textarea id="act_location_input" name="activAddress">${activity.activAddress}</textarea>
 
 
 				<div id="act_starttime">
-					开始时间： <input name="activStarttime" type="datetime"
+					开始时间： <input value="<fmt:formatDate value="${activity.activStarttime}" pattern="yyyy-MM-dd hh:mm:ss" />" name="activStarttime" type="datetime"
 						class="Wdate form-controls"
 						onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm',maxDate:'#F{$dp.$D(\'endDate\')}'})"
 						id="startDate"
 						style="margin-left: 13px; border-width: 1.5px; border-color: #8F8F8F;">
 				</div>
 				<div id="act_endtime">
-					结束时间： <input name="activEndtime" type="datetime"
+					结束时间： <input value="<fmt:formatDate value="${activity.activEndtime}" pattern="yyyy-MM-dd hh:mm:ss" />" name="activEndtime" type="datetime"
 						class="Wdate form-controls"
 						onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm',minDate:'#F{$dp.$D(\'startDate\')}'})"
 						id="endDate"
@@ -349,9 +365,11 @@ a {
 				</div>
 
 				<div id="act_tag">
-					活动标签: <select id="act_tag_select" name="activLabel"
+					活动标签: <select  id="act_tag_select" name="activLabel"
 						style="margin-left: 30px; width: 60px; border-radius: 5px; border-width: 1.5px; border-color: #8F8F8F; font-size: 14px; font-family: PingFang SC;">
-						<option value="摄影">摄影</option>
+						<%-- <c:if test="${activity.activLabel=='摄影'}"> --%>
+						<option selected="selected" value="摄影">摄影</option>
+						<c:if test=""></c:if>
 						<option value="食品">食品</option>
 						<option value="电影">电影</option>
 						<option value="宠物">宠物</option>
@@ -362,21 +380,19 @@ a {
 						<option value="科技">科技</option>
 					</select>
 				</div>
-
-
 				<div id="act_introduce">
 					<div>活动介绍：</div>
-					<textarea id="act_introduce_input" name="activBrief"></textarea>
+					<textarea id="act_introduce_input" name="activBrief">${activity.activBrief}</textarea>
 
 				</div>
 				<div id="act_limit">
 					<div>特别限制：</div>
-					<textarea id="act_limit_input" name="limitExplain"></textarea>
+					<textarea id="act_limit_input" name="limitExplain">${activity.limitExplain}</textarea>
 
 				</div>
 
 				<div id="act_num">
-					期望人数： <input type="text" id="act_num_input" name="expNum" />
+					期望人数： <input value="${activity.expNum}" type="text" id="act_num_input" name="expNum" />
 					<!-- <div
 			style="margin-left: 300px; margin-top: -23px; font-size: 12px; color: #AFAFAF">
 						不限制 <input type="checkbox">
@@ -388,11 +404,11 @@ a {
 				</div>
 
 				<center>
-					<a href="toMyInfoPage"><input type="submit" id="act_button"
-						value="确认发布"></a>
+					<input type="submit" id="act_button" value="确认发布">
 				</center>
 			</form>
 		</div>
 	</div>
+	<div id="black"></div>
 </body>
 </html>

@@ -32,7 +32,7 @@ public class ImageUtils {
 		// 保存数据库的路径
 		String sqlPath = null;
 		// 定义文件保存的本地路径
-		String localPath = "D:\\File\\";
+		String localPath = "C:\\Users\\po\\Desktop\\SayHi\\code\\SayHi\\src\\main\\webapp\\static\\image\\";
 		// 定义 文件名
 		String filename = null;
 		if (!pictureFile.isEmpty()) {
@@ -46,14 +46,16 @@ public class ImageUtils {
 			filename = uuid + "." + suffixName;
 			// 文件保存路径
 			pictureFile.transferTo(new File(localPath + filename));
+			System.out.println("filename " + filename);
 		}
 		// 把图片的相对路径保存至数据库
 		if (filename == null)
 			return null;
 		else {
 			sqlPath = "/images/" + filename;
-			return sqlPath;
+			System.out.println("sqlPath:" + sqlPath);
 		}
+			return sqlPath;
 	}
 
 	/**

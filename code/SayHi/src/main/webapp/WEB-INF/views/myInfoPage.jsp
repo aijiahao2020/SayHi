@@ -16,9 +16,12 @@ a{
   color:black;
 }
 #top {
-	border-bottom: solid;
+	border:none;
 	border-width: 2px;
 	border-color: darkgray;
+	margin-top:-8px;
+	background:transparent;
+	position:static;
 }
 
 #quit {
@@ -52,26 +55,35 @@ a{
 	margin-right:5px;
 }
 
-body {
-	background-image: url(image/publish.png);
-	background-position: 50px 50px;
-	background-size: 1350px 330px;
-	background-repeat: no-repeat;
+#imag{
+  width:1150px;
+   height:330px;
+   margin-top:-55px;
+   margin-left:150px;
 }
-
-#mid {
-	width: 1130px;
-	height: 550px;
-	border: solid;
+body {
+	onload = check();
+}
+#mid1{
+   width: 1180px;
+   min-height:600px;
+    height:auto;
+    border: solid;
 	border-top-color: #F7F7F7;
 	border-bottom-color: #B1B1B1;
 	border-left-color: #D3D3D3;
-	border-right-color: #D3D3D3;
-	margin-left: 250px;
+	border-right-color: #D3D3D3; 
+	   margin-left: 170px;
 	margin-bottom: 100px;
-	border-radius: 5px;
+	border-radius: 10px;
+	margin-top:15px;
+	float:left;
 }
-
+#mid {
+	
+	height:auto;
+	
+}
 #mid_table1 {
 	margin-left: 80px;
 }
@@ -197,15 +209,18 @@ body {
 #img_upload {
 	visibility: hidden;
 }
-
+#save_button:hover{
+background-color:  #5B91A5;
+color:white;
+}
 #save_button {
-	width: 200px;
-	height: 50px;
+	width: 180px;
+	height: 40px;
 	visibility: hidden;
 	font-size: 15px;
 	border: none;
-	margin-top: 20px;
-	margin-left: 200px;
+	margin-top: 120px;
+	margin-left: -150px;
 	color: black;
 	outline: none;
 	border-radius:5px;
@@ -218,15 +233,22 @@ body {
 #test{
 }
 #mid_add{
- right:150px;
+ right: 380px;
     position: fixed;
     z-index: 999;
-    bottom:100px;
+    bottom:50px;
 }
 #mid_add_img{
    height:80px;
    width:80px;
 } 
+#black{
+  width:100%;
+background-color:#F5F9FA;
+  height:200px;
+  margin-top:250px;
+  float:left;
+}
 </style>
 <script src="static/js/jquery-1.12.4.min.js"></script>
 <script>
@@ -284,14 +306,15 @@ body {
      <img src="${sessionScope.user.avatar}" id="head_imag">
 	</div> --%>
 	
-	<img  src="static/image/publish.png"  style="height:300px;width:1390px;">
+	<img  src="static/image/publish.png"  id="imag">
 	
+	<div id="mid1">
 	<div id="mid">
 		<table  style="margin-left:80px;">
 			<tr>
 				<th id="th_bom"><a href="${APP_PATH }/myAttendingActiv">进行中的活动</a></th>
 					<th id="th_bom"><a href="${APP_PATH }/myFavoriteActiv">活动历史</a></th>
-					<th id="th_bom1"><a href="${APP_PATH }/myUserInfo">我的账号</a></th>
+					<th id="th_bom1"><a href="${APP_PATH }/myUserInfo" style="color:white">我的账号</a></th>
 					<th id="th_bom"><a href="${APP_PATH }/myMessage">消息</a></th>
 			</tr>
 		</table>
@@ -302,16 +325,15 @@ body {
 				<div id="mid_msg_head">头像:</div>
 				<img src="${sessionScope.user.avatar}" id="mid_msg_head_img">
 				<input type="file" id="img_upload" name="file" />
-				<div id="mid_msg_num">SayHi号:<div style="margin-right:700px;float:right;">${sessionScope.user.userId}</div></div>
+				<div id="mid_msg_num">SayHi号:<div style="margin-right:670px;float:right;">${sessionScope.user.userId}</div></div>
 				<div id="mid_msg_name">
-					用户名: <input id="mid_msg_name_input"
-						value="${sessionScope.user.userName}" name="userName" type="text"
+					用户名: <input id="mid_msg_name_input" value="${sessionScope.user.userName}" name="userName" type="text"
 						readOnly>
 				</div>
 				<div id="mid_msg_tag">
 					兴趣标签:
 					<div id="labels">
-					<div style="margin-left:150px;margin-top:-29px;">
+					<div style="margin-left:200px;margin-top:-29px;">
 					<c:if test="${empty requestScope.userLabels}">
 					无标签
 					</c:if>
@@ -323,6 +345,79 @@ body {
 					</div>
 					</div>
 					<div id="mid_msg_tag_check">
+						<c:if test="${!empty requestScope.userLabels}">
+					<c:forEach items="${requestScope.labels }" var="labels" begin="0" end="0">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="摄影" name="userLabels">摄影</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="摄影" name="userLabels">摄影</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="1" end="1">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="食品" name="userLabels">食品</div>						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input type="checkbox" value="食品" name="userLabels">食品</div>						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="2" end="2">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="电影" name="userLabels">电影</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="电影" name="userLabels">电影</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="3" end="3">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="宠物" name="userLabels">宠物</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="宠物" name="userLabels">宠物</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="4" end="4">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="艺术" name="userLabels">艺术</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="艺术" name="userLabels">艺术</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="5" end="5">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="运动" name="userLabels">运动</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="运动" name="userLabels">运动</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="6" end="6">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="游戏" name="userLabels">游戏</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="游戏" name="userLabels">游戏</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="7" end="7">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="写作" name="userLabels">写作</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="写作" name="userLabels">写作</div>
+						</c:if>
+					</c:forEach>
+					<c:forEach items="${requestScope.labels }" var="labels" begin="8" end="8">
+						<c:if test="${labels == 1}">
+						<div name="test" id="checkbox"><input checked="checked" type="checkbox" value="科技" name="userLabels">科技</div>
+						</c:if>
+						<c:if test="${labels == 0}">
+						<div name="test" id="checkbox"><input  type="checkbox" value="科技" name="userLabels">科技</div>
+						</c:if>
+					</c:forEach>
+					</c:if>
+					<c:if test="${empty requestScope.userLabels}">
 						<div name="test" id="checkbox"><input type="checkbox" value="摄影" name="userLabels">摄影</div>
 						 <div name="test" id="checkbox"><input type="checkbox" value="食品" name="userLabels">食品</div>
 						<div name="test" id="checkbox"> <input type="checkbox" value="电影" name="userLabels">电影</div>
@@ -332,6 +427,7 @@ body {
 						 <div name="test" id="checkbox"><input type="checkbox" value="游戏" name="userLabels">游戏</div>
 						 <div name="test" id="checkbox"><input type="checkbox" value="写作" name="userLabels">写作</div>
 						 <div name="test" id="checkbox"><input type="checkbox" value="科技" name="userLabels">科技</div>
+					</c:if>
 					</div>
 				</div>
 				<div>
@@ -342,7 +438,8 @@ body {
 				<a href="toAddActiv"><img src="static/image/add.png" id="mid_add_img"></a>
 			</div>
 		</div>
-
+        </div>
 	</div>
+	<div id="black"></div>
 </body>
 </html>

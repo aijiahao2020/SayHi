@@ -16,7 +16,9 @@
 	width: 88%;
 	margin-left: 10%;
 }
-
+#top1{
+   padding-top: 120px;
+}
 img {
 	height: 30px;
 }
@@ -25,7 +27,7 @@ img {
 	border-style: solid;
 	border-color: #d8d8d8;
 	border-width: 1px;
-	margin-top: 3%;
+	
 	height: 430px;
 	width: 40%;
 	margin-left: 30%;
@@ -72,7 +74,9 @@ img {
 	border-width: 1px;
 	font-family: "PingFang SC";
 }
-
+#button1:hover{
+     background-color:  #5B91A5;
+}
 h1 {
 	font-family: "PingFang SC";
 	color: white;
@@ -81,7 +85,7 @@ h1 {
 </head>
 <body>
 
-
+<div id="top1">
 	<div id="login">
 		<div id="logintop">
 			<h1 style="padding-left: 5%">登录</h1>
@@ -104,6 +108,7 @@ h1 {
 				</div>
 			</form>
 		</div>
+	</div>
 	</div>
 </body>
 </html>

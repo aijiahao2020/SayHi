@@ -156,7 +156,7 @@ public class ActivityServiceImpl implements ActivityService{
 	@Override
 	public List<ActivityUser> getActivUserIndexRecom() {
 		Activity activity = new Activity();
-		activity.getActivStarttime();
+		activity.setActivStarttime(new Date());
 		return getActivUserListByComprehensive(activity);
 	}
 

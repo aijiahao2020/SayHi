@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="head.jsp"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -12,7 +13,8 @@
 %>
 <style>
 #top {
-	margin-top: 1%;
+	margin-top:-8px;
+	border:none;
 }
 
 #loginbutton {
@@ -42,23 +44,26 @@
 	margin-right: 3%;
 	padding-left: 1%;
 }
-
+#middle1{
+  padding-top: 110px;
+}
 #middle {
-	margin-top: 2%;
+	
 	border: 1px solid #ddd;
 	width: 70%;
 	height: 50px;
 	margin-left: 15%;
 	border-radius: 10px;
+	border-color:white;
+	box-shadow:0px 2px 2px 1px #E0E0E0;
 }
-
 #activity {
-	background-image: url(image/search.png);
+	background-image: url(../static/image/search.png);
 	background-size: 12px 12px;
-	background-position: 5px 9px;
+	background-position: 15px 7px;
 	background-repeat: no-repeat;
 	border: 1px solid #ddd;
-	width: 45%;
+	width: 35%;
 	height: 30px;
 	margin-top: 9px;
 	margin-left: 2%;
@@ -69,12 +74,9 @@
 }
 
 #location {
-	background-image: url("image/location.png");
-	background-size: 12px 12px;
-	background-position: 5px 9px;
-	background-repeat: no-repeat;
+	
 	border: 1px solid #ddd;
-	width: 20%;
+	width: 31%;
 	height: 30px;
 	margin-top: 9px;
 	border-top-right-radius: 5px;
@@ -82,7 +84,12 @@
 	padding-left: 4%;
 	float: left;
 }
-
+#getlocation {
+	height: 20px;
+	float: left;
+	margin-top: 15px;
+	margin-left: -400px;
+}
 #search {
 	border-radius: 5px;
 	width: 20%;
@@ -93,6 +100,8 @@
 	border-style: solid;
 	border-width: 1px;
 	float: left;
+	color: #99CEE1;
+	border-color: #99CEE1;
 	margin-left: 1.5%;
 }
 
@@ -132,6 +141,7 @@ th {
 	line-height: 50px;
 	width: 70%;
 	margin-left: 15%;
+	margin-top:30px;
 }
 
 /* 活动类型 样式 */
@@ -207,6 +217,7 @@ th {
 #condition_select {
 	height: 70px;
 	float: left;
+	margin-left:-30px;
 }
 
 #condition {
@@ -332,6 +343,8 @@ ul {
 	height: 300px;
 	width: 70%;
 	margin-left: 15%;
+	margin-top:-10px;
+	
 }
 
 .show_activ {
@@ -340,21 +353,26 @@ ul {
 	margin-top: 10px;
 	text-align: center;
 	float: left;
+	margin-bottom:40px;
+	margin-left:-10px;
+	margin-right:10px;
 }
 
 .show_img {
-	height: 140px;
-	width: 80%;
+	height: 100px;
+	width: 230px;
 	margin-left: 10%;
 	margin-top: 20px;
 	border-radius: 10px;
 	background-color: #BFBFBF;
+	
 }
 
 .show_img img {
-	height: 100%;
-	width: 100%;
+	height: 100px;
+	width: 230px;
 	border-radius: 10px;
+
 }
 
 .show_time {
@@ -382,6 +400,7 @@ ul {
 	margin-left: 10%;
 	height: 30px;
 	width: auto;
+	
 }
 
 .show_user_avatar {
@@ -397,6 +416,7 @@ ul {
 	height: 25px;
 	width: 25px;
 	border-radius: 20px;
+    margin-top:10px;
 }
 
 .show_user_num {
@@ -404,9 +424,10 @@ ul {
 	width: 25px;
 	line-height: 30px;
 	margin-left: 20px;
-	font-size: 20px;
+	font-size: 16px;
 	color: #BFBFBF;
 	float: left;
+	margin-top:10px;
 }
 
 /*  aijiahao 添加              */
@@ -434,8 +455,51 @@ ul {
 
 #img_a {
 	height: 100px;
+	width:200px;
+	border-radius:5px;
+	
+}
+#img_1 {
+	height: 30px;
+	width:30px;
+	border-radius:50%; 
+	overflow:hidden;
+    float:left;
+	margin-top:5px;
+}
+#black{
+  width:100%;
+background-color:#F5F9FA;
+  height:200px;
+  margin-top:250px;
+  float:left;
 }
 </style>
+<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript"
+	src="http://api.map.baidu.com/api?v=2.0&ak=wVZmkbFMtlrRgkkqWuDHm6GNbS7ciKGA"></script>
+<script type="text/javascript">
+	//通过百度地图成功转化经纬度并显示到界面
+	function getPoi() {
+		var x = $("#jd").val();
+		var y = $("#wd").val();
+		let point = new BMap.Point(x, y);
+		let gc = new BMap.Geocoder();
+
+		gc.getLocation(point, function(rs) {
+			let addComp = rs.addressComponents;
+			//详细地址为省，市，行政区，街道，街道地址
+			address = addComp.province + addComp.city + addComp.district
+					+ addComp.street + addComp.streetNumber;
+			document.getElementById("location").value = address;
+			//alert(addComp.city);
+			//alert(address);
+			//$("#apple").html(address);//显示到界面上
+			//window.localStorage.city = addComp.city;//当前城市
+			//window.localStorage.district = addComp.district;
+		});
+	}
+</script>
 <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
 	var activLabel = "全部";
@@ -628,13 +692,43 @@ ul {
 		</c:if>
 	</div> --%>
 
+ <div id="middle1">
 	<div id="middle">
 		<form action="${APP_PATH }/getAll/search" method="post">
-			<input name="activName" type="text" id="activity" placeholder=" 活动名"> <input
-				name="address" type="text" id="location" placeholder=" 地点"> <input
-				type="submit" value="搜索" id="search">
+			<input name="activName" type="text" id="activity" placeholder=" 活动名">
+			 <input name="address" type="text" id="location" placeholder=" 地点">
+				<img alt="" src="${APP_PATH }/static/image/location.png" onclick="getPoi()"
+				id="getlocation">
+				 <input type="submit" value="搜索" id="search">
 		</form>
 	</div>
+</div>
+     <div id="allmap"></div>
+	<script type="text/javascript">
+		var map = new BMap.Map("allmap");
+		var point = new BMap.Point(116.331398, 39.897445);
+		map.centerAndZoom(point, 12);
+
+		var geolocation = new BMap.Geolocation();
+		geolocation.getCurrentPosition(function(r) {
+			if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+				var mk = new BMap.Marker(r.point);
+				map.addOverlay(mk);
+				map.panTo(r.point);
+				document.getElementById("jd").value = r.point.lng;
+				document.getElementById("wd").value = r.point.lat;
+				//alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+			} else {
+				alert('failed' + this.getStatus());
+			}
+		});
+	</script>
+	<div class="container">
+		<form action="">
+			<input type="hidden" id="jd" /> <input type="hidden" id="wd" />
+		</form>
+	</div>
+	
 
 	<div id="headline">选活动</div>
 	<div id="select">
@@ -712,7 +806,7 @@ ul {
 						<a href="${APP_PATH }/index/${activUsers.activId}"><img
 							src="${activUsers.activBill}"></a>
 					</div>
-					<div class="show_time">${activUsers.activStart}</div>
+					<div class="show_time"><fmt:formatDate value="${activUsers.activStart}" pattern="yyyy-MM-dd hh:mm:ss" /></div>
 					<div class="show_name">
 						<a href="${APP_PATH }/index/${activUsers.activId}">${activUsers.activName}</a>
 					</div>
@@ -730,5 +824,6 @@ ul {
 		</c:if>
 
 	</div>
+	<div id="black"></div>
 </body>
 </html>

@@ -15,11 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.xalz.bean.Activity;
 import com.xalz.bean.ActivityUser;
-import com.xalz.bean.FavoriteInfo;
 import com.xalz.bean.User;
 import com.xalz.bean.UserAndComment;
 import com.xalz.service.ActivityMemberService;
@@ -73,7 +70,8 @@ public class ActivityController {
 	 * @return
 	 */
 	@RequestMapping("/toAddActiv")
-	public String addActivity() {
+	public String addActivity(Map<String, Object> map) {
+		map.put("isAdd", "未提交");
 		return "addActiv";
 	}
 
@@ -87,11 +85,14 @@ public class ActivityController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/addActiv")
-	public String addActivity(Activity activity, HttpServletRequest request, Model model) throws IOException {
+	public String addActivity(Activity activity, HttpServletRequest request, Map<String, Object> map) throws IOException {
 		System.out.println(activity);
 		String activBill = ImageUtils.upload(request, activity.getFile());
 		activity.setActivBill(activBill);
-		activityService.createActiv(activity);
+		System.out.println(activity);
+		boolean isAdd = activityService.createActiv(activity);
+		map.put("isAdd", isAdd);
+		map.put("activity", activity);
 		return "addActiv";
 	}
 
@@ -108,6 +109,9 @@ public class ActivityController {
 		System.out.println(activityUsers);
 		map.put("activUsers", activityUsers);
 		map.put("info", "全部+全部+全部+综合推荐");
+		//表单回显传入数据
+		map.put("activName", activName);
+		map.put("address", address);
 		return "classify";
 	}
 
@@ -172,6 +176,7 @@ public class ActivityController {
 			map.put("isF", "点赞");
 		}
 		map.put("isAttented", isAttented);
+		map.put("isSponsor", isSponsor);
 		map.put("activMem", activMem);
 		map.put("comments", comments);
 		map.put("activUsers", activUsers);
@@ -237,41 +242,6 @@ public class ActivityController {
 
 	}
 
-	/**
-	 * 查询员工数据（分页查询）
-	 * 
-	 * @return
-	 */
-	@RequestMapping("/emps")
-	public String getEmps(@RequestParam(value = "pn", defaultValue = "2") Integer pn, Model model) {
-		// 这不是一个分页查询；
-		// 引入PageHelper分页插件
-		// 在查询之前只需要调用，传入页码，以及每页的大小
-		PageHelper.startPage(pn, 1);
-//		// startPage后面紧跟的这个查询就是一个分页查询
-		List<UserAndComment> comments = commentService.getUserCommentByActivId(25);
-////		List<Activity> users = activityService.getAllActiv();
-//		// 使用pageInfo包装查询后的结果，只需要将pageInfo交给页面就行了。
-//		// 封装了详细的分页信息,包括有我们查询出来的数据，传入连续显示的页数
-		PageInfo<UserAndComment> page = new PageInfo<UserAndComment>(comments, 3);
-		System.out.println(page.getPageNum());
-		// 创建Page类
-		model.addAttribute("pageInfo", page);
-		return "list";
-	}
-
-	/**
-	 * 添加点赞信息
-	 * 
-	 * @param favoriteInfo
-	 * @return
-	 */
-	@RequestMapping("/favoriteActiv")
-	public String favoriteActiv(FavoriteInfo favoriteInfo) {
-		// 添加点赞信息
-//		favoriteInfoService.addFavoriteInfo(favoriteInfo);
-		return null;
-	}
 
 	/**
 	 * 获取所有活动：未登录
@@ -287,6 +257,8 @@ public class ActivityController {
 		// 主页两个标签
 		String userLabel1 = "摄影";
 		String userLabel2 = "食品";
+		//获取推荐活动
+		List<ActivityUser> activUsers = null;
 		// 根据标签获取的活动
 		List<ActivityUser> activUsers1 = null;
 		List<ActivityUser> activUsers2 = null;
@@ -300,16 +272,14 @@ public class ActivityController {
 			activUsers1 = activityService.getActivUserByActivLabel(userLabel1);
 			activUsers2 = activityService.getActivUserByActivLabel(userLabel2);
 
-			// 获取用户推荐活动
-
-			// .........
-
 		} else {
-			activUsers1 = activityService.getActivUserByActivLabel("科技");
-			activUsers2 = activityService.getActivUserByActivLabel("人文");
+			activUsers1 = activityService.getActivUserByActivLabel("摄影");
+			activUsers2 = activityService.getActivUserByActivLabel("食品");
 		}
 //		activityService.getActivUserByActivLabel(activLabel);
 //		activityService.
+		activUsers = activityService.getActivUserIndexRecom();
+		map.put("activUsers", activUsers);
 		map.put("userLabel1", userLabel1);
 		map.put("userLabel2", userLabel2);
 		map.put("activUsers1", activUsers1);
@@ -317,15 +287,5 @@ public class ActivityController {
 		return "index";
 	}
 
-	/**
-	 * 获取所有活动：已登录
-	 * 
-	 * @param map
-	 * @return
-	 *//*
-		 * @RequestMapping("/userIndex") public String getAllActivByUser(Map<String,
-		 * Object> map) { System.out.println(activityService.getAllActiv());
-		 * map.put("activities", activityService.getAllActiv()); return "index"; }
-		 */
 
 }

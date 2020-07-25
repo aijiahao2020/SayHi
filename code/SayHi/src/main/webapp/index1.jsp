@@ -81,7 +81,7 @@
 	
 	<a href="index">首页</a>
 	<a href="addFavoriteInfo1">首页</a>
-	<jsp:forward page="/emps"></jsp:forward>
+	<%-- <jsp:forward page="/emps"></jsp:forward> --%>
 	
 
 

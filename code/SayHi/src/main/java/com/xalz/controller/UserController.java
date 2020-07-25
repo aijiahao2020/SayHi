@@ -3,6 +3,7 @@ package com.xalz.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,14 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.xalz.bean.ActivityUser;
@@ -71,6 +70,7 @@ public class UserController {
 		List<ActivityUser> activityUsers = userService.getAllAUMPgByUserId(user.getUserId());
 		map.put("activityUsers", activityUsers);
 		map.put("isDel", "");
+		map.put("choose", 1);
 		return "personPage";
 	}
 
@@ -86,6 +86,7 @@ public class UserController {
 		model.setViewName("personPage");
 		model.addObject("activityUsers", activityUsers);
 		model.addObject("isDel", "isDel");
+		model.addObject("choose", 2);
 		return model;
 	}
 
@@ -101,6 +102,7 @@ public class UserController {
 		List<ActivityUser> activityUsers = userService.getFavorAUMPdByUserId(user.getUserId());
 		map.put("activityUsers", activityUsers);
 		map.put("isDel", "");
+		map.put("choose", 1);
 		return "actHistory";
 	}
 
@@ -116,6 +118,7 @@ public class UserController {
 		List<ActivityUser> activityUsers = userService.getCmtAUMPdByUserId(user.getUserId());
 		map.put("activityUsers", activityUsers);
 		map.put("isDel", "");
+		map.put("choose", 2);
 		return "actHistory";
 	}
 
@@ -130,6 +133,7 @@ public class UserController {
 		List<ActivityUser> activityUsers = userService.getAttendedAUMPdByUserId(user.getUserId());
 		map.put("activityUsers", activityUsers);
 		map.put("isDel", "");
+		map.put("choose", 3);
 		return "actHistory";
 	}
 
@@ -146,7 +150,20 @@ public class UserController {
 		System.out.println(user+"mmmmmmmmmmmmm");
 		List<UserLabel> userLabels = userLabelService.getMyUserByUserId(user.getUserId());
 //		map.put("user", user);
+		//获取标签列表数组
+		List<Integer> labels = new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0,0,0,0));
+		String[] ss = {"摄影","食品","电影","宠物","艺术","运动","游戏","写作","科技"};
+		for(int i = 0; i < userLabels.size();i++) {
+			for(int j = 0;j < ss.length;j++) {
+				if(ss[j].equals(userLabels.get(i).getLabelName())) {
+					labels.set(j, 1);
+					break;
+				}
+			}
+		}
+		System.out.println(labels);
 		map.put("userLabels", userLabels);
+		map.put("labels", labels);
 		return "myInfoPage";
 	}
 

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="head.jsp"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,9 +40,16 @@
 
 body {
 	background-image: url("static/image/index.png");
-	background-position: 50px 50px;
-	background-size: 1350px 330px;
+	 background-position: 50% 0px; 
+	background-size: 66%;
 	background-repeat: no-repeat;
+}
+#top{
+/* box-shadow:2px 2px 2px 1px darkgray; */
+border:none;
+height:65px;
+position:static;
+background:transparent;
 }
 /* #loginbutton {
 	cursor: pointer;
@@ -74,18 +82,25 @@ body {
 } */
 
 #middle {
-	margin-top: 350px;
-	border: 1px solid #ddd;
+	padding-top: 300px;
+
+	margin-left: 240px;
+
+}
+#middle1 {
 	width: 1050px;
 	height: 50px;
-	margin-left: 240px;
+    border:solid;
 	border-radius: 10px;
+	border-width:1px;
+	border-color:white;
+	box-shadow:0px 2px 2px 1px #E0E0E0;
 }
 
 #activity {
 	background-image: url(static/image/search.png);
 	background-size: 12px 12px;
-	background-position: 5px 9px;
+	background-position: 15px 7px;
 	background-repeat: no-repeat;
 	border: 1px solid #ddd;
 	width: 40%;
@@ -136,7 +151,8 @@ body {
 	margin-top: -30px;
 	border-style: none;
 	background: white;
-	color: #99CEE1;
+	color: #5B91A5;
+	font-size:16px;
 }
 
 h1 {
@@ -147,6 +163,7 @@ h1 {
 #img_a {
 	height: 100px;
 	width:200px;
+	border-radius:5px;
 	
 }
 #img_1 {
@@ -154,8 +171,7 @@ h1 {
 	width:30px;
 	border-radius:50%; 
 	overflow:hidden;
-	position:absolute; 
-	margin-right:10px;
+    float:left;
 	margin-top:5px;
 }
 
@@ -178,9 +194,11 @@ h3 {
 }
 
 #num {
-	margin-left: 70px;
-	font-size: 15px;
+	margin-left: 10px;
+	font-size: 16px;
 	color: #767676;
+	padding-top:10px;
+	float:left;
 	
 }
 #mid_act1{
@@ -194,15 +212,24 @@ a{
 }
 #mid_type{
   margin-bottom:50px;
+  padding-top:30px;
+  
   
 }
 #no_msg{
   margin-top:40px;
   font-size:20px;
-  color:red;
+  color:darkgray;
 }
 #mid_act1{
   margin-right:15px;
+}
+#black{
+  width:100%;
+background-color:#F5F9FA;
+  height:200px;
+  margin-top:250px;
+  float:left;
 }
 </style>
 </head>
@@ -224,12 +251,14 @@ a{
 	</div> --%>
 
 	<div id="middle">
+	<div id="middle1">
 		<form action="${APP_PATH }/getAll/search" method="post">
 			<input name="activName" type="text" id="activity" placeholder=" 活动名">
 			<input type="text" id="location" placeholder=" 地点" name="address">
 			<img alt="" src="${APP_PATH }/static/image/location.png" onclick="getPoi()"
 				id="getlocation"> <input type="submit" value="搜索" id="search">
 		</form>
+	</div>
 	</div>
 
 
@@ -261,28 +290,28 @@ a{
 	</div>
 
 	<div id="bottom">
-		<div id="bottom_top">
-			<h1>活动推荐</h1>
+		<div >
+			<h1 style="font-size:42px;">活动推荐</h1>
 			<a id="all" href="${APP_PATH }/getAll/全部+全部+全部+综合推荐">全部</a>
 		</div>
 		
 		<div id="mid_type">
-		<c:if test="${empty requestScope.activityUsers }">
+		<c:if test="${empty requestScope.activUsers }">
 		<div style="margin-top:20px;"><div id="no_msg">没有任何活动信息</div></div>
 		</c:if>
-		<c:if test="${!empty requestScope.activityUsers}">
-			<c:forEach items="${requestScope.activityUsers }" var="activityUsers" begin="0" end="3">
+		<c:if test="${!empty requestScope.activUsers}">
+			<c:forEach items="${requestScope.activUsers }" var="activUsers" begin="0" end="3">
 				<div id="mid_act1">
 					<div style="">
-						<a href="index/${activityUsers.activId}"><img
-							src="${activityUsers.activBill}" id="img_a"></a>
-						<h4>${activityUsers.activStart}</h4>
-						<a href="index/${activityUsers.activId}"><h3>${activityUsers.activName}</h3></a>
+						<a href="index/${activUsers.activId}"><img
+							src="${activUsers.activBill}" id="img_a"></a>
+						<h4><fmt:formatDate value="${activUsers.activStart}" pattern="yyyy-MM-dd hh:mm:ss" /></h4>
+						<a href="index/${activUsers.activId}"><h3>${activUsers.activName}</h3></a>
 						<div id="buttom_buttom">
-							<c:forEach items="${activityUsers.userList }" var="userList">
+							<c:forEach items="${activUsers.userList }" var="userList">
 								<a href="${APP_PATH }/getUserInfo/${userList.userId}"><img id="img_1" src="${userList.avatar}"></a>
 							</c:forEach>
-							<div id="num">${activityUsers.activNum}</div>
+							<div id="num">${activUsers.activNum}</div>
 						</div>
 					</div>
 				</div>
@@ -291,7 +320,7 @@ a{
 		</div>
 		<div id="mid_type">
 		<div style="margin-top:200px;"><c:if test="${ !empty requestScope.userLabel1}">
-				<font size="20px">${ requestScope.userLabel1}</font>
+				<h1 style="font-size:42px;">${ requestScope.userLabel1}</h1>
 			</c:if>
 			<a id="all" href="${APP_PATH }/getAll/${ requestScope.userLabel1}+全部+全部+综合推荐">全部</a></div>
 		<c:if test="${empty requestScope.activUsers1 }">
@@ -303,7 +332,7 @@ a{
 					<div style="">
 						<a href="${APP_PATH }/index/${activUsers1.activId}"><img
 							src="${activUsers1.activBill}" id="img_a"></a>
-						<h4>${activUsers1.activStart}</h4>
+						<h4><fmt:formatDate value="${activUsers1.activStart}" pattern="yyyy-MM-dd hh:mm:ss" /></h4>
 						<a href="${APP_PATH }/index/${activUsers1.activId}"><h3>${activUsers1.activName}</h3></a>
 						<div id="buttom_buttom">
 							<c:forEach items="${activUsers1.userList }" var="userList">
@@ -318,7 +347,7 @@ a{
          </div>
          <div id="mid_type">
 		<div style="margin-top:250px;"><c:if test="${ !empty requestScope.userLabel2}">
-				<font size="20px">${ requestScope.userLabel2}</font>
+				<h1 style="font-size:42px;">${ requestScope.userLabel2}</h1>
 			</c:if>
 			<a id="all" href="${APP_PATH }/getAll/${ requestScope.userLabel2}+全部+全部+综合推荐">全部</a></font></div>
 		<c:if test="${empty requestScope.activUsers2 }">
@@ -330,7 +359,7 @@ a{
 					<div >
 						<a href="${APP_PATH }/index/${activUsers2.activId}"><img
 							src="${activUsers2.activBill}" id="img_a"></a>
-						<h4>${activUsers2.activStart}</h4>
+					<h4><fmt:formatDate value="${activUsers2.activStart}" pattern="yyyy-MM-dd hh:mm:ss" /></h4>
 						<a href="${APP_PATH }/index/${activUsers2.activId}"><h3>${activUsers2.activName}</h3></a>
 						<div id="buttom_buttom">
 							<c:forEach items="${activUsers2.userList }" var="userList">
@@ -345,5 +374,6 @@ a{
 		</c:if>
 		</div>
 	</div>
+	<div id="black"></div>
 </body>
 </html>
