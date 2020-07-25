@@ -19,10 +19,14 @@
 <script
 	src="${APP_PATH }/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <style type="text/css">
+body{
+	overflow-x:"hidden";
+   overflow-y:"hidden";
+}
 #counter {
 	width: 1143px;
 	height: 820px;
-	background: url(../static/image/back_admin.png) no-repeat;
+	
 	float: right;
 }
 
@@ -32,6 +36,11 @@
 	margin: 25px auto 45px auto;
 	background: white;
 	border-radius: 5px;
+	box-shadow: 0px 2px 2px 1px #E0E0E0;
+}
+
+#inform::-webkit-scrollbar {
+	width: 0px;
 }
 
 #usermag_search_top {
@@ -82,7 +91,7 @@
 #usermag_search_button {
 	width: 100px;
 	height: 25px;
-	background-color: #6dbecb;
+	background-color: #4f93b6;
 	border-radius: 5px;
 	text-align: center;
 	line-height: 25px;
@@ -109,6 +118,7 @@
 	margin: 0 auto;
 	background: white;
 	border-radius: 5px;
+	box-shadow: 0px 2px 2px 1px #E0E0E0;
 }
 
 #usermag_result_top {
@@ -186,14 +196,42 @@
 	text-align: right;
 	padding-right: 40px;
 }
+#submitSearch{
+visibility: hidden;
+}
+.avatar {
+	width:40px;
+	height:40px;
+	border-radius: 40px;
+}
 </style>
+<script type="text/javascript">
+$(document).ready(
+		function() {
+			$("#activmag_search_button").click(
+					function() {
+						$("#submitSearch").trigger("click");
+					});
+			$(".table_li").css("background-color", "#4f93b6");
+			$("#user_mamager").css("background-color","#4288aa");
+			$(".delete").click(function(){
+				if(confirm("是否确认删除")){
+					
+				}else{return false;}
+			});
+			 $("body").css({
+				   "overflow-x":"hidden",
+				   "overflow-y":"hidden"
+				 });
+		});
+</script>
 </head>
 <body>
 	<jsp:include page="sidebar.jsp" flush="true" />
 	<div id="counter">
 		<div id="usermag_search">
 			<div id="usermag_search_top">搜索内容：</div>
-			<form action="" method="get">
+			<form action="userSearchAdmin" method="get">
 				<div id="usermag_search_content">
 					<div style="width: 812px; float: left;">
 						<table>
@@ -201,14 +239,15 @@
 
 								<td style="padding-left: 80px;">用户编号:</td>
 								<td style="width: 202px;"><input type="text" name="userId"
-									value=""></td>
+									value="${user.userId }"></td>
 								<td style="padding-left: 80px;">用户名:</td>
-								<td><input type="text" name="userName" value=""></td>
+								<td><input type="text" name="userName" value="${user.userName }"></td>
 							</tr>
 
 						</table>
 					</div>
 					<div id="usermag_search_button">搜索</div>
+					<input type="submit" id="submitSearch">
 				</div>
 			</form>
 
@@ -235,10 +274,10 @@
 								<td>${id.index + 1 }</td>
 								<td>${users.userId }</td>
 								<td>${users.userName }</td>
-								<td>${users.avatar }</td>
+								<td><img src="${users.avatar }" class="avatar"></td>
 								<td><a href="userAdmin/${users.userId }"><img
 										src="static/image/search_admin.png" class="img_search"></a>
-									<a href=""><img src="static/image/add_admin.png"
+									<a href="toAddUserAdmin"><img src="static/image/add_admin.png"
 										class="img_add"></a> <a href="delUserAdmin/${users.userId }" class="delete"><img
 										src="static/image/delete_admin.png" class="img_delete"></a></td>
 							</tr>
@@ -247,6 +286,7 @@
 				</table>
 			</div>
 			<!-- 显示分页信息 -->
+			<c:if test="${empty user }">
 			<div class="row">
 				<!--分页文字信息  -->
 				<div class="col-md-6" id="row_info">当前 ${pageInfo.pageNum }页,总${pageInfo.pages }
@@ -284,6 +324,47 @@
 					</nav>
 				</div>
 			</div>
+			</c:if>
+			
+			<c:if test="${!empty user }">
+			<div class="row">
+				<!--分页文字信息  -->
+				<div class="col-md-6" id="row_info">当前 ${pageInfo.pageNum }页,总${pageInfo.pages }
+					页,总 ${pageInfo.total } 条记录</div>
+				<!-- 分页条信息 -->
+				<div class="col-md-6" id="row_select">
+					<nav aria-label="Page navigation">
+						<ul class="pagination">
+							<li><a href="${APP_PATH }/userSearchAdmin?pn=1&&userId=${user.userId}&&userName=${user.userName}">首页</a></li>
+							<c:if test="${pageInfo.hasPreviousPage }">
+								<li><a
+									href="${APP_PATH }/userSearchAdmin?pn=${pageInfo.pageNum-1}&&userId=${user.userId}&&userName=${user.userName}"
+									aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+								</a></li>
+							</c:if>
+
+
+							<c:forEach items="${pageInfo.navigatepageNums }" var="page_Num">
+								<c:if test="${page_Num == pageInfo.pageNum }">
+									<li class="active"><a href="#&&userId=${user.userId}&&userName=${user.userName}">${page_Num }</a></li>
+								</c:if>
+								<c:if test="${page_Num != pageInfo.pageNum }">
+									<li><a href="${APP_PATH }/userSearchAdmin?pn=${page_Num }&&userId=${user.userId}&&userName=${user.userName}">${page_Num }</a></li>
+								</c:if>
+
+							</c:forEach>
+							<c:if test="${pageInfo.hasNextPage }">
+								<li><a
+									href="${APP_PATH }/userSearchAdmin?pn=${pageInfo.pageNum+1 }&&userId=${user.userId}&&userName=${user.userName}"
+									aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+								</a></li>
+							</c:if>
+							<li><a href="${APP_PATH }/userSearchAdmin?pn=${pageInfo.pages}&&userId=${user.userId}&&userName=${user.userName}">末页</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			</c:if>
 		</div>
 	</div>
 </body>

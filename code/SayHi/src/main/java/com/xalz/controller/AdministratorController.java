@@ -1,9 +1,11 @@
 package com.xalz.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageHelper;
@@ -25,6 +28,7 @@ import com.xalz.service.ActivityService;
 import com.xalz.service.AdministratorService;
 import com.xalz.service.CommentService;
 import com.xalz.service.UserService;
+import com.xalz.tool.ImageUtils;
 
 @Controller
 public class AdministratorController {
@@ -164,6 +168,40 @@ public class AdministratorController {
 	public String getActivByActivId(@PathVariable("id") Integer activId, Map<String, Object> map) {
 		Activity activity = activityService.getActivByPrimaryKey(activId);
 		map.put("activity", activity);
+		map.put("image", "modify_admin.png");
+		return "activInform";
+	}
+	
+	/**
+	 * 跳转到添加活动页面
+	 * @return
+	 */
+	@RequestMapping("/toAddActivAdmin")
+	public ModelAndView toAddActivityInAdmin(ModelAndView model) {
+		model.setViewName("activInform");
+		model.addObject("image", "hold_admin.png");
+		return model;
+	}
+	
+	/**
+	 *添加或更新活动
+	 * @return
+	 */
+	@RequestMapping(value = "/updateActivAdmin")
+	public String updateActivityAdmin(Activity activity, HttpServletRequest request, Map<String, Object> map) throws IOException {
+		System.out.println(activity);
+		
+		String activBill = ImageUtils.upload(request, activity.getFile());
+		if(activBill != null)
+			activity.setActivBill(activBill);
+		map.put("activity", activity);
+		if(administratorService.updateActivInAdmin(activity)) {
+			map.put("image", "modify_admin.png");
+		}else {
+			map.put("image", "hold_admin.png");
+		}
+		
+		
 		return "activInform";
 	}
 
@@ -175,6 +213,28 @@ public class AdministratorController {
 		System.out.println(activityService.deleteActivByPrimaryKey(activId));
 		return "redirect:/activAdmin";
 	}
+	
+	/**
+	 * 通过活动编号删除活动
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+
+//	@RequestMapping(value = "/delActivAdminByAjax", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+//	@ResponseBody
+//	public String deleteActivByAjax(@RequestParam("activId") Integer activId, HttpServletRequest request,
+//			HttpServletResponse response) throws IOException {
+//		String result = null;
+//		
+//		System.out.println("获取到Ajax请求");
+//		if(activityService.deleteActivByPrimaryKey(activId)) {
+//			result = "删除成功";
+//		}else {
+//			result = "删除失败";
+//		}
+//		return result;
+//	}
 
 	/**
 	 * 查询所有评论信息
@@ -237,6 +297,34 @@ public class AdministratorController {
 	public String getCommentByCmtId(@PathVariable("id") Integer cmtId, Map<String, Object> map) {
 		Comment comment = commentService.getCommentByCmtId(cmtId);
 		map.put("comment", comment);
+		map.put("image", "modify_admin.png");
+		return "cmtInform";
+	}
+	
+	/**
+	 * 跳转到添加评论页面
+	 * @return
+	 */
+	@RequestMapping("/toAddCmtAdmin")
+	public ModelAndView addCmtInAdmin(ModelAndView model) {
+		model.setViewName("cmtInform");
+		model.addObject("image", "hold_admin.png");
+		return model;
+	}
+	
+	/**
+	 *添加或更新评论
+	 * @return
+	 */
+	@RequestMapping(value = "/updateCmtAdmin")
+	public String updateCommentAdmin(Comment cmt, HttpServletRequest request, Map<String, Object> map) throws IOException {
+		System.out.println(cmt);
+		map.put("cmt", cmt);
+		if(administratorService.updateCmtInAdmin(cmt)) {
+			map.put("image", "modify_admin.png");
+		}else {
+			map.put("image", "hold_admin.png");
+		}
 		return "cmtInform";
 	}
 
@@ -251,7 +339,7 @@ public class AdministratorController {
 	
 	
 	/**
-	 * 查询所有评论信息
+	 * 查询所有用户信息
 	 */
 	@RequestMapping(value = "/userAdmin", method = RequestMethod.GET)
 	public String getAllUserInAdmin(@RequestParam(value = "pn", defaultValue = "1") Integer pn, Model model,
@@ -277,12 +365,72 @@ public class AdministratorController {
 	}
 	
 	/**
+	 * 通过用户编号和用户名进行模糊查询
+	 */
+	@RequestMapping(value = "/userSearchAdmin", method = RequestMethod.GET)
+	public String getUserSearchInAdmin(@RequestParam(value = "pn", defaultValue = "1") Integer pn, User user, Model model,
+			HttpSession session) {
+		// 获取session中的管理员账号
+		System.out.println(pn);
+		Administrator admin = (Administrator) session.getAttribute("admin");
+		System.out.println(admin);
+		if (admin != null) {
+			// 查询之前只需要调用，传入页码，以及每页的大小
+			PageHelper.startPage(pn, 10);
+			// startPage后面紧跟的这个查询就是一个分页查询
+			List<User> users = administratorService.getUserSearchInAdmin(user);
+			// 使用pageInfo包装查询后的结果，只需要将pageInfo交给页面就行了。
+			// 封装了详细的分页信息,包括有我们查询出来的数据，传入连续显示的页数
+			PageInfo page = new PageInfo(users, 3);
+			model.addAttribute("pageInfo", page);
+			model.addAttribute("user", user);
+			return "userAdmin";
+		} else {
+			model.addAttribute("message", "登入已过期，请重新登入");
+			return "loginAdmin";
+		}
+	}
+	
+	/**
 	 * 通过用户编号查询用户的详细信息
 	 */
 	@RequestMapping(value = "/userAdmin/{id}", method = RequestMethod.GET)
 	public String getUserByUserId(@PathVariable("id") Integer userId, Map<String, Object> map) {
 		User user = userService.getUserByPrimaryKey(userId);
 		map.put("user", user);
+		map.put("image", "modify_admin.png");
+		return "userInform";
+	}
+	
+	/**
+	 * 跳转到添加评论页面
+	 * @return
+	 */
+	@RequestMapping("/toAddUserAdmin")
+	public ModelAndView addUserInAdmin(ModelAndView model) {
+		model.setViewName("userInform");
+		model.addObject("image", "hold_admin.png");
+		return model;
+	}
+	
+	/**
+	 *添加或更新用户信息
+	 * @return
+	 */
+	@RequestMapping(value = "/updateUserAdmin")
+	public String updateUserAdmin(User user, HttpServletRequest request, Map<String, Object> map) throws IOException {
+		System.out.println(user);
+		String avatar = ImageUtils.upload(request, user.getFile());
+		System.out.println("avatar" + avatar);
+		if(avatar != null)
+		user.setAvatar(avatar);
+		if(administratorService.updateUserInAdmin(user)) {
+			map.put("image", "modify_admin.png");
+		}else {
+			map.put("image", "hold_admin.png");
+		}
+		map.put("user", user);
+		map.put("image", "modify_admin.png");
 		return "userInform";
 	}
 
@@ -294,5 +442,7 @@ public class AdministratorController {
 		userService.deleteUserByUserId(userId);
 		return "redirect:/userAdmin";
 	}
+	
+	
 
 }

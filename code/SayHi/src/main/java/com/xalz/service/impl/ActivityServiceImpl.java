@@ -1,6 +1,11 @@
 package com.xalz.service.impl;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -151,12 +156,12 @@ public class ActivityServiceImpl implements ActivityService{
 	}
 	
 	/**
-	 * 首页活动推荐(结束时间大于当前时间,期望人数为满,点赞/评论综合推荐)
+	 * 首页活动推荐(结束时间大于当前时间,期望人数未满,点赞/评论综合推荐)
 	 */
 	@Override
 	public List<ActivityUser> getActivUserIndexRecom() {
 		Activity activity = new Activity();
-		activity.getActivStarttime();
+		activity.setActivStarttime(new Date());
 		return getActivUserListByComprehensive(activity);
 	}
 
@@ -188,7 +193,8 @@ public class ActivityServiceImpl implements ActivityService{
 //		activRecoment.setActivCity(activity.getActivCity());
 		activRecoment.setActivLabel(activity.getActivLabel());
 		activRecoment.setActivStarttime(new Date());
-		
+		//设置时间格式
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		List<Activity> activList = getActivListByFuzzySearch(activRecoment);
 		for(Activity activ : activList) {
 			if(activ.getActivId() != activity.getActivId()) {
@@ -196,7 +202,15 @@ public class ActivityServiceImpl implements ActivityService{
 				ActivityUser activUser = new ActivityUser();
 				activUser.setActivId(activ.getActivId());
 				activUser.setActivName(activ.getActivName());
-				activUser.setActivStart(activ.getActivStarttime());
+				//转化时间格式
+				String startTime = sdf.format(activ.getActivStarttime());
+				System.out.println(startTime);
+				try {
+					activUser.setActivStart(sdf.parse(startTime));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				activUser.setActivNum(activityMemberService.getActvityMemberCount(activ.getActivId()));
 				activUser.setActivBill(activ.getActivBill());
 				activUser.setUserList(activityMemberService.getUserListByActivity(activ.getActivId()));
@@ -502,6 +516,7 @@ public class ActivityServiceImpl implements ActivityService{
 	public List<ActivityUser> convertActivListToActivUserList (List<Activity> activList) {
 		//创建ActivityUser类的list集合
 		List<ActivityUser> activUserList = new LinkedList<ActivityUser>();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		//遍历活动list
 		for(Activity activ : activList) {
 //				
@@ -510,6 +525,7 @@ public class ActivityServiceImpl implements ActivityService{
 				ActivityUser activUser = new ActivityUser();
 				activUser.setActivId(activ.getActivId());
 				activUser.setActivName(activ.getActivName());
+				
 				activUser.setActivStart(activ.getActivStarttime());
 				//通过活动编号获取成员人数，赋值给ActivityUser对象的属性
 				activUser.setActivNum(activityMemberService.getActvityMemberCount(activ.getActivId()));

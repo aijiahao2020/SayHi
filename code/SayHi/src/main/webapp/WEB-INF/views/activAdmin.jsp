@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>活动查询</title>
+<title>活动管理</title>
 
 <%
 	pageContext.setAttribute("APP_PATH", request.getContextPath());
@@ -15,19 +15,21 @@
 以/开始的相对路径，找资源，以服务器的路径为标准(http://localhost:3306)；需要加上项目名
 		http://localhost:3306/crud
  -->
+ <script type="text/javascript"
+	src="${APP_PATH }/static/js/jquery-3.4.1.js"></script>
 <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<link href="${APP_PATH }/static/css/activadmin.css" rel="stylesheet"
+	type="text/css" />
 <link
 	href="${APP_PATH }/static/bootstrap-3.3.7-dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<link href="${APP_PATH }/static/css/activadmin.css" rel="stylesheet"
-	type="text/css" />
+
 <script
 	src="${APP_PATH }/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <style type="text/css">
 #counter {
 	width: 1143px;
 	height: 820px;
-	background: url(static/image/back_admin.png) no-repeat;
 	float: right;
 }
 
@@ -47,6 +49,35 @@ a {
 	text-decoration: none;
 	outline: 0;
 }
+#activmag_search {
+	width: 1000px;
+	height: 178px;
+	margin: 25px auto 45px auto;
+	background: white;
+	border-radius: 5px;
+	box-shadow: 0px 2px 2px 1px #E0E0E0;
+}
+
+#activmag_result {
+	width: 1000px;
+	height: 524px;
+	margin: 0 auto;
+	background: white;
+	border-radius: 5px;
+	box-shadow: 0px 2px 2px 1px #E0E0E0;
+}
+#activmag_search_button {
+	width: 100px;
+	height: 25px;
+	background-color: #4f93b6;
+	border-radius: 5px;
+	text-align: center;
+	line-height:25px;
+	color: white;
+	cursor: pointer;
+	float: left;
+	font-size: 13px;
+}
 
 #submitSearch{
 visibility: hidden;
@@ -59,7 +90,37 @@ $(document).ready(
 					function() {
 						$("#submitSearch").trigger("click");
 					});
+			$(".delete").click(function(){
+				if(confirm("是否确认删除")){
+					
+				}else{return false;}
+			});
+			$("body").css({
+				   "overflow-x":"hidden",
+				   "overflow-y":"hidden"
+				 });
 		});
+/* $(document).ready(function(){
+	$(".del").click(function(){
+		var id = $(this).parent().parent().children().first().next().text();
+		alert(id);
+		$.ajax({
+			url : "${APP_PATH }/delActivAdminByAjax",//这个对应Controller的URL，和表单里面的action一样
+			date : {
+				activId : id
+				
+			},//data就是你想要传什么数据到Controller层，这里的数据是json数据。
+			type : "POST", //类型，POST或者GET,就和表单与超链接一样
+			dataType : "text", //Controller层返回类型，如果返回String，就用text,返回json,就用json
+			success : function(data) {
+				alert(data);
+			},
+			error:function(){
+	            alert("错误类型");
+			}
+		});
+	});
+}); */
 </script>
 </head>
 <body>
@@ -116,7 +177,7 @@ $(document).ready(
 								<td>${activs.activName }</td>
 								<td><a href="activAdmin/${activs.activId}"><img
 										src="static/image/search_admin.png" class="img_search"></a>
-									<a href=""><img src="static/image/add_admin.png"
+									<a href="toAddActivAdmin"><img src="static/image/add_admin.png"
 										class="img_add"></a> <a
 									href="delActivAdmin/${activs.activId}" class="delete"><img
 										src="static/image/delete_admin.png" class="img_delete"></a></td>
@@ -136,7 +197,6 @@ $(document).ready(
 					<div class="col-md-6" id="row_select">
 						<nav aria-label="Page navigation">
 							<ul class="pagination">
-							<a href="${APP_PATH }/activAdmin?pn=1">测试</a>
 								<li><a href="${APP_PATH }/activAdmin?pn=1">首页</a></li>
 								<c:if test="${pageInfo.hasPreviousPage }">
 									<li><a

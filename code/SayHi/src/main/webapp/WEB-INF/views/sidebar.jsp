@@ -5,14 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <style type="text/css">
-a {
-	text-decoration: none;
-}
+
 
 #left {
 	width: 360px;
 	height: 820px;
-	background-color: #98C5CD;
+	background-color: #4f93b6;
 	float: left;
 }
 
@@ -33,6 +31,10 @@ a {
 	color: white;
 	font-size: 24px;
 	float: right;
+}
+
+#left a {
+	text-decoration: none;
 }
 
 #logout {
@@ -68,16 +70,9 @@ ul {
 	color: white;
 	text-align: center;
 	line-height: 56px;
-	background-color: #98C5CD;
+	background-color: #4f93b6;
 }
 
-.table_li:hover {
-	background-color: rgba(42, 182, 205, 0.7);
-}
-
-#activ_mamager {
-	background-color: rgba(30, 110, 155, 0.7);
-}
 
 #bottom {
 	width: 360px;

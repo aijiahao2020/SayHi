@@ -10,13 +10,7 @@ a {
 	outline: 0;
 }
 
-#activmag_search {
-	width: 1000px;
-	height: 178px;
-	margin: 25px auto 45px auto;
-	background: white;
-	border-radius: 5px;
-}
+
 
 #activmag_search_top {
 	width: 1000px;
@@ -61,28 +55,6 @@ a {
 	border-color: black;
 }
 
-#activmag_search_button {
-	width: 100px;
-	height: 25px;
-	background-color: #6dbecb;
-	border-radius: 5px;
-	text-align: center;
-	line-height:25px;
-	color: white;
-	cursor: pointer;
-	float: left;
-	font-size: 13px;
-}
-
-
-
-#activmag_result {
-	width: 1000px;
-	height: 524px;
-	margin: 0 auto;
-	background: white;
-	border-radius: 5px;
-}
 
 #activmag_result_top {
 	width: 1000px;

@@ -1,11 +1,6 @@
 @charset "UTF-8";
 
-#counter {
-	width: 1143px;
-	height: 820px;
-	background: url(static/css/back_admin.png) no-repeat;
-	float: right;
-}
+
 
 #inform::-webkit-scrollbar {
 	width: 0px;

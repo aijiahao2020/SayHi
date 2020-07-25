@@ -13,9 +13,10 @@
 #counter {
 	width: 1143px;
 	height: 820px;
-	background: url(images/back.png) no-repeat;
+	
 	float: right;
 }
+
 
 #inform::-webkit-scrollbar {
 	width: 0px;
@@ -100,16 +101,72 @@ td {
 #user_inform option {
 	font-size: 12px;
 }
+#billSelect {
+	width: 292px;
+    height: 30px;
+    margin-top:10px;
+    margin-left:60px;
+    border:0;
+    outline: 0;
+}
+#show_avatar{
+	width: 292px;
+	height:292px;
+	text-align: center;
+}
+#user_avatar {
+	width:150px;
+	height:150px;
+	border-radius: 200px;
+}
 </style>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(
+					function() {
+						if ($("#img_modify").attr("src") == '/SayHi/static/image/modify_admin.png') {
+
+							$('input').attr("readonly", "readonly");
+							$('textarea').attr("readonly", "readonly");
+						}
+						$("#billSelect").hide();
+						$(".table_li").css("background-color", "#4f93b6");
+						$("#user_mamager").css("background-color", "#4288aa");
+						$("body").css({
+							   "overflow-x":"hidden",
+							   "overflow-y":"hidden"
+							 });
+					});
+	$(document)
+			.ready(
+					function() {
+						$("#img_modify")
+								.click(
+										function() {
+											if ($("#img_modify").attr("src") == '/SayHi/static/image/modify_admin.png') {
+
+												$("#img_modify")
+														.attr("src",
+																"/SayHi/static/image/hold_admin.png")
+												$('#user_name').removeAttr(
+														"readonly");
+												$("#billSelect").show();
+												return false;
+											}
+										});
+					});
+</script>
 </head>
 <body>
 	<jsp:include page="sidebar.jsp" flush="true" />
-	<form action="" method="get">
+	<form action="${APP_PATH }/updateUserAdmin" method="post" enctype="multipart/form-data">
 		<div id="counter">
 			<div id="inform">
 				<div id="inform_top">
-					<a href="${APP_PATH }/userAdmin"><img src="../static/image/return_admin.png" id="img_return"></a>
-					<input type="image" src="../static/image/modify_admin.png" id="img_modify">
+					<a href="${APP_PATH }/userAdmin"><img
+						src="${APP_PATH }/static/image/return_admin.png" id="img_return"></a>
+					<input type="image" src="${APP_PATH }/static/image/${image}"
+						id="img_modify">
 				</div>
 
 				<div id="context">
@@ -119,17 +176,21 @@ td {
 							<table style="border-collapse: separate; border-spacing: 19px;">
 								<tr>
 									<td style="width: 100px;">用户编号:</td>
-									<td><input type="text" name="userId" value="${user.userId }"></td>
+									<td><input type="text" name="userId"
+										value="${user.userId }"></td>
 								</tr>
 								<tr>
 									<td>用户名:</td>
-									<td><input type="text" name="userName" value="${user.userName }"></td>
+									<td><input type="text" name="userName"
+										value="${user.userName }" id="user_name"></td>
 								</tr>
 								<tr>
-									<td>用户头像:</td>
+									<td style="vertical-align: top;">用户头像:</td>
 									<td>
-										<div>
-											<input type="text" name="avatar" value="${user.avatar }">
+										<div id="show_avatar">
+											<input type="hidden" name="avatar" value="${user.avatar }">
+											<img  src="${user.avatar }" id="user_avatar">
+											<input type="file" name="file" id="billSelect">
 											<!-- <input type="button" id="upload" name="" value="文件上传"> -->
 										</div>
 									</td>

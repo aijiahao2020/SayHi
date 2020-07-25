@@ -16,10 +16,6 @@
 	width: 0px;
 }
 
-#inform_top {
-	width: 1000px;
-	height: 99px;
-}
 
 #topplus {
 	width: 1000px;
@@ -43,13 +39,7 @@
 	margin: 19px 32px auto auto;
 }
 
-.inform_top {
-	width: 100px;
-	height: 20px;
-	font-size: 20px;
-	margin-left: 108px;
-	margin-bottom: 26px;
-}
+
 
 .inform_table {
 	margin-left: 300px;

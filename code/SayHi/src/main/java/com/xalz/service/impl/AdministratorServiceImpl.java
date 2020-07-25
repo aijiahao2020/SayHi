@@ -14,6 +14,7 @@ import com.xalz.bean.User;
 import com.xalz.mappers.ActivityMapper;
 import com.xalz.mappers.AdministratorMapper;
 import com.xalz.mappers.CommentMapper;
+import com.xalz.mappers.UserMapper;
 import com.xalz.service.ActivityMemberService;
 import com.xalz.service.AdministratorService;
 import com.xalz.service.MessageService;
@@ -46,14 +47,108 @@ public class AdministratorServiceImpl implements AdministratorService{
 	@Autowired
 	CommentMapper commentMapper;
 	
+	@Autowired
+	UserMapper userMapper;
+	
+
+	/**
+	 * 在管理员端添加或修改用户
+	 */
+	@Override
+	public boolean updateUserInAdmin(User user) {
+		if(user.getUserId() != null) {
+			if(userMapper.updateByPrimaryKeySelective(user) != 0) {
+				return true;
+			}else {
+				return false;
+			}
+			
+		}else {
+			if(userMapper.insert(user) != 0) {
+				return true;
+			}else {
+				return false;
+			}
+		}
+	}
+
+
+	/**
+	 * 在管理员端添加或修改评论
+	 */
+
+	@Override
+	public boolean updateCmtInAdmin(Comment cmt) {
+		if(cmt.getCmtId() != null) {
+			if(commentMapper.updateByPrimaryKeySelective(cmt) != 0) {
+				return true;
+			}else {
+				return false;
+			}
+			
+		}else {
+			cmt.setCmtTime(new Date());
+			if(commentMapper.insert(cmt) != 0) {
+				return true;
+			}else {
+				return false;
+			}
+		}
+		
+	}
+	
+	/**
+	 * 在管理员端添加或修改活动
+	 */
+	@Override
+	public boolean updateActivInAdmin(Activity activ) {
+		if(activ.getActivId() != null) {
+			activityMapper.updateByPrimaryKeySelective(activ);
+			return true;
+		}else {
+			if(activityMapper.insert(activ) != 0) {
+				return true;
+			}else {
+				return false;
+			}
+		}
+		
+	}
+
+	
+	/**
+	 * 根据表单对用户表进行模糊查询
+	 */
+	@Override
+  	public List<User> getUserSearchInAdmin(User user){
+		Example example = new Example(User.class);
+		//设置查询的及结果按照用户编号升序排列
+//		example.setOrderByClause("userName DESC");
+		Criteria criteria = example.createCriteria();
+		if(user != null) {
+			if(user.getUserId() != null) {
+				criteria.andLike("userId", "%" + user.getUserId() + "%");
+			}
+			if(user.getUserName() != null) {//设置活动名查询条件
+				criteria.andLike("userName", "%" + user.getUserName() + "%");
+			}
+			if(user.getAvatar() != null) {
+				criteria.andLike("avatar", "%" + user.getAvatar() + "%");
+			}
+			return userMapper.selectByExample(example);
+		}else {
+			return userMapper.selectAll();
+		}
+  	}
+	
 	/**
 	 * 根据表单对评论表进行模糊查询
 	 */
 	@Override
 	public List<Comment> getCmtSearchInAdmin(Comment cmt) {
-		Example example = new Example(Activity.class);
+		Example example = new Example(Comment.class);
 		//设置查询的及结果按照活动开始时间升序排列
-		example.setOrderByClause("cmtTime DESC");
+		example.setOrderByClause("cmt_time DESC");
 		Criteria criteria = example.createCriteria();
 		if(cmt != null) {
 			if(cmt.getActivId() != null) {
@@ -151,8 +246,4 @@ public class AdministratorServiceImpl implements AdministratorService{
 			return false;
 	}
 
-
-
-	
-	
 }

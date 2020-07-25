@@ -5,8 +5,21 @@ import java.util.List;
 import com.xalz.bean.Activity;
 import com.xalz.bean.Administrator;
 import com.xalz.bean.Comment;
+import com.xalz.bean.User;
 
 public interface AdministratorService {
+	
+	//在管理员端添加或修改用户
+	public boolean updateUserInAdmin(User user);
+	
+	//在管理员端添加或修改评论
+	public boolean updateCmtInAdmin(Comment cmt);
+	
+	//在管理员端添加或修改活动
+	public boolean updateActivInAdmin(Activity activ);
+	
+	//根据表单对用户表进行模糊查询
+  	public List<User> getUserSearchInAdmin(User user);
 	
 	//根据表单对评论表进行模糊查询
   	public List<Comment> getCmtSearchInAdmin(Comment cmt);

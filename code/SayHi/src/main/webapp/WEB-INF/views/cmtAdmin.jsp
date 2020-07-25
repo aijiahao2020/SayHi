@@ -23,7 +23,7 @@
 #counter {
 	width: 1143px;
 	height: 820px;
-	background: url(static/image/back_admin.png) no-repeat;
+	
 	float: right;
 }
 
@@ -33,6 +33,7 @@
 	margin: 25px auto 45px auto;
 	background: white;
 	border-radius: 5px;
+	box-shadow: 0px 2px 2px 1px #E0E0E0;
 }
 
 #cmtmag_search_top {
@@ -83,7 +84,7 @@
 #cmtmag_search_button {
 	width: 100px;
 	height: 25px;
-	background-color: #6dbecb;
+	background-color: #4f93b6;
 	border-radius: 5px;
 	text-align: center;
 	line-height: 25px;
@@ -110,6 +111,7 @@
 	margin: 0 auto;
 	background: white;
 	border-radius: 5px;
+	box-shadow: 0px 2px 2px 1px #E0E0E0;
 }
 
 #cmtmag_result_top {
@@ -193,12 +195,25 @@ visibility: hidden;
 }
 </style>
 <script type="text/javascript">
+
+
 $(document).ready(
 		function() {
 			$("#cmtmag_search_button").click(
 					function() {
 						$("#submitSearch").trigger("click");
 					});
+			$(".table_li").css("background-color", "#4f93b6");
+			$("#cmt_mamager").css("background-color","#4288aa");
+			$(".delete").click(function(){
+				if(confirm("是否确认删除")){
+					
+				}else{return false;}
+			});
+			$("body").css({
+				   "overflow-x":"hidden",
+				   "overflow-y":"hidden"
+				 });
 		});
 </script>
 </head>
@@ -219,8 +234,7 @@ $(document).ready(
 								<td style="width: 202px;"><input type="text" name="userId"
 									value="${comment.userId }"></td>
 								<td>评论内容:</td>
-								<td><input type="text" name="cmtContent"
-									value="${comment.cmtContent }"></td>
+								<td><input type="text" name="cmtContent" value="${comment.cmtContent }"></td>
 							</tr>
 
 						</table>
@@ -256,7 +270,7 @@ $(document).ready(
 								<td>${comments.cmtContent }</td>
 								<td><a href="commentAdmin/${comments.cmtId}"><img
 										src="static/image/search_admin.png" class="img_search"></a>
-									<a href=""><img src="static/image/add_admin.png"
+									<a href="toAddCmtAdmin"><img src="static/image/add_admin.png"
 										class="img_add"></a> <a
 									href="delCommentAdmin/${comments.cmtId}" class="delete"><img
 										src="static/image/delete_admin.png" class="img_delete"></a></td>
