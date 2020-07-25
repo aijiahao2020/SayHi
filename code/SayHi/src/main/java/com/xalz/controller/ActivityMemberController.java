@@ -7,12 +7,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.xalz.bean.ActivityMember;
 import com.xalz.service.ActivityMemberService;
+import com.xalz.service.ActivityService;
 
 @Controller
 public class ActivityMemberController {
 
 	@Autowired
 	ActivityMemberService activityMemberService;
+	
+	@Autowired
+	ActivityService activityService;
 	
 	/**
 	 * 用户参加活动
@@ -21,7 +25,6 @@ public class ActivityMemberController {
 	 */
 	@RequestMapping(value = "/attendActiv",method = RequestMethod.POST)
 	public String attendActiv(ActivityMember activityMember) {
-		
 		activityMemberService.addActvityMember(activityMember.getUserId(), activityMember.getActivId());
 		return "redirect:/index/" + activityMember.getActivId();
 	}
@@ -33,9 +36,10 @@ public class ActivityMemberController {
 	 */
 	@RequestMapping(value = "/leaveActiv",method = RequestMethod.POST)
 	public String leaveActiv(ActivityMember activityMember) {
-		activityMemberService.deleteActvityMember(activityMember);
+		if(!activityService.queryActivSponsor(activityMember.getActivId(), activityMember.getUserId())) {
+			activityMemberService.deleteActvityMember(activityMember);
+		}
 		System.out.println(activityMemberService.deleteActvityMember(activityMember));
-		
 		return "redirect:/index/" + activityMember.getActivId();
 	}
 

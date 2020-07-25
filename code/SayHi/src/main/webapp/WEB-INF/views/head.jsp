@@ -9,9 +9,14 @@
 %>
 <style>
 #top {
-	border-bottom: solid;
+	border-bottom: none;
 	border-width: 2px;
 	border-color: darkgray;
+	position:fixed;
+	width:100%;
+	background-color:white;
+	z-index:999;
+	margin-top:0px;
 }
 
 #head_img{

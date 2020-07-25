@@ -1,10 +1,14 @@
 package com.xalz.bean;
 
 import java.util.Date;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Activity {
 	@Id
@@ -27,10 +31,12 @@ public class Activity {
 	private String activAddress;
 	
 	//*****更改*****
+//	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	@Column(name = "activ_starttime")
 	private Date activStarttime;
 	
+//	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	@Column(name = "activ_endtime")
 	private Date activEndtime;

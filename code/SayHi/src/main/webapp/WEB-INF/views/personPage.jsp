@@ -10,14 +10,28 @@
 <%
 	pageContext.setAttribute("APP_PATH", request.getContextPath());
 %>
+<script type="text/javascript" src="${APP_PATH }/static/js/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$(".delete").click(function() {
+			var content = $(this).parent().parent().find("#name1").text();
+			var flag = confirm("确定要删除 "+ content +"活动的信息吗？");
+			return flag;
+		});
+	});
+</script>
 <style>
-/* #top {
-	border-bottom: solid;
+ #top {
+	border:none;
 	border-width: 2px;
 	border-color: darkgray;
+	margin-top:-8px;
+	background:transparent;
+	position:static;
+
 }
 
-#quit {
+/*#quit {
 	cursor: pointer;
 	border: none;
 	background: white;
@@ -48,25 +62,29 @@
 	margin-right:5px;
 }
 
-body {
-	background-image: url(image/publish.png);
-	background-position: 50px 50px;
-	background-size: 1350px 330px;
-	background-repeat: no-repeat;
+#imag{
+   width:1150px;
+   height:330px;
+   margin-top:-55px;
+   margin-left:150px;
 }
-
-#mid {
-	width: 1130px;
-	height: 450px;
-	border: solid;
+body {
+	
+}
+#mid1{
+   width: 1180px;
+   min-height:550px;
+   height:auto;
+    border: solid;
 	border-top-color: #F7F7F7;
 	border-bottom-color: #B1B1B1;
 	border-left-color: #D3D3D3;
-	border-right-color: #D3D3D3;
-
-	margin-left: 250px;
+	border-right-color: #D3D3D3; 
+	   margin-left: 170px;
 	margin-bottom: 100px;
-	border-radius: 5px;
+	border-radius: 10px;
+	margin-top:15px;
+	float:left;
 }
 
 #mid_msg_table1 {
@@ -94,7 +112,7 @@ body {
 	font-family: "PingFang SC";
 	height: 30px;
 	border-bottom: solid;
-	border-color: #5B91A5;
+	border-color: white;
 }
 
 #th_bom {
@@ -123,45 +141,16 @@ body {
 }
 
 #mid_act {
-	margin-left: 50px;
+	margin-left: 60px;
 	margin-top: 50px;
 }
 
 #mid_act1 {
 	margin-left: 30px;
 	float: left;
-}
-
-#img_a {
-	height: 140px;
-	width: 250px;
 	
-}
-
-#img_1 {
-	height: 20px;
-	width: 20px;
-	position: absolute;
-	border-radius:50%; 
-	overflow:hidden;
-}
-
-#img_2 {
-	height: 20px;
-	width: 20px;
-	position: absolute;
-	margin-left: 15px;
-	border-radius:50%; 
-	overflow:hidden;
-}
-
-#img_3 {
-	height: 20px;
-	width: 20px;
-	position: absolute;
-	margin-left: 30px;
-	border-radius:50%; 
-	overflow:hidden;
+	margin-bottom:20px;
+	margin-right:10px;
 }
 
 h4 {
@@ -178,33 +167,49 @@ h3 {
 }
 
 #num {
-	margin-left: 70px;
-	font-size: 15px;
+	margin-left: 10px;
+	font-size: 16px;
 	color: #767676;
+    float:left;
+}
+#img_a {
+ height: 110px;
+	width: 200px;
+
+	border-radius: 5px;
 }
 
-#delete {
-	width: 250px;
+#img_1 {
 	height: 25px;
-	font-size: 16px;
-	font-family: "PingFang SC";
-	background: #5B91A5;
-	border-style: solid;
-	border-color: #5B91A5;
-	border-width: 1px;
-	color: white;
-	border-radius: 5px;
-	margin-top: 10px;
+	width:25px;
+	border-radius:50%; 
+	overflow:hidden;
+    float:left;
+	
+}
+#delete_act{
+  border:solid;
+  border-color:#5B91A5;
+  background-color:#5B91A5;
+  border-width:1px;
+  color:white;
+  font-size:15px;
+  width:150px;
+  /* text-align:center; */
+  border-radius:5px;
+  margin-top:150px;
+  float:left;
+  margin-left:-40px;
 }
 a{
  text-decoration:none;
   color:black;
 }
 #mid_add{
-  right:150px;
+ right: 380px;
     position: fixed;
     z-index: 999;
-    bottom:100px;
+    bottom:50px;
 }
 #mid_add_img{
    height:80px;
@@ -217,29 +222,39 @@ a{
   border-width:1px;
   color:white;
   font-size:17px;
-  width:250px;
+  width:200px;
  text-align:center;
   border-radius:5px;
-  margin-top:5px;
+  margin-top:40px;
+  float:left;
+}
+#black{
+  width:100%;
+background-color:#F5F9FA;
+  height:200px;
+  margin-top:250px;
+  float:left;
 }
 </style>
 <script>
-    function change()
+   function check()
     {
-    	th1.style.borderColor='#5B91A5';
-    	th2.style.borderColor='white';
-    }
-
-    function change1()
-    {
-    	th2.style.borderColor='#5B91A5';
-    	th1.style.borderColor='white';
-    }
+	var a  = choose.value;    /*  x是input的id */
+	if(a==1)
+	{
+	th1.style.borderColor='#5B91A5';   /* th1是全部 */
+	}
+	else
+	{
+	th2.style.borderColor='#5B91A5';
+	}
+	
+}
 </script>
 
 </head>
 
-<body>
+<body onload = "check()";>
 
 <%-- 	<div id="top">
 		<a href="index"><img alt="" src="static/image/SayHi.png"
@@ -252,13 +267,15 @@ a{
 		</div>
          <img src="${sessionScope.user.avatar}" id="head_imag">
 	</div> --%>
-	
-	 <img  src="static/image/publish.png"  style="height:300px;width:1390px;">
+	<input id="choose" type="hidden" value="${requestScope.choose}">
+	 <img  src="static/image/publish.png"  id="imag">
+	 
+	 <div  id="mid1">
 	<div id="mid">
 		<div id="mid_msg">
 			<table id="mid_msg_table1">
 				<tr>
-					<th id="th_bom1"><a href="${APP_PATH }/myAttendingActiv">进行中的活动</a></th>
+					<th id="th_bom1"><a href="${APP_PATH }/myAttendingActiv" style="color:white">进行中的活动</a></th>
 					<th id="th_bom"><a href="${APP_PATH }/myFavoriteActiv">活动历史</a></th>
 					<th id="th_bom"><a href="${APP_PATH }/myUserInfo">我的账号</a></th>
 					<th id="th_bom"><a href="${APP_PATH }/myMessage">消息</a></th>
@@ -266,8 +283,8 @@ a{
 			</table>
 			<table id="mid_msg_table2">
 				<tr>
-					<th id="th1" onclick=change()><a href="myAttendingActiv">全部</a></th>
-					<th id="th2" onclick=change1()><a href="myLaunchedActiv">我发起的</a></th>
+					<th id="th1" onclick=change() ><a href="myAttendingActiv">全部</a></th>
+					<th id="th2" onclick=change1() ><a href="myLaunchedActiv">我发起的</a></th>
 				</tr>
 
 			</table>
@@ -281,18 +298,18 @@ a{
 				<c:forEach items="${requestScope.activityUsers }"
 					var="activityUsers">
 					<div id="mid_act1">
-						<div style="float: left">
+						<div style="float: left;">
 							<a href="index/${activityUsers.activId}"><img
 								src="${activityUsers.activBill}" id="img_a"></a>
-							<h4>${activityUsers.activStart}</h4>
-							<a href="index/${activityUsers.activId}"><h3>${activityUsers.activName}</h3></a>
+							<h4><fmt:formatDate value="${activityUsers.activStart}" pattern="yyyy-MM-dd hh:mm:ss" /></h4>
+							<a href="index/${activityUsers.activId}"><h3 id="name1">${activityUsers.activName}</h3></a>
 							<div id="buttom_buttom">
 								<c:forEach items="${activityUsers.userList }" var="userList">
 									<a href="getUserInfo/${userList.userId}"><img id="img_1" src="${userList.avatar}"></a>
 								</c:forEach>
 								<div id="num">${activityUsers.activNum}</div>
 								<c:if test="${requestScope.isDel == 'isDel'}">
-									<a href="${APP_PATH }/delActiv/${activityUsers.activId}"><div id="delete_act">删除活动</div></a>
+									<div id="delete_act"><a class="delete" href="${APP_PATH }/delActiv/${activityUsers.activId}" style="color:white">删除活动</div></a>
 								</c:if>
 							</div>
 						</div>
@@ -300,10 +317,13 @@ a{
 				</c:forEach>
 			</c:if>
 		</div>
+		</div>
+		</div>
 		
 		<div id="mid_add">
 			<a href="toAddActiv"><img src="${APP_PATH }/static/image/add.png" id="mid_add_img"></a>
 		</div>
-	</div>
+	
+<div id="black"></div>
 </body>
 </html>
