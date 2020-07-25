@@ -77,7 +77,7 @@ create table favorite_info
 /*==============================================================*/
 create table message
 (
-   msg_id               int(4) not null,
+   msg_id               int(4) not null auto_increment,
    user_id              int(4),
    mess_info            varchar(255),
    mess_time            datetime not null,
