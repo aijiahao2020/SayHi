@@ -163,7 +163,7 @@ body {
 }
 
 #mid_msg_tag {
-	margin-left: 20px;
+	margin-left: 0px;
 	margin-top: 30px;
 	font-size: 20px;
 }
@@ -171,7 +171,7 @@ body {
 #mid_msg_name_input {
 	height: 30px;
 	width: 300px;
-	margin-left: 80px;
+	margin-left: 100px;
 	outline: none;
 	border-radius: 5px;
 	font-size:19px;
