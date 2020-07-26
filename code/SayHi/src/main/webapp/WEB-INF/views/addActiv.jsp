@@ -93,13 +93,13 @@ background:transparent;
 }
 
 #act_name {
-	margin-left: 300px;
+	margin-left: 290px;
 	font-size: 18px;
 	font-family: PingFang SC;
 }
 
 #act_name_input {
-	margin-left: 7%;
+	margin-left: 4%;
 	width: 30%;
 	border-radius: 5px;
 	border-width: 1.5px;
@@ -115,7 +115,7 @@ background:transparent;
 
 #act_location_input {
 	margin-top: 10px;
-	margin-left: 410px;
+	margin-left: 380px;
 	width: 20%;
 	height: 70px;
 	border-radius: 5px;

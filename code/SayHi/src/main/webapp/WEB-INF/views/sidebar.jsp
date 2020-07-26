@@ -93,7 +93,6 @@ ul {
 <%
 	pageContext.setAttribute("APP_PATH", request.getContextPath());
 %>
-<script type="text/javascript" src="scripts/jquery-3.4.1.js"></script>
 
 </head>
 <body>
@@ -103,7 +102,9 @@ ul {
 			<a href="${APP_PATH }/logoutAdmin"><div id="logout">
 					<img src="${APP_PATH }/static/image/logout_admin.png">
 				</div></a>
-			<div id="user">艾佳豪</div>
+				<c:if test="${!empty sessionScope.admin}">
+					<div id="user">${sessionScope.admin.adminName}</div>
+				</c:if>
 		</div>
 		<div id="main">
 			<ul>

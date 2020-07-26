@@ -12,6 +12,8 @@
 <link href="${APP_PATH }/static/css/cmtinform.css" rel="stylesheet"
 	type="text/css" />
 <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="${APP_PATH }/static/js/window.js"></script>
+<link href="${APP_PATH }/static/css/window.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 	$(document)
 			.ready(
@@ -43,6 +45,10 @@
 							   "overflow-x":"hidden",
 							   "overflow-y":"hidden"
 							 });
+						var ret = $("input[name='ret']").val();
+						if(ret != ""){
+							TS.successAlert(ret);
+						}
 					});
 </script>
 <style type="text/css">
@@ -97,5 +103,6 @@
 			</div>
 		</div>
 	</form>
+	<input type="hidden" name="ret" value="${ret}">
 </body>
 </html>
