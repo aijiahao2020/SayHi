@@ -197,7 +197,7 @@ public class ActivityServiceImpl implements ActivityService{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		List<Activity> activList = getActivListByFuzzySearch(activRecoment);
 		for(Activity activ : activList) {
-			if(activ.getActivId() != activity.getActivId()) {
+			if(!activ.getActivId().equals(activity.getActivId())) {
 				//通过活动编号查询活动对应的用户成员列表
 				ActivityUser activUser = new ActivityUser();
 				activUser.setActivId(activ.getActivId());

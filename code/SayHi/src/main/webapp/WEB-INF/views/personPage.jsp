@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="head.jsp"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -302,7 +303,7 @@ background-color:#F5F9FA;
 							<a href="index/${activityUsers.activId}"><img
 								src="${activityUsers.activBill}" id="img_a"></a>
 							<h4><fmt:formatDate value="${activityUsers.activStart}" pattern="yyyy-MM-dd hh:mm:ss" /></h4>
-							<a href="index/${activityUsers.activId}"><h3 id="name1">${activityUsers.activName}</h3></a>
+							<a href="index/${activityUsers.activId}"><h3 class="name1">${activityUsers.activName}</h3></a>
 							<div id="buttom_buttom">
 								<c:forEach items="${activityUsers.userList }" var="userList">
 									<a href="getUserInfo/${userList.userId}"><img id="img_1" src="${userList.avatar}"></a>
