@@ -10,13 +10,13 @@ import com.xalz.bean.User;
 public interface AdministratorService {
 	
 	//在管理员端添加或修改用户
-	public boolean updateUserInAdmin(User user);
+	public User updateUserInAdmin(User user);
 	
 	//在管理员端添加或修改评论
-	public boolean updateCmtInAdmin(Comment cmt);
+	public Comment updateCmtInAdmin(Comment cmt);
 	
 	//在管理员端添加或修改活动
-	public boolean updateActivInAdmin(Activity activ);
+	public Activity updateActivInAdmin(Activity activ);
 	
 	//根据表单对用户表进行模糊查询
   	public List<User> getUserSearchInAdmin(User user);

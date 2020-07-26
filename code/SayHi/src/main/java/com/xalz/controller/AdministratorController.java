@@ -168,6 +168,7 @@ public class AdministratorController {
 	public String getActivByActivId(@PathVariable("id") Integer activId, Map<String, Object> map) {
 		Activity activity = activityService.getActivByPrimaryKey(activId);
 		map.put("activity", activity);
+		map.put("userId", activity.getUserId());
 		map.put("image", "modify_admin.png");
 		return "activInform";
 	}
@@ -176,9 +177,10 @@ public class AdministratorController {
 	 * 跳转到添加活动页面
 	 * @return
 	 */
-	@RequestMapping("/toAddActivAdmin")
-	public ModelAndView toAddActivityInAdmin(ModelAndView model) {
+	@RequestMapping(value = "/toAddActivAdmin/{id}", method = RequestMethod.GET)
+	public ModelAndView toAddActivityInAdmin(@PathVariable("id") Integer userId, ModelAndView model) {
 		model.setViewName("activInform");
+		model.addObject("userId", userId);
 		model.addObject("image", "hold_admin.png");
 		return model;
 	}
@@ -190,17 +192,21 @@ public class AdministratorController {
 	@RequestMapping(value = "/updateActivAdmin")
 	public String updateActivityAdmin(Activity activity, HttpServletRequest request, Map<String, Object> map) throws IOException {
 		System.out.println(activity);
-		
+		map.put("userId", activity.getUserId());
 		String activBill = ImageUtils.upload(request, activity.getFile());
 		if(activBill != null)
 			activity.setActivBill(activBill);
-		map.put("activity", activity);
-		if(administratorService.updateActivInAdmin(activity)) {
+		//更新或添加活动，成功返回带活动编号的活动对象，失败返回null
+		Activity activ = administratorService.updateActivInAdmin(activity);
+		if(activ != null) {
+			map.put("ret", "操作成功");
+			map.put("activity", activ);
 			map.put("image", "modify_admin.png");
 		}else {
+			map.put("ret", "操作失败");
+			map.put("activity", activity);
 			map.put("image", "hold_admin.png");
 		}
-		
 		
 		return "activInform";
 	}
@@ -319,10 +325,15 @@ public class AdministratorController {
 	@RequestMapping(value = "/updateCmtAdmin")
 	public String updateCommentAdmin(Comment cmt, HttpServletRequest request, Map<String, Object> map) throws IOException {
 		System.out.println(cmt);
-		map.put("cmt", cmt);
-		if(administratorService.updateCmtInAdmin(cmt)) {
+		//更新或添加活动，成功返回带评论编号的评论对象，失败返回null
+		Comment comment = administratorService.updateCmtInAdmin(cmt);
+		if(comment != null) {
+			map.put("ret", "操作成功");
+			map.put("cmt", comment);
 			map.put("image", "modify_admin.png");
 		}else {
+			map.put("ret", "操作失败");
+			map.put("cmt", cmt);
 			map.put("image", "hold_admin.png");
 		}
 		return "cmtInform";
@@ -424,13 +435,18 @@ public class AdministratorController {
 		System.out.println("avatar" + avatar);
 		if(avatar != null)
 		user.setAvatar(avatar);
-		if(administratorService.updateUserInAdmin(user)) {
+		//更新或添加活动，成功返回带用户编号的用户对象，失败返回null
+		User getuser = administratorService.updateUserInAdmin(user);
+		if(getuser != null) {
+			map.put("ret", "操作成功");
+			map.put("user", getuser);
 			map.put("image", "modify_admin.png");
 		}else {
+			map.put("ret", "操作失败");
+			map.put("user", user);
 			map.put("image", "hold_admin.png");
 		}
-		map.put("user", user);
-		map.put("image", "modify_admin.png");
+		
 		return "userInform";
 	}
 

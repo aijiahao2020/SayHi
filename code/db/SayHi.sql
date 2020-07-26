@@ -1,12 +1,14 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2020/7/23 20:40:01                           */
+/* Created on:     2020/7/26 10:56:43                           */
 /*==============================================================*/
 
 
 drop table if exists activity;
 
 drop table if exists activity_member;
+
+drop table if exists administrator;
 
 drop table if exists comment;
 
@@ -51,6 +53,18 @@ create table activity_member
 );
 
 /*==============================================================*/
+/* Table: administrator                                         */
+/*==============================================================*/
+create table administrator
+(
+   admin_id             int(4) not null auto_increment,
+   admin_name           char(50) not null,
+   password             varchar(100) not null,
+   avatar               varchar(255),
+   primary key (admin_id)
+);
+
+/*==============================================================*/
 /* Table: comment                                               */
 /*==============================================================*/
 create table comment
@@ -77,7 +91,7 @@ create table favorite_info
 /*==============================================================*/
 create table message
 (
-   msg_id               int(4) not null,
+   msg_id               int(4) not null auto_increment,
    user_id              int(4),
    mess_info            varchar(255),
    mess_time            datetime not null,

@@ -55,21 +55,49 @@ public class AdministratorServiceImpl implements AdministratorService{
 	 * 在管理员端添加或修改用户
 	 */
 	@Override
-	public boolean updateUserInAdmin(User user) {
+	public User updateUserInAdmin(User user) {
+		User queryUser = new User();
+		if(user.getUserName() == null) {
+			return null;
+		}
+		queryUser.setUserName(user.getUserName());
 		if(user.getUserId() != null) {
-			if(userMapper.updateByPrimaryKeySelective(user) != 0) {
-				return true;
+			//查询要更新的用户用户名是否发生改变
+			System.out.println("进入更新————————");
+			if(userMapper.selectByPrimaryKey(user.getUserId()).getUserName().equals(user.getUserName())) {
+				if(userMapper.updateByPrimaryKeySelective(user) != 0) {
+					System.out.println("=============");
+					return userMapper.selectByPrimaryKey(user.getUserId());
+				}else {
+					return null;
+				}
 			}else {
-				return false;
+				//用户名存在
+				if(userMapper.selectOne(queryUser) != null) {
+					//无法更新
+					return null;
+				}else {
+					//用户名不存在
+					if(userMapper.updateByPrimaryKeySelective(user) != 0) {
+						return userMapper.selectByPrimaryKey(user.getUserId());
+					}else {
+						return null;
+					}
+				}
 			}
-			
 		}else {
-			if(userMapper.insert(user) != 0) {
-				return true;
+			if(userMapper.selectOne(queryUser) != null) {
+				//无法添加
+				return null;
 			}else {
-				return false;
+				if(userMapper.insert(user) != 0) {
+					return userMapper.selectOne(user);
+				}else {
+					return null;
+				}
 			}
 		}
+
 	}
 
 
@@ -78,20 +106,23 @@ public class AdministratorServiceImpl implements AdministratorService{
 	 */
 
 	@Override
-	public boolean updateCmtInAdmin(Comment cmt) {
+	public Comment updateCmtInAdmin(Comment cmt) {
+		if(cmt.getCmtContent() == null) {
+			return null;
+		}
 		if(cmt.getCmtId() != null) {
 			if(commentMapper.updateByPrimaryKeySelective(cmt) != 0) {
-				return true;
+				return commentMapper.selectByPrimaryKey(cmt.getCmtId());
 			}else {
-				return false;
+				return null;
 			}
 			
 		}else {
 			cmt.setCmtTime(new Date());
 			if(commentMapper.insert(cmt) != 0) {
-				return true;
+				return commentMapper.selectOne(cmt);
 			}else {
-				return false;
+				return null;
 			}
 		}
 		
@@ -101,15 +132,18 @@ public class AdministratorServiceImpl implements AdministratorService{
 	 * 在管理员端添加或修改活动
 	 */
 	@Override
-	public boolean updateActivInAdmin(Activity activ) {
+	public Activity updateActivInAdmin(Activity activ) {
 		if(activ.getActivId() != null) {
-			activityMapper.updateByPrimaryKeySelective(activ);
-			return true;
+			if(activityMapper.updateByPrimaryKeySelective(activ) != 0) {
+				return activityMapper.selectByPrimaryKey(activ.getActivId());
+			}else {
+				return null;
+			}
 		}else {
 			if(activityMapper.insert(activ) != 0) {
-				return true;
+				return activityMapper.selectOne(activ);
 			}else {
-				return false;
+				return null;
 			}
 		}
 		

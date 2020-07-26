@@ -121,6 +121,8 @@ td {
 }
 </style>
 <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="${APP_PATH }/static/js/window.js"></script>
+<link href="${APP_PATH }/static/css/window.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 	$(document).ready(
 					function() {
@@ -154,6 +156,10 @@ td {
 												return false;
 											}
 										});
+						var ret = $("input[name='ret']").val();
+						if(ret != ""){
+							TS.successAlert(ret);
+						}
 					});
 </script>
 </head>
@@ -185,6 +191,11 @@ td {
 										value="${user.userName }" id="user_name"></td>
 								</tr>
 								<tr>
+									<td>用户密码:</td>
+									<td><input type="password" name="password"
+										value="${user.password }" id="password"></td>
+								</tr>
+								<tr>
 									<td style="vertical-align: top;">用户头像:</td>
 									<td>
 										<div id="show_avatar">
@@ -204,5 +215,6 @@ td {
 			</div>
 		</div>
 	</form>
+	<input type="hidden" name="ret" value="${ret}">
 </body>
 </html>

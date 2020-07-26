@@ -193,24 +193,17 @@ public class ActivityServiceImpl implements ActivityService{
 //		activRecoment.setActivCity(activity.getActivCity());
 		activRecoment.setActivLabel(activity.getActivLabel());
 		activRecoment.setActivStarttime(new Date());
-		//设置时间格式
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		System.out.println(activity);
 		List<Activity> activList = getActivListByFuzzySearch(activRecoment);
+		System.out.println(activList);
 		for(Activity activ : activList) {
-			if(activ.getActivId() != activity.getActivId()) {
+			if(!activ.getActivId().equals(activity.getActivId())) {
+				System.out.println(activ.getActivId() + "!=" + activity.getActivId());
 				//通过活动编号查询活动对应的用户成员列表
 				ActivityUser activUser = new ActivityUser();
 				activUser.setActivId(activ.getActivId());
 				activUser.setActivName(activ.getActivName());
-				//转化时间格式
-				String startTime = sdf.format(activ.getActivStarttime());
-				System.out.println(startTime);
-				try {
-					activUser.setActivStart(sdf.parse(startTime));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				activUser.setActivStart(activ.getActivStarttime());
 				activUser.setActivNum(activityMemberService.getActvityMemberCount(activ.getActivId()));
 				activUser.setActivBill(activ.getActivBill());
 				activUser.setUserList(activityMemberService.getUserListByActivity(activ.getActivId()));
@@ -237,16 +230,16 @@ public class ActivityServiceImpl implements ActivityService{
 		String activCity = null;
 		if(address != null) {
 			if(address.indexOf("省") == -1) {
-				activState = address.substring(0, address.indexOf("市") + 1);
+				activState = address.substring(0, address.indexOf("市"));
 				address = address.substring(address.indexOf("市") + 1, address.length());
-				activCity = address.substring(0, address.indexOf("区") + 1);
+				activCity = address.substring(0, address.indexOf("区"));
 			}else {
-				activState = address.substring(0, address.indexOf("省") + 1);
+				activState = address.substring(0, address.indexOf("省"));
 				address = address.substring(address.indexOf("省") + 1, address.length());
-				activCity = address.substring(0, address.indexOf("市") + 1);
+				activCity = address.substring(0, address.indexOf("市"));
 			}
 		}
-//		System.out.println(activState + ":" + activCity);
+		System.out.println(activState + ":" + activCity);
 		activ.setActivState(activState);
 		activ.setActivCity(activCity);
 		activ.setActivStarttime(new Date());

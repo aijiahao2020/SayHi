@@ -94,7 +94,7 @@ $(document).ready(
 				if(confirm("是否确认删除")){
 					
 				}else{return false;}
-			});
+			 });
 			$("body").css({
 				   "overflow-x":"hidden",
 				   "overflow-y":"hidden"
@@ -107,11 +107,11 @@ $(document).ready(
 		$.ajax({
 			url : "${APP_PATH }/delActivAdminByAjax",//这个对应Controller的URL，和表单里面的action一样
 			date : {
-				activId : id
+				
 				
 			},//data就是你想要传什么数据到Controller层，这里的数据是json数据。
 			type : "POST", //类型，POST或者GET,就和表单与超链接一样
-			dataType : "text", //Controller层返回类型，如果返回String，就用text,返回json,就用json
+			dataType : "json", //Controller层返回类型，如果返回String，就用text,返回json,就用json
 			success : function(data) {
 				alert(data);
 			},
@@ -120,7 +120,7 @@ $(document).ready(
 			}
 		});
 	});
-}); */
+});  */
 </script>
 </head>
 <body>
@@ -177,9 +177,9 @@ $(document).ready(
 								<td>${activs.activName }</td>
 								<td><a href="activAdmin/${activs.activId}"><img
 										src="static/image/search_admin.png" class="img_search"></a>
-									<a href="toAddActivAdmin"><img src="static/image/add_admin.png"
-										class="img_add"></a> <a
-									href="delActivAdmin/${activs.activId}" class="delete"><img
+									<a href="toAddActivAdmin/${activs.userId}"><img src="static/image/add_admin.png"
+										class="img_add"></a><!-- <span class="del"><button>删除</button></span> -->
+											<a href="delActivAdmin/${activs.activId}" class="delete"><img
 										src="static/image/delete_admin.png" class="img_delete"></a></td>
 							</tr>
 						</c:forEach>

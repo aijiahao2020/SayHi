@@ -56,6 +56,8 @@
 <script src="${APP_PATH }/static/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${APP_PATH }/static/js/geo2.js"></script>
 <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="${APP_PATH }/static/js/window.js"></script>
+<link href="${APP_PATH }/static/css/window.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 	//转化时间格式
 	/* var format = function(time, format) {
@@ -136,6 +138,7 @@
 							$('#param_city').attr("disabled", "disabled");
 							$("#billSelect").hide();
 						}
+						$("#user_id").attr("readonly", "readonly");
 					});
 	$(document).ready(
 			function() {
@@ -156,6 +159,7 @@
 							$('#param_province').removeAttr("disabled");
 							$('#param_city').removeAttr("disabled");
 							$("#billSelect").show();
+							$("#user_id").attr("readonly", "readonly");
 						});
 				$("body").css({
 					   "overflow-x":"hidden",
@@ -185,6 +189,7 @@
 												return false;
 											}
 										});
+						
 					});
 
 	$(document).ready(function() {
@@ -203,6 +208,10 @@
 		});
 		$(".table_li").css("background-color", "#4f93b6");
 		$("#activ_mamager").css("background-color","#4288aa");
+		var ret = $("input[name='ret']").val();
+		if(ret != ""){
+			TS.successAlert(ret);
+		}
 	});
 </script>
 </head>
@@ -230,7 +239,7 @@
 								<tr>
 									<td style="width: 100px;">用户编号:</td>
 									<td><input type="text" name="userId"
-										value="${activity.userId }"></td>
+										value="${userId }" id="user_id"></td>
 									</tr>
 									<td style="width: 100px;">活动名:</td>
 									<td><input type="text" name="activName"
@@ -343,5 +352,6 @@
 	<input type="hidden" id="sageCity" value="${activity.activCity}">
 	<input type="hidden" name="activLabel" id="stage_label"
 		value="${activity.activLabel}">
+	<input type="hidden" name="ret" value="${ret}">
 </body>
 </html>

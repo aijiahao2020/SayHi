@@ -1,6 +1,10 @@
 package com.xalz.test;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -163,19 +167,16 @@ public class ActivityTest {
 		
 		/* 测试通过活动id获取该活动以及相关推荐 */	
 		
-//		Map<Activity, List<User>> activUser =  activityService.getActivAndRecomment(5);
-//		
-//		for(Map.Entry<Activity, List<User>> entry : activUser.entrySet()){
-//           System.out.println(entry.getKey());
-//           for(User user : entry.getValue()) {
-//        	   System.out.println(user);
-//           }
-//        }
+		List<ActivityUser> activUser =  activityService.getActivAndRecommentByActivId(1041);
+		
+		for(ActivityUser activ : activUser){
+          System.out.println(activ);
+       }
 		
 		/* 测试过活动名和地点进行活动查询 */	
 		
 //		String activName = null;
-//		String activAddress = null;
+//		String activAddress = "湖北省仙桃市";
 //		
 //		List<ActivityUser> activList =  activityService.getActivUserByNameAddress(activName, activAddress);
 //		
@@ -198,7 +199,11 @@ public class ActivityTest {
 //          System.out.println(activ);
 //       }
 		//查询是否为主班方
-		System.out.println(activityService.queryActivSponsor(1001, 1102));
+//		System.out.println(activityService.queryActivSponsor(1002, 1102));
+//		LocalDateTime localDateTime = LocalDateTime.parse("2019-07-09 13:56:21", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//
+//		System.out.println(localDateTime);
+//		System.out.println(activityService.getActivUserIndexRecom());
 	}
 	
 
