@@ -198,10 +198,6 @@ public class ActivityServiceImpl implements ActivityService{
 		System.out.println(activList);
 		for(Activity activ : activList) {
 			if(!activ.getActivId().equals(activity.getActivId())) {
-<<<<<<< HEAD
-=======
-				System.out.println(activ.getActivId() + "!=" + activity.getActivId());
->>>>>>> 98e1f4de09434c088433430feab526cad8b15dd6
 				//通过活动编号查询活动对应的用户成员列表
 				ActivityUser activUser = new ActivityUser();
 				activUser.setActivId(activ.getActivId());
