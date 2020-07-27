@@ -78,6 +78,7 @@ public class AdministratorController {
 	@RequestMapping(value = "/loginAdmin", method = RequestMethod.POST)
 	public ModelAndView login(ModelAndView model, Administrator admin, HttpServletRequest request) {
 		// 对登入的管理员进行唯一存在查询
+		request.getSession().invalidate();
 		if (administratorService.queryAdministrator(admin)) {
 			model.setViewName("redirect:/activAdmin");
 //			model.addObject("user", userService.getUserByExample(user));
@@ -387,7 +388,7 @@ public class AdministratorController {
 		System.out.println(admin);
 		if (admin != null) {
 			// 查询之前只需要调用，传入页码，以及每页的大小
-			PageHelper.startPage(pn, 10);
+			PageHelper.startPage(pn, 6);
 			// startPage后面紧跟的这个查询就是一个分页查询
 			List<User> users = administratorService.getUserSearchInAdmin(user);
 			// 使用pageInfo包装查询后的结果，只需要将pageInfo交给页面就行了。

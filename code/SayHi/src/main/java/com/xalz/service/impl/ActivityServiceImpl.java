@@ -228,7 +228,7 @@ public class ActivityServiceImpl implements ActivityService{
 		activ.setActivName(activName);
 		String activState = null;
 		String activCity = null;
-		if(address != null) {
+		if(!address.equals("")) {
 			if(address.indexOf("省") == -1) {
 				activState = address.substring(0, address.indexOf("市"));
 				address = address.substring(address.indexOf("市") + 1, address.length());

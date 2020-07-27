@@ -208,7 +208,7 @@ visibility: hidden;
 <script type="text/javascript">
 $(document).ready(
 		function() {
-			$("#activmag_search_button").click(
+			$("#usermag_search_button").click(
 					function() {
 						$("#submitSearch").trigger("click");
 					});
