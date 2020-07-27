@@ -80,13 +80,16 @@
     
     	
 	<!-- 使用filter实现登录控制 -->
-	<!-- <filter>
+	<filter>
 		<filter-name>SessionFilter</filter-name>
 		<filter-class>com.xalz.controller.LoginFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>SessionFilter</filter-name> -->
+		<filter-name>SessionFilter</filter-name>
 		<!-- 所有的管理页面需要登录后才能访问 -->
-		<!-- <url-pattern>/views/*</url-pattern>
-	</filter-mapping> --> 
+		<url-pattern>/views/actHistory.jsp</url-pattern>
+		<url-pattern>/views/addActiv.jsp</url-pattern>
+		<url-pattern>/views/myInfoPage.jsp</url-pattern>
+		<url-pattern>/views/myMessage.jsp</url-pattern>
+	</filter-mapping>
 </web-app>

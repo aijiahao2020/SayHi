@@ -130,12 +130,12 @@ function checkPasswordConfig()
  if(a!="") document.getElementById("spanPassword").innerHTML = "";
  if(b==null||b=="")
  {
-  document.getElementById("spanPasswordConfig").innerHTML = "<font color='red' style='margin-left:50px'>请您确认密码！ </p>";
+  document.getElementById("spanPasswordConfig").innerHTML = "<font color='red' style='margin-left:45px'>请您确认密码！ </p>";
   return false;
  }
  if(a!=b)
  {
-  document.getElementById("spanPasswordConfig").innerHTML = "<font color='red'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp您两次输入的密码不一致！ </font>";
+  document.getElementById("spanPasswordConfig").innerHTML = "<font color='red' style='margin-left:45px'>您两次输入的密码不一致！ </font>";
   return false;
  }
  

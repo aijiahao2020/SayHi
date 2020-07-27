@@ -303,7 +303,7 @@ background-color:#F5F9FA;
 							<a href="index/${activityUsers.activId}"><img
 								src="${activityUsers.activBill}" id="img_a"></a>
 							<h4><fmt:formatDate value="${activityUsers.activStart}" pattern="yyyy-MM-dd hh:mm:ss" /></h4>
-							<a href="index/${activityUsers.activId}"><h3 id="name1">${activityUsers.activName}</h3></a>
+							<a href="index/${activityUsers.activId}"><h3 class="name1">${activityUsers.activName}</h3></a>
 							<div id="buttom_buttom">
 								<c:forEach items="${activityUsers.userList }" var="userList">
 									<a href="getUserInfo/${userList.userId}"><img id="img_1" src="${userList.avatar}"></a>
