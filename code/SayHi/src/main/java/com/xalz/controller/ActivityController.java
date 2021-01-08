@@ -279,6 +279,7 @@ public class ActivityController {
 //		activityService.getActivUserByActivLabel(activLabel);
 //		activityService.
 		activUsers = activityService.getActivUserIndexRecom();
+		System.out.println(activUsers + "2021-1-4-19:20");
 		map.put("activUsers", activUsers);
 		map.put("userLabel1", userLabel1);
 		map.put("userLabel2", userLabel2);

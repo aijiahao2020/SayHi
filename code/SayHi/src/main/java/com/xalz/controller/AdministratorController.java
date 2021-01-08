@@ -233,7 +233,7 @@ public class AdministratorController {
 //	public String deleteActivByAjax(@RequestParam("activId") Integer activId, HttpServletRequest request,
 //			HttpServletResponse response) throws IOException {
 //		String result = null;
-//		
+//		System.out.println(activId);
 //		System.out.println("获取到Ajax请求");
 //		if(activityService.deleteActivByPrimaryKey(activId)) {
 //			result = "删除成功";
